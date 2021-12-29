@@ -1,0 +1,54 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >
+  cover validator
+
+Globals:
+  Api:
+    OpenApiVersion: 3.0.1
+
+  Function:
+    Runtime: nodejs14.x
+    MemorySize: 128
+    Timeout: 100
+    Layers:
+      - Ref: RuntimeDependenciesLayer
+
+Transform:
+  - AWS::Serverless-2016-10-31
+
+Parameters:
+  ENV:
+    Type: String
+
+Resources:
+  BasicAWSApiGateway:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: AWS Api Gateway
+      StageName: !Ref ENV
+
+  RepoValidatorFunction:
+    Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: makefile
+    Properties:
+      Handler: dist/handlers/repoValidator.handler
+      Description: repo validator
+      Events:
+        RepoValidatorApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref BasicAWSApiGateway
+            Path: /repo-validate
+            Method: POST
+
+  RuntimeDependenciesLayer:
+    Type: AWS::Serverless::LayerVersion
+    Metadata:
+      BuildMethod: makefile
+    Properties:
+      Description: Runtime dependencies for Lambdas
+      ContentUri: ./
+      CompatibleRuntimes:
+        - nodejs14.x
+      RetentionPolicy: Retain

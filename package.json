@@ -1,0 +1,45 @@
+{
+  "name": "cover_validator",
+  "version": "0.0.1",
+  "description": "cover validator",
+  "scripts": {
+    "prettier:check": "prettier --check .",
+    "prettier": "prettier --write .",
+    "lint:check": "eslint .",
+    "lint": "eslint . --fix",
+    "pre:stage": "npm run prettier && npm run lint && npm t",
+    "build": "tsc",
+    "clean": "rm -rf dist coverage logs node_modules build public package-lock.json .aws-sam",
+    "test": "jest",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@aws-sdk/client-lambda": "^3.18.0",
+    "@types/aws-lambda": "^8.10.77",
+    "@types/jest": "^27.0.3",
+    "@typescript-eslint/eslint-plugin": "^5.8.1",
+    "@typescript-eslint/parser": "^5.8.1",
+    "aws-lambda": "^1.0.6",
+    "eslint": "^8.5.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-import-resolver-typescript": "^2.4.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-sonarjs": "^0.11.0",
+    "husky": "^7.0.4",
+    "jest": "^27.0.4",
+    "prettier": "^2.3.0",
+    "ts-jest": "^27.1.2",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.2.4"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@octokit/core": "^3.5.1",
+    "class-transformer": "^0.5.1",
+    "class-transformer-validator": "^0.9.1",
+    "class-validator": "^0.13.2",
+    "tslib": "^2.3.1"
+  }
+}

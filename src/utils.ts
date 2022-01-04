@@ -20,7 +20,7 @@ export async function validateRepoUrl(url: string, token: string) {
     throw "Bad credentials or repo not found";
   }
 
-  if (!res.data.permissions?.admin) {
-    throw "User must have admin permission";
+  if (!res.data.permissions?.triage) {
+    throw "User must have triage permission";
   }
 }

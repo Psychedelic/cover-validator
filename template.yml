@@ -24,7 +24,8 @@ Resources:
   BasicAWSApiGateway:
     Type: AWS::Serverless::Api
     Properties:
-      Name: AWS Api Gateway
+      Name:
+        Fn::Sub: Cover Validator ${ENV}
       StageName: !Ref ENV
 
   AddBuildConfigFunction:
@@ -41,6 +42,21 @@ Resources:
             RestApiId: !Ref BasicAWSApiGateway
             Path: /add-build-config
             Method: POST
+
+  UpdateBuildConfigFunction:
+    Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: makefile
+    Properties:
+      Handler: dist/handlers/updateBuildConfig.handler
+      Description: update build config
+      Events:
+        AddBuildConfigApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref BasicAWSApiGateway
+            Path: /update-build-config
+            Method: PUT
 
   RuntimeDependenciesLayer:
     Type: AWS::Serverless::LayerVersion

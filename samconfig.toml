@@ -4,22 +4,22 @@ version = 0.1
 [dev.deploy]
 [dev.deploy.parameters]
 stack_name = "cover-validator-dev"
-s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-72h36tdsbeh6"
 s3_prefix = "cover-validator-dev"
 region = "us-east-1"
 confirm_changeset = true
 capabilities = "CAPABILITY_IAM"
 image_repositories = []
 parameter_overrides = "ENV=\"dev\""
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-mo07zp9fpcpi"
 
 [prod]
 [prod.deploy]
 [prod.deploy.parameters]
 stack_name = "cover-validator-prod"
-s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-72h36tdsbeh6"
 s3_prefix = "cover-validator-prod"
 region = "us-east-1"
 confirm_changeset = true
 capabilities = "CAPABILITY_IAM"
 image_repositories = []
 parameter_overrides = "ENV=\"prod\""
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-mo07zp9fpcpi"

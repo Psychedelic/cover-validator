@@ -1,8 +1,8 @@
 .PHONY: build-RuntimeDependenciesLayer build-lambda-common
-.PHONY: build-RepoValidatorFunction
+.PHONY: build-AddBuildConfigFunction
 
-build-RepoValidatorFunction:
-	$(MAKE) HANDLER=src/handlers/repoValidator.ts build-lambda-common
+build-AddBuildConfigFunction:
+	$(MAKE) HANDLER=src/handlers/addBuildConfig.ts build-lambda-common
 
 build-lambda-common:
 	npm install --ignore-scripts

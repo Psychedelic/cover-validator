@@ -27,19 +27,19 @@ Resources:
       Name: AWS Api Gateway
       StageName: !Ref ENV
 
-  RepoValidatorFunction:
+  AddBuildConfigFunction:
     Type: AWS::Serverless::Function
     Metadata:
       BuildMethod: makefile
     Properties:
-      Handler: dist/handlers/repoValidator.handler
-      Description: repo validator
+      Handler: dist/handlers/addBuildConfig.handler
+      Description: add build config
       Events:
-        RepoValidatorApi:
+        AddBuildConfigApi:
           Type: Api
           Properties:
             RestApiId: !Ref BasicAWSApiGateway
-            Path: /repo-validate
+            Path: /add-build-config
             Method: POST
 
   RuntimeDependenciesLayer:

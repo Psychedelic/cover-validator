@@ -14,15 +14,16 @@ Globals:
       - Ref: RuntimeDependenciesLayer
     Environment:
       Variables:
-        COVER_TOKEN:
-        NODE_ENV: local
-        COVER_CANISTER_ID:
+        NODE_ENV: !Ref NODE_ENV
+        COVER_CANISTER_ID: !Ref COVER_CANISTER_ID
 
 Transform:
   - AWS::Serverless-2016-10-31
 
 Parameters:
   NODE_ENV:
+    Type: String
+  COVER_CANISTER_ID:
     Type: String
 
 Resources:

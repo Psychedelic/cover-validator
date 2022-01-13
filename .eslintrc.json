@@ -12,6 +12,7 @@
     "plugin:promise/recommended",
     "prettier"
   ],
+  "ignorePatterns": ["src/actor/factory*"],
   "rules": {
     "eqeqeq": ["error"],
     "prefer-const": ["error"],

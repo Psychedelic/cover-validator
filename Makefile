@@ -1,12 +1,16 @@
 .PHONY: build-RuntimeDependenciesLayer build-lambda-common
 .PHONY: build-AddBuildConfigFunction
 .PHONY: build-UpdateBuildConfigFunction
+.PHONY: build-BuildWasmFunction
 
 build-AddBuildConfigFunction:
 	$(MAKE) HANDLER=src/handlers/addBuildConfig.ts build-lambda-common
 
 build-UpdateBuildConfigFunction:
 	$(MAKE) HANDLER=src/handlers/updateBuildConfig.ts build-lambda-common
+
+build-BuildWasmFunction:
+	$(MAKE) HANDLER=src/handlers/buildWasm.ts build-lambda-common
 
 build-lambda-common:
 	npm install --ignore-scripts

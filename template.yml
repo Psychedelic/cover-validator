@@ -12,12 +12,17 @@ Globals:
     Timeout: 100
     Layers:
       - Ref: RuntimeDependenciesLayer
+    Environment:
+      Variables:
+        COVER_TOKEN:
+        NODE_ENV: local
+        COVER_CANISTER_ID:
 
 Transform:
   - AWS::Serverless-2016-10-31
 
 Parameters:
-  ENV:
+  NODE_ENV:
     Type: String
 
 Resources:
@@ -25,8 +30,8 @@ Resources:
     Type: AWS::Serverless::Api
     Properties:
       Name:
-        Fn::Sub: Cover Validator ${ENV}
-      StageName: !Ref ENV
+        Fn::Sub: Cover Validator ${NODE_ENV}
+      StageName: !Ref NODE_ENV
 
   AddBuildConfigFunction:
     Type: AWS::Serverless::Function
@@ -57,6 +62,21 @@ Resources:
             RestApiId: !Ref BasicAWSApiGateway
             Path: /update-build-config
             Method: PUT
+
+  BuildWasmFunction:
+    Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: makefile
+    Properties:
+      Handler: dist/handlers/buildWasm.handler
+      Description: build wasm
+      Events:
+        AddBuildConfigApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref BasicAWSApiGateway
+            Path: /build-wasm
+            Method: POST
 
   RuntimeDependenciesLayer:
     Type: AWS::Serverless::LayerVersion

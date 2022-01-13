@@ -20,3 +20,4 @@ export const InvalidRepoPermission: ErrorResponse = new ErrorResponse("ERR_003",
 export const GettingCanisterInfoFailed: ErrorResponse = new ErrorResponse("ERR_004", "Failed to get canister info");
 export const UnauthorizedPrincipal: ErrorResponse = new ErrorResponse("ERR_005", "Unauthorized canister controller");
 export const InvalidSignature: ErrorResponse = new ErrorResponse("ERR_006", "Invalid signature");
+export const BuilConfigNotFound: ErrorResponse = new ErrorResponse("ERR_007", "Build Config Not Found");

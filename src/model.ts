@@ -50,3 +50,24 @@ export class BuildConfigRequest {
   @Validate(IsValidPrincipalFormat)
   userPrincipal?: string;
 }
+
+export class BuildWasmRequest {
+  @IsNotEmpty()
+  @Validate(IsValidPrincipalFormat)
+  canisterId?: string;
+
+  @IsNotEmpty()
+  @Validate(IsHexString)
+  publicKey?: string;
+
+  @IsNotEmpty()
+  userAccessToken?: string;
+
+  @IsNotEmpty()
+  @Validate(IsHexString)
+  signature?: string;
+
+  @IsNotEmpty()
+  @Validate(IsValidPrincipalFormat)
+  userPrincipal?: string;
+}

@@ -39,6 +39,7 @@
   "license": "ISC",
   "dependencies": {
     "@dfinity/agent": "^0.10.2",
+    "@dfinity/identity": "^0.10.2",
     "@dfinity/principal": "^0.10.2",
     "@octokit/core": "^3.5.1",
     "buffer": "^6.0.3",

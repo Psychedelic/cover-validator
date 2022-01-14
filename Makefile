@@ -17,7 +17,9 @@ build-lambda-common:
 	rm -rf dist
 	echo "{\"extends\": \"./tsconfig.json\", \"include\": [\"${HANDLER}\"] }" > tsconfig-only-handler.json
 	node_modules/typescript/bin/tsc --build tsconfig-only-handler.json
-	cp -r dist "$(ARTIFACTS_DIR)/"
+	cp -r dist "$(ARTIFACTS_DIR)"
+	cp package.json "$(ARTIFACTS_DIR)" # this helps for top await feature
+	node fileExtReplacer.js "$(ARTIFACTS_DIR)" # adding `.js` into to `import` statement
 
 build-RuntimeDependenciesLayer:
 	mkdir -p "$(ARTIFACTS_DIR)/nodejs"

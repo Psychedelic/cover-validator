@@ -1,3 +1,4 @@
+import {GetSecretValueCommand, SecretsManagerClient} from "@aws-sdk/client-secrets-manager";
 import {Ed25519KeyIdentity} from "@dfinity/identity";
 
 interface Config {
@@ -5,17 +6,31 @@ interface Config {
   icHost: string;
   nodeEnv: string;
   identity: Ed25519KeyIdentity;
-  coverToken: string;
+  coverGithubToken: string;
 }
 
-const identity = Ed25519KeyIdentity.generate();
+interface SecretData {
+  coverGithubToken: string;
+  coverValidatorPrivateKey: string;
+}
 
-let coverToken: string;
-if (process.env.COVER_TOKEN) {
-  coverToken = process.env.COVER_TOKEN;
-} else {
+const client = new SecretsManagerClient({region: "us_east_1"});
+
+const command = new GetSecretValueCommand({SecretId: "coverDev"});
+
+const secret = await client.send(command);
+
+const secretData: SecretData = JSON.parse(secret.SecretString as string);
+
+if (!secretData.coverGithubToken) {
   throw new Error("Couldn't load cover token");
 }
+
+if (!secretData.coverValidatorPrivateKey) {
+  throw new Error("Couldn't load private key");
+}
+
+const identity = Ed25519KeyIdentity.fromSecretKey(Buffer.from(secretData.coverValidatorPrivateKey, "hex"));
 
 let coverCanisterId: string;
 if (process.env.COVER_CANISTER_ID) {
@@ -28,4 +43,6 @@ const nodeEnv = process.env.NODE_ENV || "local";
 
 const icHost = nodeEnv === "local" ? "http://host.docker.internal:8000" : "https://ic0.app";
 
-export const config: Config = {coverCanisterId, icHost, nodeEnv, identity, coverToken};
+const config: Config = {coverCanisterId, icHost, nodeEnv, identity, coverGithubToken: secretData.coverGithubToken};
+
+export default config;

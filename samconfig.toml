@@ -9,8 +9,8 @@ region = "us-east-1"
 confirm_changeset = true
 capabilities = "CAPABILITY_IAM"
 image_repositories = []
-parameter_overrides = "ENV=\"dev\""
 s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-mo07zp9fpcpi"
+parameter_overrides = "Env=\"dev\" CoverCanisterId=\"3x7en-uqaaa-aaaai-abgca-cai\""
 
 [prod]
 [prod.deploy]

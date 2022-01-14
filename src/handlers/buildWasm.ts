@@ -4,8 +4,8 @@ import {BuilConfigNotFound} from "../error";
 import {BuildWasmRequest} from "../model";
 import {Octokit} from "@octokit/core";
 import {Principal} from "@dfinity/principal";
-import {config} from "../config";
-import {getCoverActor} from "../actor";
+import config from "../config";
+import coverActor from "../actor";
 import {httpResponse} from "../httpResponse";
 
 const buildWasm = async (event: APIGatewayProxyEvent): Promise<void> => {
@@ -15,7 +15,6 @@ const buildWasm = async (event: APIGatewayProxyEvent): Promise<void> => {
 
   await validateCanisterOwner(req.canisterId as string, req.userPrincipal as string);
 
-  const coverActor = await getCoverActor();
   const buildConfig = await coverActor.getBuildConfigProvider(
     Principal.fromText(req.userPrincipal as string),
     Principal.fromText(req.canisterId as string)
@@ -28,7 +27,7 @@ const buildWasm = async (event: APIGatewayProxyEvent): Promise<void> => {
   await validateRepoUrl(buildConfig[0].repo_url, req.userAccessToken as string);
 
   const octokit = new Octokit({
-    auth: config.coverToken
+    auth: config.coverGithubToken
   });
 
   await octokit.request("POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches", {

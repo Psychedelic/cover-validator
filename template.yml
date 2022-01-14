@@ -14,16 +14,16 @@ Globals:
       - Ref: RuntimeDependenciesLayer
     Environment:
       Variables:
-        NODE_ENV: !Ref NODE_ENV
-        COVER_CANISTER_ID: !Ref COVER_CANISTER_ID
+        NODE_ENV: !Ref Env
+        COVER_CANISTER_ID: !Ref CoverCanisterId
 
 Transform:
   - AWS::Serverless-2016-10-31
 
 Parameters:
-  NODE_ENV:
+  Env:
     Type: String
-  COVER_CANISTER_ID:
+  CoverCanisterId:
     Type: String
 
 Resources:
@@ -31,8 +31,8 @@ Resources:
     Type: AWS::Serverless::Api
     Properties:
       Name:
-        Fn::Sub: Cover Validator ${NODE_ENV}
-      StageName: !Ref NODE_ENV
+        Fn::Sub: Cover Validator ${Env}
+      StageName: !Ref Env
 
   AddBuildConfigFunction:
     Type: AWS::Serverless::Function

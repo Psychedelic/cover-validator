@@ -14,7 +14,7 @@ interface SecretData {
   coverValidatorPrivateKey: string;
 }
 
-const client = new SecretsManagerClient({region: "us_east_1"});
+const client = new SecretsManagerClient({region: "us-east-1"});
 
 const command = new GetSecretValueCommand({SecretId: "coverDev"});
 
@@ -45,4 +45,4 @@ const icHost = nodeEnv === "local" ? "http://host.docker.internal:8000" : "https
 
 const config: Config = {coverCanisterId, icHost, nodeEnv, identity, coverGithubToken: secretData.coverGithubToken};
 
-export default config;
+export {config};

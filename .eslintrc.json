@@ -17,6 +17,8 @@
   ],
   "ignorePatterns": ["src/actor/factory*"],
   "rules": {
+    "import/no-named-as-default-member": "off",
+    "import/no-named-as-default": ["error"],
     "eqeqeq": ["error"],
     "prefer-const": ["error"],
     "object-shorthand": ["error", "always"],

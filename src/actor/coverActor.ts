@@ -1,6 +1,6 @@
 import {Actor, HttpAgent} from "@dfinity/agent";
 import {_SERVICE as Service} from "./factory.d";
-import config from "../config";
+import {config} from "../config";
 import fetch from "isomorphic-fetch";
 import {idlFactory} from "./factory";
 
@@ -19,4 +19,4 @@ if (config.nodeEnv === "local") {
   });
 }
 
-export default coverActor;
+export {coverActor};

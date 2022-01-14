@@ -8,7 +8,7 @@
     "lint:check": "eslint .",
     "lint": "eslint . --fix",
     "pre:stage": "npm run prettier && npm run lint && npm t",
-    "build": "tsc",
+    "build": "tsc && node fileExtReplacer.js dist",
     "clean": "rm -rf dist coverage logs node_modules build public package-lock.json .aws-sam",
     "test": "jest",
     "prepare": "husky install"
@@ -46,6 +46,7 @@
   "dependencies": {
     "@aws-sdk/client-secrets-manager": "^3.46.0",
     "@dfinity/agent": "^0.10.2",
+    "@dfinity/candid": "^0.10.2",
     "@dfinity/identity": "^0.10.2",
     "@dfinity/principal": "^0.10.2",
     "@octokit/core": "^3.5.1",

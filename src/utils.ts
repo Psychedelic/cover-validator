@@ -11,14 +11,12 @@ import {ClassType, transformAndValidate} from "class-transformer-validator";
 import {Octokit} from "@octokit/core";
 import {Principal} from "@dfinity/principal";
 import {decode} from "cbor";
-import {ecdsaVerify} from "secp256k1";
 import fetch from "isomorphic-fetch";
+import secp256k1 from "secp256k1";
 import {sha256} from "js-sha256";
-import {sign} from "tweetnacl";
+import tweetnacl from "tweetnacl";
 
-const textEncoder = new TextEncoder();
-
-export const validateRepoUrl = async (url: string, token: string) => {
+export const validateRepo = async (url: string, token: string) => {
   const urlSplit = url.split("/");
 
   const octokit = new Octokit({
@@ -42,11 +40,11 @@ export const validateRepoUrl = async (url: string, token: string) => {
 };
 
 //
-export const validateCanisterOwner = async (canisterId: string, userPrincipal: string) => {
+export const validateCanister = async (canisterId: string, userPrincipal: string) => {
   const agent = new HttpAgent({host: "https://ic0.app", fetch});
   const canisterPrincipal = Principal.fromText(canisterId);
 
-  const path = [textEncoder.encode("canister"), canisterPrincipal.toUint8Array(), textEncoder.encode("controllers")];
+  const path = [Buffer.from("canister", "utf8"), canisterPrincipal.toUint8Array(), Buffer.from("controllers", "utf8")];
 
   let res;
   let cert;
@@ -76,12 +74,12 @@ export const fromHexString = (hex: string): Uint8Array =>
   new Uint8Array((hex.match(/.{1,2}/g) ?? []).map(byte => parseInt(byte, 16)));
 
 const validateSecp256k1Signature = (canisterId: string, signature: string, publicKey: string): boolean => {
-  const challenge = textEncoder.encode(canisterId);
+  const challenge = Buffer.from(canisterId, "utf8");
   const hash = sha256.create();
   hash.update(challenge);
 
   try {
-    return ecdsaVerify(fromHexString(signature), new Uint8Array(hash.digest()), fromHexString(publicKey));
+    return secp256k1.ecdsaVerify(fromHexString(signature), new Uint8Array(hash.digest()), fromHexString(publicKey));
   } catch (error) {
     console.log("Can't validate Secp256k1 signature: ", error);
     return false;
@@ -90,8 +88,8 @@ const validateSecp256k1Signature = (canisterId: string, signature: string, publi
 
 const validateEd25519Signature = (canisterId: string, signature: string, publicKey: string): boolean => {
   try {
-    return sign.detached.verify(
-      new TextEncoder().encode(canisterId),
+    return tweetnacl.sign.detached.verify(
+      Buffer.from(canisterId, "utf8"),
       fromHexString(signature),
       fromHexString(publicKey)
     );

@@ -18,11 +18,12 @@ build-lambda-common:
 	echo "{\"extends\": \"./tsconfig.json\", \"include\": [\"${HANDLER}\"] }" > tsconfig-only-handler.json
 	node_modules/typescript/bin/tsc --build tsconfig-only-handler.json
 	cp -r dist "$(ARTIFACTS_DIR)"
-	cp package.json "$(ARTIFACTS_DIR)" # this helps for top await feature
+	cp package.json package-lock.json "$(ARTIFACTS_DIR)"
+	npm install --production --prefix "$(ARTIFACTS_DIR)" --ignore-scripts
 	node fileExtReplacer.js "$(ARTIFACTS_DIR)" # adding `.js` into to `import` statement
 
-build-RuntimeDependenciesLayer:
-	mkdir -p "$(ARTIFACTS_DIR)/nodejs"
-	cp package.json package-lock.json "$(ARTIFACTS_DIR)/nodejs/"
-	npm install --production --prefix "$(ARTIFACTS_DIR)/nodejs/" --ignore-scripts
-	rm "$(ARTIFACTS_DIR)/nodejs/package.json" # to avoid rebuilding when changes aren't related to dependencies
+# build-RuntimeDependenciesLayer:
+	# mkdir -p "$(ARTIFACTS_DIR)/nodejs"
+	# cp package.json package-lock.json "$(ARTIFACTS_DIR)/nodejs/"
+	# npm install --production --prefix "$(ARTIFACTS_DIR)/nodejs/" --ignore-scripts
+	# rm "$(ARTIFACTS_DIR)/nodejs/package.json" # to avoid rebuilding when changes aren't related to dependencies

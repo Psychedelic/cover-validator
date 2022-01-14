@@ -16,15 +16,24 @@ Globals:
       Variables:
         NODE_ENV: !Ref Env
         COVER_CANISTER_ID: !Ref CoverCanisterId
+        SECRET_KEY: !Ref SecretKey
 
 Transform:
   - AWS::Serverless-2016-10-31
 
+# Default as local environment
 Parameters:
   Env:
     Type: String
+    Description: Environment
+    Default: local
   CoverCanisterId:
     Type: String
+    Description: Cover canister id
+    Default: rrkah-fqaaa-aaaaa-aaaaq-cai
+  SecretKey:
+    Type: String
+    Description: SecretKey to get secret data from AWS KMS
 
 Resources:
   BasicAWSApiGateway:

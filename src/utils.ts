@@ -46,10 +46,9 @@ export const validateCanister = async (canisterId: string, userPrincipal: string
 
   const path = [Buffer.from("canister", "utf8"), canisterPrincipal.toUint8Array(), Buffer.from("controllers", "utf8")];
 
-  let res;
   let cert;
   try {
-    res = await agent.readState(canisterPrincipal, {
+    const res = await agent.readState(canisterPrincipal, {
       paths: [path]
     });
 

@@ -1,6 +1,6 @@
 import {transformAndValidateData, validateCanister, validateRepo, validateSignature} from "../utils";
 import {APIGatewayProxyEvent} from "aws-lambda";
-import {BuilConfigNotFound} from "../error";
+import {BuildConfigNotFound} from "../error";
 import {BuildWasmRequest} from "../model";
 import {Octokit} from "@octokit/core";
 import {Principal} from "@dfinity/principal";
@@ -21,7 +21,7 @@ const buildWasm = async (event: APIGatewayProxyEvent): Promise<void> => {
   );
 
   if (!buildConfig.length) {
-    throw BuilConfigNotFound;
+    throw BuildConfigNotFound;
   }
 
   await validateRepo(buildConfig[0].repo_url, req.userAccessToken as string);

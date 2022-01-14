@@ -10,8 +10,6 @@ Globals:
     Runtime: nodejs14.x
     MemorySize: 128
     Timeout: 100
-    Layers:
-      - Ref: RuntimeDependenciesLayer
     Environment:
       Variables:
         NODE_ENV: !Ref Env
@@ -87,14 +85,3 @@ Resources:
             RestApiId: !Ref BasicAWSApiGateway
             Path: /build-wasm
             Method: POST
-
-  RuntimeDependenciesLayer:
-    Type: AWS::Serverless::LayerVersion
-    Metadata:
-      BuildMethod: makefile
-    Properties:
-      Description: Runtime dependencies for Lambdas
-      ContentUri: ./
-      CompatibleRuntimes:
-        - nodejs14.x
-      RetentionPolicy: Retain

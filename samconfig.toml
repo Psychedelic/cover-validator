@@ -1,25 +1,25 @@
 version = 0.1
 
-[dev]
-[dev.deploy]
-[dev.deploy.parameters]
-stack_name = "cover-validator-dev"
-s3_prefix = "cover-validator-dev"
+[development]
+[development.deploy]
+[development.deploy.parameters]
+stack_name = "cover-validator-development"
+s3_prefix = "cover-validator-development"
 region = "us-east-1"
 confirm_changeset = true
 capabilities = "CAPABILITY_IAM"
 image_repositories = []
-parameter_overrides = "ENV=\"dev\""
 s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-mo07zp9fpcpi"
+parameter_overrides = "Env=\"development\" CoverCanisterId=\"3x7en-uqaaa-aaaai-abgca-cai\" SecretArn=\"cover-development-ES4vVw\""
 
-[prod]
-[prod.deploy]
-[prod.deploy.parameters]
-stack_name = "cover-validator-prod"
-s3_prefix = "cover-validator-prod"
+[production]
+[production.deploy]
+[production.deploy.parameters]
+stack_name = "cover-validator-production"
+s3_prefix = "cover-validator-production"
 region = "us-east-1"
 confirm_changeset = true
 capabilities = "CAPABILITY_IAM"
 image_repositories = []
-parameter_overrides = "ENV=\"prod\""
+parameter_overrides = "ENV=\"production\""
 s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-mo07zp9fpcpi"

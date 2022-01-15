@@ -18,6 +18,7 @@ export const httpResponse =
       await handler(event);
       return response(200);
     } catch (error) {
+      console.error("Unexpected Error:", error);
       if (error instanceof ErrorResponse) {
         return response(400, error);
       }

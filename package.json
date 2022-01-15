@@ -8,16 +8,21 @@
     "lint:check": "eslint .",
     "lint": "eslint . --fix",
     "pre:stage": "npm run prettier && npm run lint && npm t",
-    "build": "tsc",
+    "build": "tsc && node fileExtReplacer.js dist",
     "clean": "rm -rf dist coverage logs node_modules build public package-lock.json .aws-sam",
     "test": "jest",
     "prepare": "husky install"
   },
+  "engines": {
+    "node": ">=14.18.2"
+  },
+  "type": "module",
   "devDependencies": {
     "@aws-sdk/client-lambda": "^3.18.0",
     "@types/aws-lambda": "^8.10.77",
     "@types/isomorphic-fetch": "^0.0.35",
     "@types/jest": "^27.0.3",
+    "@types/node": "^17.0.8",
     "@types/secp256k1": "^4.0.3",
     "@typescript-eslint/eslint-plugin": "^5.8.1",
     "@typescript-eslint/parser": "^5.8.1",
@@ -28,6 +33,7 @@
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-sonarjs": "^0.11.0",
+    "filehound": "^1.17.5",
     "husky": "^7.0.4",
     "jest": "^27.0.4",
     "prettier": "^2.3.0",
@@ -38,7 +44,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.46.0",
     "@dfinity/agent": "^0.10.2",
+    "@dfinity/candid": "^0.10.2",
     "@dfinity/identity": "^0.10.2",
     "@dfinity/principal": "^0.10.2",
     "@octokit/core": "^3.5.1",
@@ -50,7 +58,6 @@
     "isomorphic-fetch": "^3.0.0",
     "js-sha256": "^0.9.0",
     "secp256k1": "^4.0.2",
-    "tslib": "^2.3.1",
     "tweetnacl": "^1.0.3"
   }
 }

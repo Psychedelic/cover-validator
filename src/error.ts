@@ -11,7 +11,7 @@ export class ErrorResponse {
 export const UnexpectedError: ErrorResponse = new ErrorResponse(
   "ERR_000",
   "Internal server error",
-  "Somthing went wrong"
+  "Something went wrong"
 );
 export const BadInputRequest = (details: unknown): ErrorResponse =>
   new ErrorResponse("ERR_001", "Bad request input", details);
@@ -20,4 +20,4 @@ export const InvalidRepoPermission: ErrorResponse = new ErrorResponse("ERR_003",
 export const GettingCanisterInfoFailed: ErrorResponse = new ErrorResponse("ERR_004", "Failed to get canister info");
 export const UnauthorizedPrincipal: ErrorResponse = new ErrorResponse("ERR_005", "Unauthorized canister controller");
 export const InvalidSignature: ErrorResponse = new ErrorResponse("ERR_006", "Invalid signature");
-export const BuilConfigNotFound: ErrorResponse = new ErrorResponse("ERR_007", "Build Config Not Found");
+export const BuildConfigNotFound: ErrorResponse = new ErrorResponse("ERR_007", "Build Config Not Found");

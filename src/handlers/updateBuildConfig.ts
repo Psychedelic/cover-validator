@@ -1,4 +1,4 @@
-import {transformAndValidateData, validateCanisterOwner, validateRepoUrl, validateSignature} from "../utils";
+import {transformAndValidateData, validateCanister, validateRepo, validateSignature} from "../utils";
 import {APIGatewayProxyEvent} from "aws-lambda";
 import {BuildConfigRequest} from "../model";
 import {httpResponse} from "../httpResponse";
@@ -8,9 +8,9 @@ const updateBuildConfig = async (event: APIGatewayProxyEvent): Promise<void> => 
 
   validateSignature(req.canisterId as string, req.signature as string, req.publicKey as string);
 
-  await validateRepoUrl(req.repoUrl as string, req.userAccessToken as string);
+  await validateRepo(req.repoUrl as string, req.userAccessToken as string);
 
-  await validateCanisterOwner(req.canisterId as string, req.userPrincipal as string);
+  await validateCanister(req.canisterId as string, req.userPrincipal as string);
 };
 
 export const handler = httpResponse(updateBuildConfig);

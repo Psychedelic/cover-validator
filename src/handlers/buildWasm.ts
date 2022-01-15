@@ -1,11 +1,11 @@
-import {transformAndValidateData, validateCanisterOwner, validateRepoUrl, validateSignature} from "../utils";
+import {transformAndValidateData, validateCanister, validateRepo, validateSignature} from "../utils";
 import {APIGatewayProxyEvent} from "aws-lambda";
-import {BuilConfigNotFound} from "../error";
+import {BuildConfigNotFound} from "../error";
 import {BuildWasmRequest} from "../model";
 import {Octokit} from "@octokit/core";
 import {Principal} from "@dfinity/principal";
 import {config} from "../config";
-import {getCoverActor} from "../actor";
+import {coverActor} from "../actor/coverActor";
 import {httpResponse} from "../httpResponse";
 
 const buildWasm = async (event: APIGatewayProxyEvent): Promise<void> => {
@@ -13,22 +13,21 @@ const buildWasm = async (event: APIGatewayProxyEvent): Promise<void> => {
 
   validateSignature(req.canisterId as string, req.signature as string, req.publicKey as string);
 
-  await validateCanisterOwner(req.canisterId as string, req.userPrincipal as string);
+  await validateCanister(req.canisterId as string, req.userPrincipal as string);
 
-  const coverActor = await getCoverActor();
   const buildConfig = await coverActor.getBuildConfigProvider(
     Principal.fromText(req.userPrincipal as string),
     Principal.fromText(req.canisterId as string)
   );
 
   if (!buildConfig.length) {
-    throw BuilConfigNotFound;
+    throw BuildConfigNotFound;
   }
 
-  await validateRepoUrl(buildConfig[0].repo_url, req.userAccessToken as string);
+  await validateRepo(buildConfig[0].repo_url, req.userAccessToken as string);
 
   const octokit = new Octokit({
-    auth: config.coverToken
+    auth: config.coverGithubToken
   });
 
   await octokit.request("POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches", {

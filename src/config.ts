@@ -1,3 +1,4 @@
+import {GetSecretValueCommand, SecretsManagerClient} from "@aws-sdk/client-secrets-manager";
 import {Ed25519KeyIdentity} from "@dfinity/identity";
 
 interface Config {
@@ -5,27 +6,47 @@ interface Config {
   icHost: string;
   nodeEnv: string;
   identity: Ed25519KeyIdentity;
-  coverToken: string;
+  coverGithubToken: string;
 }
 
-const identity = Ed25519KeyIdentity.generate();
-
-let coverToken: string;
-if (process.env.COVER_TOKEN) {
-  coverToken = process.env.COVER_TOKEN;
-} else {
-  throw new Error("Couldn't load cover token");
+interface SecretData {
+  coverGithubToken: string;
+  coverValidatorPrivateKey: string;
 }
 
-let coverCanisterId: string;
-if (process.env.COVER_CANISTER_ID) {
-  coverCanisterId = process.env.COVER_CANISTER_ID;
-} else {
-  throw new Error("Couldn't load canister Id");
+const coverCanisterId = process.env.COVER_CANISTER_ID;
+
+if (!coverCanisterId) {
+  throw new Error("Couldn't load cover canister Id");
 }
 
 const nodeEnv = process.env.NODE_ENV || "local";
 
 const icHost = nodeEnv === "local" ? "http://host.docker.internal:8000" : "https://ic0.app";
 
-export const config: Config = {coverCanisterId, icHost, nodeEnv, identity, coverToken};
+const secretKey = process.env.SECRET_KEY;
+if (secretKey) {
+  throw new Error("Couldn't load SECRET_KEY");
+}
+
+const client = new SecretsManagerClient({region: "us-east-1"});
+
+const command = new GetSecretValueCommand({SecretId: `cover-${nodeEnv}`});
+
+const secret = await client.send(command);
+
+const secretData: SecretData = JSON.parse(secret.SecretString as string);
+
+if (!secretData.coverGithubToken) {
+  throw new Error("Couldn't load cover github token");
+}
+
+if (!secretData.coverValidatorPrivateKey) {
+  throw new Error("Couldn't load cover validator private key");
+}
+
+const identity = Ed25519KeyIdentity.fromSecretKey(Buffer.from(secretData.coverValidatorPrivateKey, "hex"));
+
+const config: Config = {coverCanisterId, icHost, nodeEnv, identity, coverGithubToken: secretData.coverGithubToken};
+
+export {config};

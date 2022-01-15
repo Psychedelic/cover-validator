@@ -1,6 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: >
-  cover validator
+Description: Cover Validator
 
 Globals:
   Api:
@@ -10,29 +9,35 @@ Globals:
     Runtime: nodejs14.x
     MemorySize: 128
     Timeout: 100
-    Layers:
-      - Ref: RuntimeDependenciesLayer
     Environment:
       Variables:
-        NODE_ENV: !Ref NODE_ENV
-        COVER_CANISTER_ID: !Ref COVER_CANISTER_ID
+        NODE_ENV: !Ref Env
+        COVER_CANISTER_ID: !Ref CoverCanisterId
 
 Transform:
   - AWS::Serverless-2016-10-31
 
+# Default as local environment
 Parameters:
-  NODE_ENV:
+  Env:
     Type: String
-  COVER_CANISTER_ID:
+    Description: Environment
+    Default: local
+  CoverCanisterId:
     Type: String
+    Description: Cover canister id
+    Default: rrkah-fqaaa-aaaaa-aaaaq-cai
+  SecretArn:
+    Type: String
+    Description: Secret Manager
 
 Resources:
   BasicAWSApiGateway:
     Type: AWS::Serverless::Api
     Properties:
       Name:
-        Fn::Sub: Cover Validator ${NODE_ENV}
-      StageName: !Ref NODE_ENV
+        Fn::Sub: Cover Validator ${Env}
+      StageName: !Ref Env
 
   AddBuildConfigFunction:
     Type: AWS::Serverless::Function
@@ -48,6 +53,9 @@ Resources:
             RestApiId: !Ref BasicAWSApiGateway
             Path: /add-build-config
             Method: POST
+      Policies:
+        - AWSSecretsManagerGetSecretValuePolicy:
+            SecretArn: !Sub arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:${SecretArn}
 
   UpdateBuildConfigFunction:
     Type: AWS::Serverless::Function
@@ -63,6 +71,9 @@ Resources:
             RestApiId: !Ref BasicAWSApiGateway
             Path: /update-build-config
             Method: PUT
+      Policies:
+        - AWSSecretsManagerGetSecretValuePolicy:
+            SecretArn: !Sub arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:${SecretArn}
 
   BuildWasmFunction:
     Type: AWS::Serverless::Function
@@ -78,14 +89,6 @@ Resources:
             RestApiId: !Ref BasicAWSApiGateway
             Path: /build-wasm
             Method: POST
-
-  RuntimeDependenciesLayer:
-    Type: AWS::Serverless::LayerVersion
-    Metadata:
-      BuildMethod: makefile
-    Properties:
-      Description: Runtime dependencies for Lambdas
-      ContentUri: ./
-      CompatibleRuntimes:
-        - nodejs14.x
-      RetentionPolicy: Retain
+      Policies:
+        - AWSSecretsManagerGetSecretValuePolicy:
+            SecretArn: !Sub arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:${SecretArn}

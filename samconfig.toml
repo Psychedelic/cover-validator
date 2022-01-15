@@ -10,7 +10,7 @@ confirm_changeset = true
 capabilities = "CAPABILITY_IAM"
 image_repositories = []
 s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-mo07zp9fpcpi"
-parameter_overrides = "Env=\"development\" CoverCanisterId=\"3x7en-uqaaa-aaaai-abgca-cai\""
+parameter_overrides = "Env=\"development\" CoverCanisterId=\"3x7en-uqaaa-aaaai-abgca-cai\" SecretArn=\"cover-development-ES4vVw\""
 
 [production]
 [production.deploy]

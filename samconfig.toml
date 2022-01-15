@@ -15,11 +15,11 @@ parameter_overrides = "Env=\"development\" CoverCanisterId=\"3x7en-uqaaa-aaaai-a
 [production]
 [production.deploy]
 [production.deploy.parameters]
-stack_name = "cover-validator-prod"
-s3_prefix = "cover-validator-prod"
+stack_name = "cover-validator-production"
+s3_prefix = "cover-validator-production"
 region = "us-east-1"
 confirm_changeset = true
 capabilities = "CAPABILITY_IAM"
 image_repositories = []
-parameter_overrides = "ENV=\"prod\""
+parameter_overrides = "ENV=\"production\""
 s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-mo07zp9fpcpi"

@@ -1,4 +1,4 @@
-//@ts-nocheck
+// @ts-nocheck
 export const idlFactory = ({IDL}) => {
   const Error = IDL.Record({
     debug_log: IDL.Opt(IDL.Text),
@@ -13,7 +13,7 @@ export const idlFactory = ({IDL}) => {
     canister_name: IDL.Text,
     commit_hash: IDL.Text,
     repo_url: IDL.Text,
-    rust_version: IDL.Text
+    rust_version: IDL.Opt(IDL.Text)
   });
   const AddProvider = IDL.Record({
     id: IDL.Principal,
@@ -28,15 +28,6 @@ export const idlFactory = ({IDL}) => {
   const AddRequest = IDL.Record({
     canister_id: IDL.Principal,
     build_settings: BuildSettings
-  });
-  const AddVerification = IDL.Record({
-    wasm_checksum: IDL.Text,
-    source_snapshot_url: IDL.Text,
-    canister_id: IDL.Principal,
-    git_repo: IDL.Text,
-    git_ref: IDL.Text,
-    git_sha: IDL.Text,
-    build_log_url: IDL.Text
   });
   const Request = IDL.Record({
     request_id: IDL.Nat64,
@@ -56,7 +47,7 @@ export const idlFactory = ({IDL}) => {
     canister_name: IDL.Text,
     commit_hash: IDL.Text,
     repo_url: IDL.Text,
-    rust_version: IDL.Text
+    rust_version: IDL.Opt(IDL.Text)
   });
   const ProgressStatus = IDL.Variant({
     Error: IDL.Null,
@@ -88,17 +79,28 @@ export const idlFactory = ({IDL}) => {
     created_by: IDL.Principal
   });
   const Verification = IDL.Record({
-    wasm_checksum: IDL.Text,
     updated_at: IDL.Text,
     updated_by: IDL.Principal,
-    source_snapshot_url: IDL.Text,
     canister_id: IDL.Principal,
     created_at: IDL.Text,
     created_by: IDL.Principal,
-    git_repo: IDL.Text,
-    git_ref: IDL.Text,
-    git_sha: IDL.Text,
-    build_log_url: IDL.Text
+    dfx_version: IDL.Text,
+    canister_name: IDL.Text,
+    commit_hash: IDL.Text,
+    repo_url: IDL.Text,
+    rust_version: IDL.Text,
+    optimize_count: IDL.Nat8,
+    wasm_hash: IDL.Text
+  });
+  const SubmitVerification = IDL.Record({
+    canister_id: IDL.Principal,
+    dfx_version: IDL.Text,
+    canister_name: IDL.Text,
+    commit_hash: IDL.Text,
+    repo_url: IDL.Text,
+    rust_version: IDL.Text,
+    optimize_count: IDL.Nat8,
+    wasm_hash: IDL.Text
   });
   const UpdateBuildConfig = IDL.Record({
     dfx_version: IDL.Text,
@@ -106,7 +108,7 @@ export const idlFactory = ({IDL}) => {
     canister_name: IDL.Text,
     commit_hash: IDL.Text,
     repo_url: IDL.Text,
-    rust_version: IDL.Text
+    rust_version: IDL.Opt(IDL.Text)
   });
   const UpdateProgress = IDL.Record({
     request_id: IDL.Nat64,
@@ -122,32 +124,30 @@ export const idlFactory = ({IDL}) => {
   });
   return IDL.Service({
     addAdmin: IDL.Func([IDL.Principal], [Result], []),
-    addBuildConfig: IDL.Func([AddBuildConfig], [Result], []),
+    addBuildConfig: IDL.Func([IDL.Principal, AddBuildConfig], [Result], []),
     addProvider: IDL.Func([AddProvider], [Result], []),
     addRequest: IDL.Func([AddRequest], [Result], []),
-    addVerification: IDL.Func([AddVerification], [Result], []),
     consumeRequests: IDL.Func([IDL.Record({})], [Result_1], []),
     deleteAdmin: IDL.Func([IDL.Principal], [Result], []),
-    deleteBuildConfig: IDL.Func([IDL.Principal], [Result], []),
+    deleteBuildConfig: IDL.Func([IDL.Principal, IDL.Principal], [Result], []),
     deleteProvider: IDL.Func([IDL.Principal], [Result], []),
     getAllAdmins: IDL.Func([], [IDL.Vec(IDL.Principal)], ["query"]),
-    getAllBuildConfigs: IDL.Func([], [IDL.Vec(BuildConfig)], ["query"]),
+    getAllBuildConfigs: IDL.Func([IDL.Principal], [IDL.Vec(BuildConfig)], ["query"]),
     getAllProgresses: IDL.Func([], [IDL.Vec(Progress)], ["query"]),
     getAllProviders: IDL.Func([], [IDL.Vec(Provider)], ["query"]),
     getAllRequests: IDL.Func([], [IDL.Vec(Request)], ["query"]),
     getAllVerifications: IDL.Func([], [IDL.Vec(Verification)], ["query"]),
-    getBuildConfigById: IDL.Func([IDL.Principal], [IDL.Opt(BuildConfig)], ["query"]),
+    getBuildConfigById: IDL.Func([IDL.Principal, IDL.Principal], [IDL.Opt(BuildConfig)], ["query"]),
     getBuildConfigProvider: IDL.Func([IDL.Principal, IDL.Principal], [IDL.Opt(BuildConfig)], ["query"]),
     getProgressByCanisterId: IDL.Func([IDL.Principal], [IDL.Vec(Progress)], ["query"]),
     getProgressByRequestId: IDL.Func([IDL.Nat64], [IDL.Opt(Progress)], ["query"]),
     getProviderById: IDL.Func([IDL.Principal], [IDL.Opt(Provider)], ["query"]),
     getRequestById: IDL.Func([IDL.Nat64], [IDL.Opt(Request)], ["query"]),
     getVerificationByCanisterId: IDL.Func([IDL.Principal], [IDL.Opt(Verification)], ["query"]),
-    submitVerification: IDL.Func([AddVerification], [Result], []),
-    updateBuildConfig: IDL.Func([IDL.Principal, UpdateBuildConfig], [Result], []),
+    submitVerification: IDL.Func([IDL.Principal, SubmitVerification], [Result], []),
+    updateBuildConfig: IDL.Func([IDL.Principal, IDL.Principal, UpdateBuildConfig], [Result], []),
     updateProgress: IDL.Func([UpdateProgress], [Result], []),
-    updateProvider: IDL.Func([AddProvider], [Result], []),
-    updateVerification: IDL.Func([AddVerification], [Result], [])
+    updateProvider: IDL.Func([AddProvider], [Result], [])
   });
 };
 export const init = ({IDL}) => {

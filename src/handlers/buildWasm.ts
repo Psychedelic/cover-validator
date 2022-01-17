@@ -41,7 +41,7 @@ const buildWasm = async (event: APIGatewayProxyEvent): Promise<void> => {
       repo_url: `github.com/${buildConfig[0].repo_url}`,
       user_access_token: req.userAccessToken as string,
       commit_hash: buildConfig[0].commit_hash,
-      rust_version: buildConfig[0].rust_version,
+      rust_version: buildConfig[0].rust_version[0] || "",
       dfx_version: buildConfig[0].dfx_version,
       optimize_times: buildConfig[0].optimize_times.toString()
     }

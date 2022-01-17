@@ -6,7 +6,7 @@ export interface AddBuildConfig {
   canister_name: string;
   commit_hash: string;
   repo_url: string;
-  rust_version: string;
+  rust_version: [] | [string];
 }
 export interface AddProvider {
   id: Principal;
@@ -16,15 +16,6 @@ export interface AddProvider {
 export interface AddRequest {
   canister_id: Principal;
   build_settings: BuildSettings;
-}
-export interface AddVerification {
-  wasm_checksum: string;
-  source_snapshot_url: string;
-  canister_id: Principal;
-  git_repo: string;
-  git_ref: string;
-  git_sha: string;
-  build_log_url: string;
 }
 export interface BuildConfig {
   updated_at: string;
@@ -36,7 +27,7 @@ export interface BuildConfig {
   canister_name: string;
   commit_hash: string;
   repo_url: string;
-  rust_version: string;
+  rust_version: [] | [string];
 }
 export interface BuildSettings {
   git_repo: string;
@@ -81,13 +72,23 @@ export interface Request {
 }
 export type Result = {Ok: null} | {Err: Error};
 export type Result_1 = {Ok: Array<Request>} | {Err: Error};
+export interface SubmitVerification {
+  canister_id: Principal;
+  dfx_version: string;
+  canister_name: string;
+  commit_hash: string;
+  repo_url: string;
+  rust_version: string;
+  optimize_count: number;
+  wasm_hash: string;
+}
 export interface UpdateBuildConfig {
   dfx_version: string;
   optimize_times: number;
   canister_name: string;
   commit_hash: string;
   repo_url: string;
-  rust_version: string;
+  rust_version: [] | [string];
 }
 export interface UpdateProgress {
   request_id: bigint;
@@ -102,44 +103,43 @@ export interface UpdateProgress {
   percentage: [] | [number];
 }
 export interface Verification {
-  wasm_checksum: string;
   updated_at: string;
   updated_by: Principal;
-  source_snapshot_url: string;
   canister_id: Principal;
   created_at: string;
   created_by: Principal;
-  git_repo: string;
-  git_ref: string;
-  git_sha: string;
-  build_log_url: string;
+  dfx_version: string;
+  canister_name: string;
+  commit_hash: string;
+  repo_url: string;
+  rust_version: string;
+  optimize_count: number;
+  wasm_hash: string;
 }
 export interface _SERVICE {
   addAdmin: (arg_0: Principal) => Promise<Result>;
-  addBuildConfig: (arg_0: AddBuildConfig, arg_1: Principal) => Promise<Result>;
+  addBuildConfig: (arg_0: Principal, arg_1: AddBuildConfig) => Promise<Result>;
   addProvider: (arg_0: AddProvider) => Promise<Result>;
   addRequest: (arg_0: AddRequest) => Promise<Result>;
-  addVerification: (arg_0: AddVerification) => Promise<Result>;
   consumeRequests: (arg_0: {}) => Promise<Result_1>;
   deleteAdmin: (arg_0: Principal) => Promise<Result>;
-  deleteBuildConfig: (arg_0: Principal) => Promise<Result>;
+  deleteBuildConfig: (arg_0: Principal, arg_1: Principal) => Promise<Result>;
   deleteProvider: (arg_0: Principal) => Promise<Result>;
   getAllAdmins: () => Promise<Array<Principal>>;
-  getAllBuildConfigs: () => Promise<Array<BuildConfig>>;
+  getAllBuildConfigs: (arg_0: Principal) => Promise<Array<BuildConfig>>;
   getAllProgresses: () => Promise<Array<Progress>>;
   getAllProviders: () => Promise<Array<Provider>>;
   getAllRequests: () => Promise<Array<Request>>;
   getAllVerifications: () => Promise<Array<Verification>>;
-  getBuildConfigById: (arg_0: Principal) => Promise<[] | [BuildConfig]>;
+  getBuildConfigById: (arg_0: Principal, arg_1: Principal) => Promise<[] | [BuildConfig]>;
   getBuildConfigProvider: (arg_0: Principal, arg_1: Principal) => Promise<[] | [BuildConfig]>;
   getProgressByCanisterId: (arg_0: Principal) => Promise<Array<Progress>>;
   getProgressByRequestId: (arg_0: bigint) => Promise<[] | [Progress]>;
   getProviderById: (arg_0: Principal) => Promise<[] | [Provider]>;
   getRequestById: (arg_0: bigint) => Promise<[] | [Request]>;
   getVerificationByCanisterId: (arg_0: Principal) => Promise<[] | [Verification]>;
-  submitVerification: (arg_0: AddVerification) => Promise<Result>;
-  updateBuildConfig: (arg_0: Principal, arg_1: UpdateBuildConfig) => Promise<Result>;
+  submitVerification: (arg_0: Principal, arg_1: SubmitVerification) => Promise<Result>;
+  updateBuildConfig: (arg_0: Principal, arg_1: Principal, arg_2: UpdateBuildConfig) => Promise<Result>;
   updateProgress: (arg_0: UpdateProgress) => Promise<Result>;
   updateProvider: (arg_0: AddProvider) => Promise<Result>;
-  updateVerification: (arg_0: AddVerification) => Promise<Result>;
 }

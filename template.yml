@@ -75,19 +75,37 @@ Resources:
         - AWSSecretsManagerGetSecretValuePolicy:
             SecretArn: !Sub arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:${SecretArn}
 
-  BuildWasmFunction:
+  BuildWithConfigFunction:
     Type: AWS::Serverless::Function
     Metadata:
       BuildMethod: makefile
     Properties:
-      Handler: dist/handlers/buildWasm.handler
+      Handler: dist/handlers/buildWithConfig.handler
+      Description: build with config
+      Events:
+        AddBuildConfigApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref BasicAWSApiGateway
+            Path: /build-with-config
+            Method: POST
+      Policies:
+        - AWSSecretsManagerGetSecretValuePolicy:
+            SecretArn: !Sub arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:${SecretArn}
+
+  BuildFunction:
+    Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: makefile
+    Properties:
+      Handler: dist/handlers/build.handler
       Description: build wasm
       Events:
         AddBuildConfigApi:
           Type: Api
           Properties:
             RestApiId: !Ref BasicAWSApiGateway
-            Path: /build-wasm
+            Path: /build
             Method: POST
       Policies:
         - AWSSecretsManagerGetSecretValuePolicy:

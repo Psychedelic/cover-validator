@@ -1,4 +1,4 @@
-import {Error} from "actor/factory.d";
+import {Error} from "./actor/factory.d";
 
 export class ErrorResponse {
   code: string;

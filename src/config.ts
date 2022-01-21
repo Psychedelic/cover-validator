@@ -24,11 +24,6 @@ const nodeEnv = process.env.NODE_ENV || "local";
 
 const icHost = nodeEnv === "local" ? "http://host.docker.internal:8000" : "https://ic0.app";
 
-const secretKey = process.env.SECRET_KEY;
-if (secretKey) {
-  throw new Error("Couldn't load SECRET_KEY");
-}
-
 const client = new SecretsManagerClient({region: "us-east-1"});
 
 const command = new GetSecretValueCommand({SecretId: `cover-${nodeEnv}`});

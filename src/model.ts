@@ -20,9 +20,10 @@ export class BuildConfigRequest {
   repoUrl?: string;
 
   @IsNotEmpty()
-  userAccessToken?: string;
+  repoAccessToken?: string;
 
   @IsNotEmpty()
+  @Validate(IsHexString)
   commitHash?: string;
 
   @IsNotEmptyIfOptimized()
@@ -61,7 +62,7 @@ export class BuildWasmRequest {
   publicKey?: string;
 
   @IsNotEmpty()
-  userAccessToken?: string;
+  repoAccessToken?: string;
 
   @IsNotEmpty()
   @Validate(IsHexString)

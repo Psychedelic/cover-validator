@@ -24,7 +24,7 @@ const buildWasm = async (event: APIGatewayProxyEvent): Promise<void> => {
     throw BuildConfigNotFound;
   }
 
-  await validateRepo(buildConfig[0].repo_url, req.userAccessToken as string);
+  await validateRepo(buildConfig[0].repo_url, req.repoAccessToken as string);
 
   const octokit = new Octokit({
     auth: config.coverGithubToken
@@ -39,7 +39,7 @@ const buildWasm = async (event: APIGatewayProxyEvent): Promise<void> => {
       canister_id: req.canisterId as string,
       canister_name: buildConfig[0].canister_name,
       repo_url: `github.com/${buildConfig[0].repo_url}`,
-      user_access_token: req.userAccessToken as string,
+      repo_access_token: req.repoAccessToken as string,
       commit_hash: buildConfig[0].commit_hash,
       rust_version: buildConfig[0].rust_version[0] || "",
       dfx_version: buildConfig[0].dfx_version,

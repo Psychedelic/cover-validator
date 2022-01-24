@@ -6,16 +6,17 @@ import {Principal} from "@dfinity/principal";
 import {coverActor} from "../actor/coverActor";
 import {httpResponse} from "../httpResponse";
 
-const addBuildConfig = async (event: APIGatewayProxyEvent): Promise<void> => {
+const saveBuildConfig = async (event: APIGatewayProxyEvent): Promise<void> => {
   const req = await transformAndValidateData<BuildConfigRequest>(event.body as string, BuildConfigRequest);
 
   validateSignature(req.canisterId as string, req.signature as string, req.publicKey as string);
 
-  await validateRepo(req.repoUrl as string, req.userAccessToken as string);
+  await validateRepo(req.repoUrl as string, req.repoAccessToken as string);
 
   await validateCanister(req.canisterId as string, req.userPrincipal as string);
 
-  const result = await coverActor.addBuildConfig(Principal.fromText(req.userPrincipal as string), {
+  const result = await coverActor.saveBuildConfig({
+    owner_id: Principal.fromText(req.userPrincipal as string),
     canister_id: Principal.fromText(req.canisterId as string),
     dfx_version: req.dfxVersion as string,
     optimize_times: req.optimizeTimes as number,
@@ -30,4 +31,4 @@ const addBuildConfig = async (event: APIGatewayProxyEvent): Promise<void> => {
   }
 };
 
-export const handler = httpResponse(addBuildConfig);
+export const handler = httpResponse(saveBuildConfig);

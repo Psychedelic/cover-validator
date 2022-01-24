@@ -36,7 +36,7 @@ export class IsValidVersionFormat implements ValidatorConstraintInterface {
 export class IsHexString implements ValidatorConstraintInterface {
   validate(value: string) {
     const hexPattern = /^([A-Fa-f0-9]{2})+$/;
-    return value.length % 2 === 0 && hexPattern.test(value);
+    return value !== undefined && value.length % 2 === 0 && hexPattern.test(value);
   }
 
   defaultMessage() {

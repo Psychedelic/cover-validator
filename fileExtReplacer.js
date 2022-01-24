@@ -2,7 +2,7 @@ import FileHound from "filehound";
 import fs from "fs";
 
 const args = process.argv;
-if (args.length < 3) throw "Missing path arguments";
+if (args.length < 3) throw new Error("Missing path arguments");
 
 const files = FileHound.create().paths(args[2]).discard("node_modules").ext("js").find();
 

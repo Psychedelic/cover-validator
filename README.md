@@ -2,30 +2,31 @@
 
 Cover validator is a set of lambda functions that help validate user request’s inputs before getting forwarded to Cover canister or Cover builder.
 
-## API
+## REST API
 - These APIs will check if:
     - The inputs are in the right format?
-    - The caller has the canister repo access permission?
+    - The caller has the right canister repo access permission?
     - The caller is the controller of the canister?
-    - The caller really owned the provided canister id? 
+    - The caller really owned the provided `userPrincipal`? 
   
 - How to get `signature` and `publicKey`:
+    - `signature` is signed with the `canisterId` being the message.
     - You can refer to these documents: [Secp256k1](https://github.com/dfinity/keysmith) or [Ed25519](https://github.com/Psychedelic/dfx-key)
 
 ### Save a build config
 - Save a build config to Cover canister to reuse later (login required)
 - Required inputs:
-    - `canisterId` : ID of the canister you want to build
-    - `canisterName` : name of the canister
-    - `repoUrl` : github repo of the canister in format **{server}/{repo}**
-    - `repoAccessToken` : Personal Access Token of a github account that is an **OWNER** or has **TRIAGE** permission to the canister repo. 
-    - `commitHash` : the commit hash that gets built
-    - `rustVersion` : Rust version of the canister, optional if you don’t use ic-cdk-optimizer, must be specified if you want to optimize your wasm.
-    - `dfxVersion` : Dfx version of the canister
-    - `optimizeCount` : The times you want to optimize your wasm. 1 is recommended (after the first time, the wasm isn’t going to be significantly smaller anymore). If `optimizeCount` > 0, `rustVersion` must be specified.
-    - `publicKey`: public key of `userPrincipal`
-    - `signature`: signature of `userPrincipal`
-    - `userPrincipal`: the controller of the canister
+    - `canisterId` (string): ID of the canister you want to build
+    - `canisterName` (string): name of the canister
+    - `repoUrl` (string): github repo of the canister in format **{server}/{repo}**
+    - `repoAccessToken` (string): Personal Access Token of a github account that is an **OWNER** or has **TRIAGE** permission to the canister repo. [How to create Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
+    - `commitHash` (hex string): the commit hash that gets built
+    - `rustVersion` (string): Rust version to build the wasm, optional if you don’t use ic-cdk-optimizer, must be specified if you want to optimize your wasm.
+    - `dfxVersion` (string): Dfx version to build the wasm
+    - `optimizeCount` (number): The times you want to optimize your wasm. 1 is recommended (after the first time, the wasm isn’t going to be significantly smaller anymore). If `optimizeCount` > 0, `rustVersion` must be specified.
+    - `publicKey` (hex string): public key of `userPrincipal`
+    - `signature` (hex string): signature of `userPrincipal`
+    - `userPrincipal` (hex string): the controller of the canister
  - Example: 
 
 ```
@@ -46,17 +47,17 @@ Cover validator is a set of lambda functions that help validate user request’s
 ### Build 
 - Build provided config without login or save the config to Cover canister (user has to re-enter all the fields everytime send a build request since the config hasn't been saved)
 - Required inputs:
-    - `canisterId` : ID of the canister you want to build
-    - `canisterName` : name of the canister
-    - `repoUrl` : github repo of the canister in format **{server}/{repo}**
-    - `repoAccessToken` : Personal Access Token of a github account that is an **OWNER** or has **TRIAGE** permission to the canister repo. 
-    - `commitHash` : the commit hash that gets built
-    - `rustVersion` : Rust version of the canister, optional if you don’t use ic-cdk-optimizer, must be specified if you want to optimize your wasm.
-    - `dfxVersion` : Dfx version of the canister
-    - `optimizeCount` : The times you want to optimize your wasm. 1 is recommended (after the first time, the wasm isn’t going to be significantly smaller anymore). If `optimizeCount` > 0, `rustVersion` must be specified.
-    - `publicKey`: public key of `userPrincipal`
-    - `signature`: signature of `userPrincipal`
-    - `userPrincipal`: the controller of the canister
+    - `canisterId` (string): ID of the canister you want to build
+    - `canisterName` (string): name of the canister
+    - `repoUrl` (string): github repo of the canister in format **{server}/{repo}**
+    - `repoAccessToken` (string): Personal Access Token of a github account that is an **OWNER** or has **TRIAGE** permission to the canister repo.
+    - `commitHash` (hex string): the commit hash that gets built
+    - `rustVersion` (string): Rust version to build the wasm, optional if you don’t use ic-cdk-optimizer, must be specified if you want to optimize your wasm.
+    - `dfxVersion` (string): Dfx version to build the wasm
+    - `optimizeCount` (number): The times you want to optimize your wasm. 1 is recommended (after the first time, the wasm isn’t going to be significantly smaller anymore). If `optimizeCount` > 0, `rustVersion` must be specified.
+    - `publicKey` (hex string): public key of `userPrincipal`
+    - `signature` (hex string): signature of `userPrincipal`
+    - `userPrincipal` (hex string): the controller of the canister
 - Example: 
 
 ```
@@ -76,11 +77,11 @@ Cover validator is a set of lambda functions that help validate user request’s
 ### Build with config
 - Build an existing config from the Cover canister (login required)
 - Required inputs:
-    - `canisterId`: ID of the canister you want to build
-    - `publicKey`: public key of `userPrincipal`
-    - `repoAccessToken` : Personal Access Token of a github account that is an **OWNER** or has **TRIAGE** permission to the canister repo. 
-    - `signature`: signature of `userPrincipal`
-    - `userPrincipal`: the controller of the canister
+    - `canisterId` (string): ID of the canister you want to build
+    - `publicKey` (hex string): public key of `userPrincipal`
+    - `repoAccessToken` (string): Personal Access Token of a github account that is an **OWNER** or has **TRIAGE** permission to the canister repo. 
+    - `signature` (hex string): signature of `userPrincipal`
+    - `userPrincipal` (hex string): the controller of the canister
 - Example: 
 
 ```

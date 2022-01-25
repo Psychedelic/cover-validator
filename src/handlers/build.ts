@@ -24,6 +24,7 @@ const build = async (event: APIGatewayProxyEvent): Promise<void> => {
     workflow_id: "cover_build.yml",
     ref: "main",
     inputs: {
+      owner_id: req.userPrincipal as string,
       canister_id: req.canisterId as string,
       canister_name: req.canisterName as string,
       repo_url: `github.com/${req.repoUrl}`,
@@ -31,7 +32,7 @@ const build = async (event: APIGatewayProxyEvent): Promise<void> => {
       commit_hash: req.commitHash as string,
       rust_version: req.rustVersion as string,
       dfx_version: req.dfxVersion as string,
-      optimize_times: (req.optimizeTimes as number).toString()
+      optimize_count: (req.optimizeCount as number).toString()
     }
   });
 };

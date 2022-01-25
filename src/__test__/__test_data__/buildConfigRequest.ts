@@ -9,7 +9,7 @@ const repoUrl = "claire-tran/motoko";
 const commitHash = "b2d85d4fc583289261227963f7dd6b3cc3864360";
 const rustVersion = "1.57.0";
 const dfxVersion = "0.8.4";
-const optimizeTimes = 1;
+const optimizeCount = 1;
 const publicKey = "ee68ea737af7dc455b4b4150e420bc403ab4561e1e818756071cb84622d8dd0e";
 const userPrincipal = "nqc3c-dlaut-vo2wp-yjr4u-ujegb-pnige-n65cs-4fv34-vt37w-ctkbw-gqe";
 
@@ -22,7 +22,7 @@ const body = (body: BuildConfigRequest): string =>
     commitHash: body.commitHash,
     rustVersion: body.rustVersion,
     dfxVersion: body.dfxVersion,
-    optimizeTimes: body.optimizeTimes,
+    optimizeCount: body.optimizeCount,
     publicKey: body.publicKey,
     signature: process.env.SIGNATURE,
     userPrincipal: body.userPrincipal
@@ -35,7 +35,7 @@ const goodData1 = body({
   commitHash,
   rustVersion,
   dfxVersion,
-  optimizeTimes,
+  optimizeCount,
   publicKey,
   userPrincipal
 });
@@ -47,7 +47,7 @@ const goodData2 = body({
   commitHash,
   rustVersion: "",
   dfxVersion,
-  optimizeTimes: 0,
+  optimizeCount: 0,
   publicKey,
   userPrincipal
 });
@@ -84,7 +84,7 @@ const badData7 = body({
   commitHash,
   rustVersion,
   dfxVersion,
-  optimizeTimes: -1
+  optimizeCount: -1
 });
 const badData8 = body({
   canisterId,
@@ -92,7 +92,7 @@ const badData8 = body({
   commitHash,
   rustVersion,
   dfxVersion,
-  optimizeTimes,
+  optimizeCount,
   publicKey: "bad public key"
 });
 const badData9 = body({
@@ -101,7 +101,7 @@ const badData9 = body({
   commitHash,
   rustVersion,
   dfxVersion,
-  optimizeTimes,
+  optimizeCount,
   publicKey,
   userPrincipal: "bad user principal"
 });
@@ -112,7 +112,7 @@ const badData10 = body({
   commitHash,
   rustVersion: "",
   dfxVersion,
-  optimizeTimes: 1,
+  optimizeCount: 1,
   publicKey,
   userPrincipal
 });

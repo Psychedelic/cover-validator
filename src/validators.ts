@@ -69,8 +69,8 @@ export function IsNotEmptyIfOptimized() {
       options: {message: "Rust version must be specified to use the optimizer"},
       validator: {
         validate(value: string, args: ValidationArguments) {
-          const optimizeTimes = (args.object as BuildConfigRequest).optimizeTimes as number;
-          return optimizeTimes <= 0 || (optimizeTimes > 0 && !isEmpty(value));
+          const optimizeCount = (args.object as BuildConfigRequest).optimizeCount as number;
+          return optimizeCount <= 0 || (optimizeCount > 0 && !isEmpty(value));
         }
       }
     });

@@ -10,17 +10,13 @@ export interface BuildConfig {
   created_at: string;
   dfx_version: string;
   owner_id: Principal;
-  optimize_times: number;
   canister_name: string;
   commit_hash: string;
   repo_url: string;
   rust_version: [] | [string];
+  optimize_count: number;
 }
-export interface Error {
-  debug_log: [] | [string];
-  code: string;
-  message: string;
-}
+export type BuildStatus = {Error: null} | {Success: null};
 export interface Provider {
   id: Principal;
   updated_at: string;
@@ -30,47 +26,48 @@ export interface Provider {
   created_at: string;
   created_by: Principal;
 }
-export type Result = {Ok: null} | {Err: Error};
 export interface SaveBuildConfig {
   canister_id: Principal;
   dfx_version: string;
   owner_id: Principal;
-  optimize_times: number;
   canister_name: string;
   commit_hash: string;
   repo_url: string;
   rust_version: [] | [string];
+  optimize_count: number;
 }
 export interface SubmitVerification {
   canister_id: Principal;
   dfx_version: string;
+  build_status: BuildStatus;
   canister_name: string;
   commit_hash: string;
   repo_url: string;
-  rust_version: string;
+  rust_version: [] | [string];
   optimize_count: number;
-  wasm_hash: string;
+  build_url: string;
+  wasm_hash: [] | [string];
 }
 export interface Verification {
   updated_at: string;
   updated_by: Principal;
   canister_id: Principal;
-  created_at: string;
-  created_by: Principal;
   dfx_version: string;
+  build_status: BuildStatus;
   canister_name: string;
   commit_hash: string;
   repo_url: string;
-  rust_version: string;
+  rust_version: [] | [string];
   optimize_count: number;
-  wasm_hash: string;
+  build_url: string;
+  wasm_hash: [] | [string];
 }
 export interface _SERVICE {
-  addAdmin: (arg_0: Principal) => Promise<Result>;
-  addProvider: (arg_0: AddProvider) => Promise<Result>;
-  deleteAdmin: (arg_0: Principal) => Promise<Result>;
-  deleteBuildConfig: (arg_0: Principal) => Promise<Result>;
-  deleteProvider: (arg_0: Principal) => Promise<Result>;
+  addAdmin: (arg_0: Principal) => Promise<undefined>;
+  addProvider: (arg_0: AddProvider) => Promise<undefined>;
+  deleteAdmin: (arg_0: Principal) => Promise<undefined>;
+  deleteBuildConfig: (arg_0: Principal) => Promise<undefined>;
+  deleteProvider: (arg_0: Principal) => Promise<undefined>;
   getAllAdmins: () => Promise<Array<Principal>>;
   getAllBuildConfigs: () => Promise<Array<BuildConfig>>;
   getAllProviders: () => Promise<Array<Provider>>;
@@ -79,7 +76,6 @@ export interface _SERVICE {
   getBuildConfigProvider: (arg_0: Principal, arg_1: Principal) => Promise<[] | [BuildConfig]>;
   getProviderById: (arg_0: Principal) => Promise<[] | [Provider]>;
   getVerificationByCanisterId: (arg_0: Principal) => Promise<[] | [Verification]>;
-  saveBuildConfig: (arg_0: SaveBuildConfig) => Promise<Result>;
-  submitVerification: (arg_0: Principal, arg_1: SubmitVerification) => Promise<Result>;
-  updateProvider: (arg_0: AddProvider) => Promise<Result>;
+  saveBuildConfig: (arg_0: SaveBuildConfig) => Promise<undefined>;
+  submitVerification: (arg_0: Principal, arg_1: SubmitVerification) => Promise<undefined>;
 }

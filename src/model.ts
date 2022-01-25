@@ -37,7 +37,7 @@ export class BuildConfigRequest {
   @IsInt()
   @Min(0)
   @Max(10)
-  optimizeTimes?: number;
+  optimizeCount?: number;
 
   @IsNotEmpty()
   @Validate(IsHexString)

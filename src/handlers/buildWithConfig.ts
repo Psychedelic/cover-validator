@@ -36,6 +36,7 @@ const buildWasm = async (event: APIGatewayProxyEvent): Promise<void> => {
     workflow_id: "cover_build.yml",
     ref: "main",
     inputs: {
+      owner_id: req.userPrincipal as string,
       canister_id: req.canisterId as string,
       canister_name: buildConfig[0].canister_name,
       repo_url: `github.com/${buildConfig[0].repo_url}`,
@@ -43,7 +44,7 @@ const buildWasm = async (event: APIGatewayProxyEvent): Promise<void> => {
       commit_hash: buildConfig[0].commit_hash,
       rust_version: buildConfig[0].rust_version[0] || "",
       dfx_version: buildConfig[0].dfx_version,
-      optimize_times: buildConfig[0].optimize_times.toString()
+      optimize_count: buildConfig[0].optimize_count.toString()
     }
   });
 };

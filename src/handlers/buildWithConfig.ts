@@ -15,10 +15,10 @@ const buildWasm = async (event: APIGatewayProxyEvent): Promise<void> => {
 
   await validateCanister(req.canisterId as string, req.userPrincipal as string);
 
-  const buildConfig = await coverActor.getBuildConfigProvider(
-    Principal.fromText(req.userPrincipal as string),
-    Principal.fromText(req.canisterId as string)
-  );
+  const buildConfig = await coverActor.getBuildConfigProvider({
+    canister_id: Principal.fromText(req.canisterId as string),
+    owner_id: Principal.fromText(req.userPrincipal as string)
+  });
 
   if (!buildConfig.length) {
     throw BuildConfigNotFound;

@@ -16,6 +16,10 @@ export interface BuildConfig {
   rust_version: [] | [string];
   optimize_count: number;
 }
+export interface BuildConfigInfo {
+  canister_id: Principal;
+  owner_id: Principal;
+}
 export type BuildStatus = {Error: null} | {Success: null};
 export interface Provider {
   id: Principal;
@@ -39,6 +43,7 @@ export interface SaveBuildConfig {
 export interface SubmitVerification {
   canister_id: Principal;
   dfx_version: string;
+  owner_id: Principal;
   build_status: BuildStatus;
   canister_name: string;
   commit_hash: string;
@@ -73,9 +78,8 @@ export interface _SERVICE {
   getAllProviders: () => Promise<Array<Provider>>;
   getAllVerifications: () => Promise<Array<Verification>>;
   getBuildConfigById: (arg_0: Principal) => Promise<[] | [BuildConfig]>;
-  getBuildConfigProvider: (arg_0: Principal, arg_1: Principal) => Promise<[] | [BuildConfig]>;
-  getProviderById: (arg_0: Principal) => Promise<[] | [Provider]>;
+  getBuildConfigProvider: (arg_0: BuildConfigInfo) => Promise<[] | [BuildConfig]>;
   getVerificationByCanisterId: (arg_0: Principal) => Promise<[] | [Verification]>;
   saveBuildConfig: (arg_0: SaveBuildConfig) => Promise<undefined>;
-  submitVerification: (arg_0: Principal, arg_1: SubmitVerification) => Promise<undefined>;
+  submitVerification: (arg_0: SubmitVerification) => Promise<undefined>;
 }

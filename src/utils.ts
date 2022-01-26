@@ -30,7 +30,7 @@ export const validateRepo = async (url: string, token: string) => {
       repo: urlSplit[1]
     });
   } catch (error) {
-    console.log("Validate repo fail: ", error);
+    console.error("Validate repo fail: ", error);
     throw ValidateRepoFail;
   }
 
@@ -55,7 +55,7 @@ export const validateCanister = async (canisterId: string, userPrincipal: string
     cert = new Certificate(res, agent);
     await cert.verify();
   } catch (error) {
-    console.log("Validate canister owner fail: ", error);
+    console.error("Validate canister owner fail: ", error);
     throw GettingCanisterInfoFailed;
   }
 

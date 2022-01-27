@@ -41,6 +41,10 @@ export const idlFactory = ({IDL}) => {
     build_url: IDL.Text,
     wasm_hash: IDL.Opt(IDL.Text)
   });
+  const BuildConfigInfo = IDL.Record({
+    canister_id: IDL.Principal,
+    owner_id: IDL.Principal
+  });
   const SaveBuildConfig = IDL.Record({
     canister_id: IDL.Principal,
     dfx_version: IDL.Text,
@@ -54,6 +58,7 @@ export const idlFactory = ({IDL}) => {
   const SubmitVerification = IDL.Record({
     canister_id: IDL.Principal,
     dfx_version: IDL.Text,
+    owner_id: IDL.Principal,
     build_status: BuildStatus,
     canister_name: IDL.Text,
     commit_hash: IDL.Text,
@@ -74,11 +79,10 @@ export const idlFactory = ({IDL}) => {
     getAllProviders: IDL.Func([], [IDL.Vec(Provider)], ["query"]),
     getAllVerifications: IDL.Func([], [IDL.Vec(Verification)], ["query"]),
     getBuildConfigById: IDL.Func([IDL.Principal], [IDL.Opt(BuildConfig)], ["query"]),
-    getBuildConfigProvider: IDL.Func([IDL.Principal, IDL.Principal], [IDL.Opt(BuildConfig)], ["query"]),
-    getProviderById: IDL.Func([IDL.Principal], [IDL.Opt(Provider)], ["query"]),
+    getBuildConfigProvider: IDL.Func([BuildConfigInfo], [IDL.Opt(BuildConfig)], ["query"]),
     getVerificationByCanisterId: IDL.Func([IDL.Principal], [IDL.Opt(Verification)], ["query"]),
     saveBuildConfig: IDL.Func([SaveBuildConfig], [], []),
-    submitVerification: IDL.Func([IDL.Principal, SubmitVerification], [], [])
+    submitVerification: IDL.Func([SubmitVerification], [], [])
   });
 };
 export const init = ({IDL}) => {

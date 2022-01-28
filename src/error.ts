@@ -19,6 +19,6 @@ export const ValidateRepoFail: ErrorResponse = new ErrorResponse("ERR_002", "Bad
 export const InvalidRepoPermission: ErrorResponse = new ErrorResponse("ERR_003", "Invalid repo permission");
 export const GettingCanisterInfoFailed: ErrorResponse = new ErrorResponse("ERR_004", "Failed to get canister info");
 export const UnauthorizedPrincipal: ErrorResponse = new ErrorResponse("ERR_005", "Unauthorized canister controller");
-export const InvalidSignature = (err: Error): ErrorResponse =>
-  new ErrorResponse("ERR_006", "Invalid signature", err.message);
-export const BuildConfigNotFound: ErrorResponse = new ErrorResponse("ERR_007", "Build Config Not Found");
+export const InvalidUserPrincipal: ErrorResponse = new ErrorResponse("ERR_006", "Invalid user principal");
+export const InvalidSignature: ErrorResponse = new ErrorResponse("ERR_007", "Invalid signature");
+export const BuildConfigNotFound: ErrorResponse = new ErrorResponse("ERR_008", "Build Config Not Found");

@@ -21,7 +21,7 @@ export const httpResponse =
       if (error instanceof ErrorResponse) {
         return response(400, error);
       }
-      console.error("Unexpected Error:", JSON.stringify(error, null, 4));
+      console.error("Unexpected Error:", error);
       return response(500, UnexpectedError);
     }
   };

@@ -1,4 +1,4 @@
-import {transformAndValidateData, validateCanister, validateRepo, validateSignature} from "../utils";
+import {transformAndValidateData, validateCanister, validatePrincipal, validateRepo, validateSignature} from "../utils";
 import {APIGatewayProxyEvent} from "aws-lambda";
 import {BuildConfigNotFound} from "../error";
 import {BuildWasmRequest} from "../model";
@@ -10,6 +10,8 @@ import {httpResponse} from "../httpResponse";
 
 const buildWasm = async (event: APIGatewayProxyEvent): Promise<void> => {
   const req = await transformAndValidateData<BuildWasmRequest>(event.body as string, BuildWasmRequest);
+
+  validatePrincipal(req.userPrincipal as string, req.publicKey as string);
 
   validateSignature(req.canisterId as string, req.signature as string, req.publicKey as string);
 

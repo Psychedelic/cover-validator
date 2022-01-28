@@ -3,11 +3,13 @@ import {
   GettingCanisterInfoFailed,
   InvalidRepoPermission,
   InvalidSignature,
+  InvalidUserPrincipal,
   UnauthorizedPrincipal,
   ValidateRepoFail
 } from "./error";
 import {Certificate, HttpAgent} from "@dfinity/agent";
 import {ClassType, transformAndValidate} from "class-transformer-validator";
+import {Ed25519PublicKey, Secp256k1PublicKey} from "@dfinity/identity";
 import {Octokit} from "@octokit/core";
 import {Principal} from "@dfinity/principal";
 import {decode} from "cbor";
@@ -100,6 +102,18 @@ export const validateSignature = (canisterId: string, signature: string, publicK
   const validEd25519Signature = validateEd25519Signature(canisterId, signature, publicKey);
   if (!validSecp256k1Signature && !validEd25519Signature) {
     throw InvalidSignature;
+  }
+};
+
+export const validatePrincipal = (userPrincipal: string, publicKey: string) => {
+  const ed25519PublicKey = Ed25519PublicKey.fromRaw(Buffer.from(publicKey, "hex"));
+  const secp256k1PublicKey = Secp256k1PublicKey.fromRaw(Buffer.from(publicKey, "hex"));
+
+  const ed25519Principal = Principal.selfAuthenticating(new Uint8Array(ed25519PublicKey.toDer()));
+  const secp256k1Principal = Principal.selfAuthenticating(new Uint8Array(secp256k1PublicKey.toDer()));
+
+  if (ed25519Principal.toText() !== userPrincipal && secp256k1Principal.toText() !== userPrincipal) {
+    throw InvalidUserPrincipal;
   }
 };
 

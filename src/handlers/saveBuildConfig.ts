@@ -1,4 +1,4 @@
-import {transformAndValidateData, validateCanister, validateRepo, validateSignature} from "../utils";
+import {transformAndValidateData, validateCanister, validatePrincipal, validateRepo, validateSignature} from "../utils";
 import {APIGatewayProxyEvent} from "aws-lambda";
 import {BuildConfigRequest} from "../model";
 import {Principal} from "@dfinity/principal";
@@ -7,6 +7,8 @@ import {httpResponse} from "../httpResponse";
 
 const saveBuildConfig = async (event: APIGatewayProxyEvent): Promise<void> => {
   const req = await transformAndValidateData<BuildConfigRequest>(event.body as string, BuildConfigRequest);
+
+  validatePrincipal(req.userPrincipal as string, req.publicKey as string);
 
   validateSignature(req.canisterId as string, req.signature as string, req.publicKey as string);
 

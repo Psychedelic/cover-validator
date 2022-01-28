@@ -70,7 +70,7 @@ export function IsNotEmptyIfOptimized() {
       validator: {
         validate(value: string, args: ValidationArguments) {
           const optimizeCount = (args.object as BuildConfigRequest).optimizeCount as number;
-          return optimizeCount <= 0 || (optimizeCount > 0 && !isEmpty(value));
+          return optimizeCount === undefined || optimizeCount <= 0 || (optimizeCount > 0 && !isEmpty(value));
         }
       }
     });

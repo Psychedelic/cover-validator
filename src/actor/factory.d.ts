@@ -101,12 +101,12 @@ export interface _SERVICE {
   deleteBuilder: (arg_0: Principal) => Promise<undefined>;
   deleteValidator: (arg_0: Principal) => Promise<undefined>;
   getActivities: (arg_0: PaginationInfo) => Promise<Pagination>;
-  getAllAdmins: () => Promise<Array<Principal>>;
-  getAllBuildConfigs: () => Promise<Array<BuildConfig>>;
-  getAllBuilders: () => Promise<Array<Principal>>;
-  getAllValidators: () => Promise<Array<Principal>>;
+  getAdmins: () => Promise<Array<Principal>>;
   getBuildConfigById: (arg_0: Principal) => Promise<[] | [BuildConfig]>;
   getBuildConfigValidator: (arg_0: BuildConfigInfo) => Promise<[] | [BuildConfig]>;
+  getBuildConfigs: () => Promise<Array<BuildConfig>>;
+  getBuilders: () => Promise<Array<Principal>>;
+  getValidators: () => Promise<Array<Principal>>;
   getVerificationByCanisterId: (arg_0: Principal) => Promise<[] | [Verification]>;
   getVerifications: (arg_0: PaginationInfo) => Promise<Pagination_1>;
   registerVerification: (arg_0: RegisterVerification) => Promise<Result>;

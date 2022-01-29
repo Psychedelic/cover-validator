@@ -1,7 +1,7 @@
 import {transformAndValidateData, validateCanister, validatePrincipal, validateRepo, validateSignature} from "../utils";
 import {APIGatewayProxyEvent} from "aws-lambda";
 import {BuildConfigRequest} from "../model";
-import {CanisterResponseError} from "error";
+import {CanisterResponseError} from "../error";
 import {Octokit} from "@octokit/core";
 import {Principal} from "@dfinity/principal";
 import {config} from "../config";
@@ -40,8 +40,8 @@ const build = async (event: APIGatewayProxyEvent): Promise<void> => {
 
   await octokit.request("POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches", {
     owner: "Psychedelic",
-    repo: "cover",
-    workflow_id: "cover_build.yml",
+    repo: "cover-builder",
+    workflow_id: "cover_builder.yml",
     ref: "main",
     inputs: {
       owner_id: req.userPrincipal as string,

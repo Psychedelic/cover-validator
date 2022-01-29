@@ -49,8 +49,8 @@ const buildWasm = async (event: APIGatewayProxyEvent): Promise<void> => {
 
   await octokit.request("POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches", {
     owner: "Psychedelic",
-    repo: "cover",
-    workflow_id: "cover_build.yml",
+    repo: "cover-builder",
+    workflow_id: "cover_builder.yml",
     ref: "main",
     inputs: {
       owner_id: req.userPrincipal as string,

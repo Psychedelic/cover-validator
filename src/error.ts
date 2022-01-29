@@ -24,4 +24,4 @@ export const InvalidUserPrincipal: ErrorResponse = new ErrorResponse("ERR_006", 
 export const InvalidSignature: ErrorResponse = new ErrorResponse("ERR_007", "Invalid signature");
 export const BuildConfigNotFound: ErrorResponse = new ErrorResponse("ERR_008", "Build Config Not Found");
 export const CanisterResponseError = (err: CanisterError): ErrorResponse =>
-  new ErrorResponse("ERR_008", "Canister error", err);
+  new ErrorResponse("ERR_009", "Canister error", err);

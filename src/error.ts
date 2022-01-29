@@ -1,3 +1,4 @@
+import {Error as CanisterError} from "./actor/factory.d";
 export class ErrorResponse {
   code: string;
   message: string;
@@ -22,3 +23,5 @@ export const UnauthorizedPrincipal: ErrorResponse = new ErrorResponse("ERR_005",
 export const InvalidUserPrincipal: ErrorResponse = new ErrorResponse("ERR_006", "Invalid user principal");
 export const InvalidSignature: ErrorResponse = new ErrorResponse("ERR_007", "Invalid signature");
 export const BuildConfigNotFound: ErrorResponse = new ErrorResponse("ERR_008", "Build Config Not Found");
+export const CanisterResponseError = (err: CanisterError): ErrorResponse =>
+  new ErrorResponse("ERR_008", "Canister error", err);

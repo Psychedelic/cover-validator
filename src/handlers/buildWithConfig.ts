@@ -61,7 +61,8 @@ const buildWasm = async (event: APIGatewayProxyEvent): Promise<void> => {
       commit_hash: buildConfig[0].commit_hash,
       rust_version: buildConfig[0].rust_version[0] || "",
       dfx_version: buildConfig[0].dfx_version,
-      optimize_count: buildConfig[0].optimize_count.toString()
+      optimize_count: buildConfig[0].optimize_count.toString(),
+      env: config.nodeEnv
     }
   });
 };

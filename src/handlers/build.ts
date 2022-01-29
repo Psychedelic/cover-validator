@@ -52,7 +52,8 @@ const build = async (event: APIGatewayProxyEvent): Promise<void> => {
       commit_hash: req.commitHash as string,
       rust_version: req.rustVersion as string,
       dfx_version: req.dfxVersion as string,
-      optimize_count: (req.optimizeCount as number).toString()
+      optimize_count: (req.optimizeCount as number).toString(),
+      env: config.nodeEnv
     }
   });
 };

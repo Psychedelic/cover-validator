@@ -1,6 +1,6 @@
+import {BuildConfigNotFound, CanisterResponseError} from "../error";
 import {transformAndValidateData, validateCanister, validatePrincipal, validateRepo, validateSignature} from "../utils";
 import {APIGatewayProxyEvent} from "aws-lambda";
-import {BuildConfigNotFound} from "../error";
 import {BuildWasmRequest} from "../model";
 import {Octokit} from "@octokit/core";
 import {Principal} from "@dfinity/principal";
@@ -17,7 +17,7 @@ const buildWasm = async (event: APIGatewayProxyEvent): Promise<void> => {
 
   await validateCanister(req.canisterId as string, req.userPrincipal as string);
 
-  const buildConfig = await coverActor.getBuildConfigProvider({
+  const buildConfig = await coverActor.getBuildConfigValidator({
     canister_id: Principal.fromText(req.canisterId as string),
     owner_id: Principal.fromText(req.userPrincipal as string)
   });
@@ -27,6 +27,21 @@ const buildWasm = async (event: APIGatewayProxyEvent): Promise<void> => {
   }
 
   await validateRepo(buildConfig[0].repo_url, req.repoAccessToken as string);
+
+  const result = await coverActor.registerVerification({
+    owner_id: buildConfig[0].owner_id,
+    canister_id: buildConfig[0].canister_id,
+    dfx_version: buildConfig[0].dfx_version,
+    optimize_count: buildConfig[0].optimize_count,
+    canister_name: buildConfig[0].canister_name,
+    commit_hash: buildConfig[0].commit_hash,
+    repo_url: buildConfig[0].repo_url,
+    rust_version: buildConfig[0].rust_version
+  });
+
+  if ("Err" in result) {
+    throw CanisterResponseError(result.Err);
+  }
 
   const octokit = new Octokit({
     auth: config.coverGithubToken

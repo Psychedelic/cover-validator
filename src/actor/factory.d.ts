@@ -1,8 +1,8 @@
 import type {Principal} from "@dfinity/principal";
-export interface AddProvider {
-  id: Principal;
-  memo: [] | [string];
-  name: string;
+export interface Activity {
+  create_at: string;
+  canister_id: Principal;
+  build_status: BuildStatus;
 }
 export interface BuildConfig {
   updated_at: string;
@@ -20,16 +20,41 @@ export interface BuildConfigInfo {
   canister_id: Principal;
   owner_id: Principal;
 }
-export type BuildStatus = {Error: null} | {Success: null};
-export interface Provider {
-  id: Principal;
-  updated_at: string;
-  updated_by: Principal;
-  memo: [] | [string];
-  name: string;
-  created_at: string;
-  created_by: Principal;
+export type BuildStatus = {Error: null} | {Building: null} | {Success: null} | {Pending: null};
+export type Error = {BuildInProgress: null};
+export interface Pagination {
+  page_index: bigint;
+  data: Array<Activity>;
+  total_pages: bigint;
+  total_items: bigint;
+  is_first_page: boolean;
+  items_per_page: bigint;
+  is_last_page: boolean;
 }
+export interface PaginationInfo {
+  page_index: bigint;
+  items_per_page: bigint;
+}
+export interface Pagination_1 {
+  page_index: bigint;
+  data: Array<Verification>;
+  total_pages: bigint;
+  total_items: bigint;
+  is_first_page: boolean;
+  items_per_page: bigint;
+  is_last_page: boolean;
+}
+export interface RegisterVerification {
+  canister_id: Principal;
+  dfx_version: string;
+  owner_id: Principal;
+  canister_name: string;
+  commit_hash: string;
+  repo_url: string;
+  rust_version: [] | [string];
+  optimize_count: number;
+}
+export type Result = {Ok: null} | {Err: Error};
 export interface SaveBuildConfig {
   canister_id: Principal;
   dfx_version: string;
@@ -64,22 +89,27 @@ export interface Verification {
   repo_url: string;
   rust_version: [] | [string];
   optimize_count: number;
-  build_url: string;
+  build_url: [] | [string];
   wasm_hash: [] | [string];
 }
 export interface _SERVICE {
   addAdmin: (arg_0: Principal) => Promise<undefined>;
-  addProvider: (arg_0: AddProvider) => Promise<undefined>;
+  addBuilder: (arg_0: Principal) => Promise<undefined>;
+  addValidator: (arg_0: Principal) => Promise<undefined>;
   deleteAdmin: (arg_0: Principal) => Promise<undefined>;
   deleteBuildConfig: (arg_0: Principal) => Promise<undefined>;
-  deleteProvider: (arg_0: Principal) => Promise<undefined>;
+  deleteBuilder: (arg_0: Principal) => Promise<undefined>;
+  deleteValidator: (arg_0: Principal) => Promise<undefined>;
+  getActivities: (arg_0: PaginationInfo) => Promise<Pagination>;
   getAllAdmins: () => Promise<Array<Principal>>;
   getAllBuildConfigs: () => Promise<Array<BuildConfig>>;
-  getAllProviders: () => Promise<Array<Provider>>;
-  getAllVerifications: () => Promise<Array<Verification>>;
+  getAllBuilders: () => Promise<Array<Principal>>;
+  getAllValidators: () => Promise<Array<Principal>>;
   getBuildConfigById: (arg_0: Principal) => Promise<[] | [BuildConfig]>;
-  getBuildConfigProvider: (arg_0: BuildConfigInfo) => Promise<[] | [BuildConfig]>;
+  getBuildConfigValidator: (arg_0: BuildConfigInfo) => Promise<[] | [BuildConfig]>;
   getVerificationByCanisterId: (arg_0: Principal) => Promise<[] | [Verification]>;
+  getVerifications: (arg_0: PaginationInfo) => Promise<Pagination_1>;
+  registerVerification: (arg_0: RegisterVerification) => Promise<Result>;
   saveBuildConfig: (arg_0: SaveBuildConfig) => Promise<undefined>;
   submitVerification: (arg_0: SubmitVerification) => Promise<undefined>;
 }

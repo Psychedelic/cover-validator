@@ -69,6 +69,15 @@ export interface SaveBuildConfig {
   'rust_version' : [] | [string],
   'optimize_count' : number,
 }
+export interface Stats {
+  'build_error_count' : bigint,
+  'build_in_progress_count' : bigint,
+  'rust_canisters_count' : bigint,
+  'build_pending_count' : bigint,
+  'motoko_canisters_count' : bigint,
+  'total_canisters' : bigint,
+  'build_success_count' : bigint,
+}
 export interface SubmitVerification {
   'canister_id' : Principal,
   'dfx_version' : string,
@@ -112,6 +121,7 @@ export interface _SERVICE {
     >,
   'getBuildConfigs' : () => Promise<Array<BuildConfig>>,
   'getBuilders' : () => Promise<Array<Principal>>,
+  'getStats' : () => Promise<Stats>,
   'getValidators' : () => Promise<Array<Principal>>,
   'getVerificationByCanisterId' : (arg_0: Principal) => Promise<
       [] | [Verification]

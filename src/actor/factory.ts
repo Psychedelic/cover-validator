@@ -40,6 +40,15 @@ export const idlFactory = ({ IDL }) => {
     'canister_id' : IDL.Principal,
     'owner_id' : IDL.Principal,
   });
+  const Stats = IDL.Record({
+    'build_error_count' : IDL.Nat64,
+    'build_in_progress_count' : IDL.Nat64,
+    'rust_canisters_count' : IDL.Nat64,
+    'build_pending_count' : IDL.Nat64,
+    'motoko_canisters_count' : IDL.Nat64,
+    'total_canisters' : IDL.Nat64,
+    'build_success_count' : IDL.Nat64,
+  });
   const Verification = IDL.Record({
     'updated_at' : IDL.Text,
     'updated_by' : IDL.Principal,
@@ -120,6 +129,7 @@ export const idlFactory = ({ IDL }) => {
       ),
     'getBuildConfigs' : IDL.Func([], [IDL.Vec(BuildConfig)], ['query']),
     'getBuilders' : IDL.Func([], [IDL.Vec(IDL.Principal)], ['query']),
+    'getStats' : IDL.Func([], [Stats], ['query']),
     'getValidators' : IDL.Func([], [IDL.Vec(IDL.Principal)], ['query']),
     'getVerificationByCanisterId' : IDL.Func(
         [IDL.Principal],

@@ -27,7 +27,8 @@ const build = async (event: APIGatewayProxyEvent): Promise<void> => {
     canister_name: req.canisterName as string,
     commit_hash: req.commitHash as string,
     repo_url: req.repoUrl as string,
-    rust_version: req.rustVersion ? [req.rustVersion] : []
+    rust_version: req.rustVersion ? [req.rustVersion] : [],
+    canister_type: []
   });
 
   if ("Err" in result) {

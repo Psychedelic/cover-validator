@@ -36,7 +36,8 @@ const buildWasm = async (event: APIGatewayProxyEvent): Promise<void> => {
     canister_name: buildConfig[0].canister_name,
     commit_hash: buildConfig[0].commit_hash,
     repo_url: buildConfig[0].repo_url,
-    rust_version: buildConfig[0].rust_version
+    rust_version: buildConfig[0].rust_version,
+    canister_type: []
   });
 
   if ("Err" in result) {

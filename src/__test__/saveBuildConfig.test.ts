@@ -16,14 +16,12 @@ test("Create build config failed with bad data", async t => {
 });
 
 test("Create build config successfully", async t => {
-  const results = await Promise.all(goodData.map(data => handler(getAPIEvent(data))));
-  results.forEach(result => {
-    t.deepEqual(result, {
-      body: undefined,
-      headers: {
-        "Content-Type": "application/json"
-      },
-      statusCode: 200
-    });
+  const result = await handler(getAPIEvent(goodData));
+  t.deepEqual(result, {
+    body: undefined,
+    headers: {
+      "Content-Type": "application/json"
+    },
+    statusCode: 200
   });
 });

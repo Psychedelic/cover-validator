@@ -28,7 +28,7 @@ const body = (body: BuildConfigRequest): string =>
     userPrincipal: body.userPrincipal
   });
 
-const goodData1 = body({
+export const goodData = body({
   canisterId,
   canisterName,
   repoUrl,
@@ -36,18 +36,6 @@ const goodData1 = body({
   rustVersion,
   dfxVersion,
   optimizeCount,
-  publicKey,
-  userPrincipal
-});
-
-const goodData2 = body({
-  canisterId,
-  canisterName,
-  repoUrl,
-  commitHash,
-  rustVersion: "",
-  dfxVersion,
-  optimizeCount: 0,
   publicKey,
   userPrincipal
 });
@@ -117,7 +105,6 @@ const badData10 = body({
   userPrincipal
 });
 
-export const goodData = [goodData1, goodData2];
 export const badData = [
   badData1,
   badData2,

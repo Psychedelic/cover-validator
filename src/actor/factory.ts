@@ -49,6 +49,7 @@ export const idlFactory = ({ IDL }) => {
     'total_canisters' : IDL.Nat64,
     'build_success_count' : IDL.Nat64,
   });
+  const CanisterType = IDL.Variant({ 'Rust' : IDL.Null, 'Motoko' : IDL.Null });
   const Verification = IDL.Record({
     'updated_at' : IDL.Text,
     'updated_by' : IDL.Principal,
@@ -57,6 +58,7 @@ export const idlFactory = ({ IDL }) => {
     'build_status' : BuildStatus,
     'canister_name' : IDL.Text,
     'commit_hash' : IDL.Text,
+    'canister_type' : IDL.Opt(CanisterType),
     'repo_url' : IDL.Text,
     'rust_version' : IDL.Opt(IDL.Text),
     'optimize_count' : IDL.Nat8,
@@ -78,6 +80,7 @@ export const idlFactory = ({ IDL }) => {
     'owner_id' : IDL.Principal,
     'canister_name' : IDL.Text,
     'commit_hash' : IDL.Text,
+    'canister_type' : IDL.Opt(CanisterType),
     'repo_url' : IDL.Text,
     'rust_version' : IDL.Opt(IDL.Text),
     'optimize_count' : IDL.Nat8,
@@ -101,6 +104,7 @@ export const idlFactory = ({ IDL }) => {
     'build_status' : BuildStatus,
     'canister_name' : IDL.Text,
     'commit_hash' : IDL.Text,
+    'canister_type' : IDL.Opt(CanisterType),
     'repo_url' : IDL.Text,
     'rust_version' : IDL.Opt(IDL.Text),
     'optimize_count' : IDL.Nat8,

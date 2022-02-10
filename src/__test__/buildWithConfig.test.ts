@@ -1,4 +1,4 @@
-import {badData, goodData} from "./__test_data__/buildWasmRequest";
+import {badData, goodData} from "./__test_data__/buildConfigRequest";
 import {getAPIEvent} from "./__test_utils__/utils";
 import {handler} from "../handlers/buildWithConfig";
 import test from "ava";

@@ -1,9 +1,10 @@
-import {badData} from "./__test_data__/buildConfigRequest";
+import "./__test_data__/env";
+import {badData, goodData} from "./__test_data__/buildWasmRequest";
 import {getAPIEvent} from "./__test_utils__/utils";
-import {handler} from "../handlers/build";
 import test from "ava";
 
 test("Build request failed with bad data", async t => {
+  const {handler} = await import("../handlers/build");
   const results = await Promise.all(badData.map(data => handler(getAPIEvent(data))));
   results.forEach(result => {
     t.like(result, {
@@ -15,13 +16,16 @@ test("Build request failed with bad data", async t => {
   });
 });
 
-// test("Build request success", async t => {
-//   const result = await handler(getAPIEvent(goodData));
-//   t.deepEqual(result, {
-//     body: undefined,
-//     headers: {
-//       "Content-Type": "application/json"
-//     },
-//     statusCode: 200
-//   });
-// });
+test("Build request success", async t => {
+  const {handler} = await import("../handlers/build");
+  const results = await Promise.all(goodData.map(data => handler(getAPIEvent(data))));
+  results.forEach(result => {
+    t.deepEqual(result, {
+      body: undefined,
+      headers: {
+        "Content-Type": "application/json"
+      },
+      statusCode: 200
+    });
+  });
+});

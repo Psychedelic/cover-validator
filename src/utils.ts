@@ -10,9 +10,9 @@ import {
 import {Certificate, HttpAgent} from "@dfinity/agent";
 import {ClassType, transformAndValidate} from "class-transformer-validator";
 import {Ed25519PublicKey, Secp256k1PublicKey} from "@dfinity/identity";
+import {Decoder} from "cbor";
 import {Octokit} from "@octokit/core";
 import {Principal} from "@dfinity/principal";
-import {decode} from "cbor";
 import fetch from "isomorphic-fetch";
 import secp256k1 from "secp256k1";
 import {sha256} from "js-sha256";
@@ -44,6 +44,7 @@ export const validateRepo = async (url: string, token: string) => {
 //
 export const validateCanister = async (canisterId: string, userPrincipal: string) => {
   const agent = new HttpAgent({host: "https://ic0.app", fetch});
+
   const canisterPrincipal = Principal.fromText(canisterId);
 
   const path = [Buffer.from("canister", "utf8"), canisterPrincipal.toUint8Array(), Buffer.from("controllers", "utf8")];
@@ -61,8 +62,8 @@ export const validateCanister = async (canisterId: string, userPrincipal: string
     throw GettingCanisterInfoFailed;
   }
 
-  const resEnc = (cert as Certificate).lookup(path);
-  const controllers: string[] = decode(resEnc as ArrayBuffer).value.map((x: Uint8Array) =>
+  const resEnc = cert.lookup(path);
+  const controllers: string[] = Decoder.decodeFirstSync(resEnc as ArrayBuffer).value.map((x: Uint8Array) =>
     Principal.fromUint8Array(x).toText()
   );
 
@@ -71,15 +72,16 @@ export const validateCanister = async (canisterId: string, userPrincipal: string
   }
 };
 
-export const fromHexString = (hex: string): Uint8Array =>
-  new Uint8Array((hex.match(/.{1,2}/g) ?? []).map(byte => parseInt(byte, 16)));
-
 const validateSecp256k1Signature = (canisterId: string, signature: string, publicKey: string): boolean => {
   const challenge = Buffer.from(canisterId, "utf8");
   const hash = sha256.create();
   hash.update(challenge);
   try {
-    return secp256k1.ecdsaVerify(fromHexString(signature), new Uint8Array(hash.digest()), fromHexString(publicKey));
+    return secp256k1.ecdsaVerify(
+      Buffer.from(signature, "hex"),
+      new Uint8Array(hash.digest()),
+      Buffer.from(publicKey, "hex")
+    );
   } catch (_) {
     return false;
   }
@@ -89,8 +91,8 @@ const validateEd25519Signature = (canisterId: string, signature: string, publicK
   try {
     return tweetnacl.sign.detached.verify(
       Buffer.from(canisterId, "utf8"),
-      fromHexString(signature),
-      fromHexString(publicKey)
+      Buffer.from(signature, "hex"),
+      Buffer.from(publicKey, "hex")
     );
   } catch (_) {
     return false;

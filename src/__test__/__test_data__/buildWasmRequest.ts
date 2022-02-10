@@ -66,7 +66,6 @@ const goodData3 = body({
   signature,
   userPrincipal
 });
-
 export const goodData = [goodData1, goodData2, goodData3];
 
 const badData1 = body({});
@@ -133,7 +132,6 @@ const badData10 = body({
   publicKey,
   userPrincipal
 });
-
 export const badData = [
   badData1,
   badData2,

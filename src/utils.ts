@@ -41,7 +41,6 @@ export const validateRepo = async (url: string, token: string) => {
   }
 };
 
-//
 export const validateCanister = async (canisterId: string, userPrincipal: string) => {
   const agent = new HttpAgent({host: "https://ic0.app", fetch});
 
@@ -63,6 +62,7 @@ export const validateCanister = async (canisterId: string, userPrincipal: string
   }
 
   const resEnc = cert.lookup(path);
+
   const controllers: string[] = Decoder.decodeFirstSync(resEnc as ArrayBuffer).value.map((x: Uint8Array) =>
     Principal.fromUint8Array(x).toText()
   );

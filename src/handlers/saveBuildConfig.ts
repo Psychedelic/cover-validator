@@ -12,9 +12,9 @@ const saveBuildConfig = async (event: APIGatewayProxyEvent): Promise<void> => {
 
   validateSignature(req.canisterId as string, req.signature as string, req.publicKey as string);
 
-  await validateRepo(req.repoUrl as string, req.repoAccessToken as string);
-
   await validateCanister(req.canisterId as string, req.ownerId as string);
+
+  await validateRepo(req.repoUrl as string, req.repoAccessToken as string);
 
   await coverActor.saveBuildConfig({
     owner_id: Principal.fromText(req.ownerId as string),

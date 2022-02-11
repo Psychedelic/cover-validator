@@ -1,11 +1,23 @@
 import * as td from "testdouble";
+import {
+  canisterId,
+  canisterName,
+  commitHash,
+  dfxVersion,
+  optimizeCount,
+  ownerId,
+  publicKey,
+  repoAccessToken,
+  repoUrl,
+  rustVersion,
+  signature
+} from "./dump";
 import {Decoder} from "cbor";
 import {Principal} from "@dfinity/principal";
-import {userPrincipal} from "./dump";
 
 //  MOCK - cbor
 td.replace(Decoder, "decodeFirstSync", () => ({
-  value: [Principal.fromText(userPrincipal).toUint8Array()]
+  value: [Principal.fromText(ownerId).toUint8Array()]
 }));
 
 // MOCK - cover canister id
@@ -29,7 +41,23 @@ const {HttpAgent, Certificate} = td.replace("@dfinity/agent", {
     createActor: () => ({
       registerVerification: () => ({
         Ok: null
-      })
+      }),
+      saveBuildConfig: () => undefined,
+      getBuildConfigValidator: () => [
+        {
+          owner_id: Principal.fromText(ownerId),
+          canister_id: Principal.fromText(canisterId),
+          canister_name: canisterName,
+          repo_url: repoUrl,
+          repo_access_token: repoAccessToken,
+          commit_hash: commitHash,
+          rust_version: rustVersion,
+          dfx_version: dfxVersion,
+          public_key: publicKey,
+          signature,
+          optimize_count: optimizeCount
+        }
+      ]
     })
   },
   HttpAgent: td.func(),

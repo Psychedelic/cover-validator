@@ -11,16 +11,16 @@ import {httpResponse} from "../httpResponse";
 const build = async (event: APIGatewayProxyEvent): Promise<void> => {
   const req = await transformAndValidateData<BuildConfigRequest>(event.body as string, BuildConfigRequest);
 
-  validatePrincipal(req.userPrincipal as string, req.publicKey as string);
+  validatePrincipal(req.ownerId as string, req.publicKey as string);
 
   validateSignature(req.canisterId as string, req.signature as string, req.publicKey as string);
 
-  await validateCanister(req.canisterId as string, req.userPrincipal as string);
+  await validateCanister(req.canisterId as string, req.ownerId as string);
 
   await validateRepo(req.repoUrl as string, req.repoAccessToken as string);
 
   const result = await coverActor.registerVerification({
-    owner_id: Principal.fromText(req.userPrincipal as string),
+    owner_id: Principal.fromText(req.ownerId as string),
     canister_id: Principal.fromText(req.canisterId as string),
     dfx_version: req.dfxVersion as string,
     optimize_count: req.optimizeCount as number,
@@ -45,7 +45,7 @@ const build = async (event: APIGatewayProxyEvent): Promise<void> => {
     workflow_id: "cover_builder.yml",
     ref: "main",
     inputs: {
-      owner_id: req.userPrincipal as string,
+      owner_id: req.ownerId as string,
       canister_id: req.canisterId as string,
       canister_name: req.canisterName as string,
       repo_url: `github.com/${req.repoUrl}`,

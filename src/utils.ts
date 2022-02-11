@@ -1,10 +1,10 @@
 import {
   BadInputRequest,
   GettingCanisterInfoFailed,
+  InvalidOwner,
   InvalidRepoPermission,
   InvalidSignature,
-  InvalidUserPrincipal,
-  UnauthorizedPrincipal,
+  UnauthorizedOwner,
   ValidateRepoFail
 } from "./error";
 import {Certificate, HttpAgent} from "@dfinity/agent";
@@ -41,7 +41,7 @@ export const validateRepo = async (url: string, token: string) => {
   }
 };
 
-export const validateCanister = async (canisterId: string, userPrincipal: string) => {
+export const validateCanister = async (canisterId: string, ownerId: string) => {
   const agent = new HttpAgent({host: "https://ic0.app", fetch});
 
   const canisterPrincipal = Principal.fromText(canisterId);
@@ -67,8 +67,8 @@ export const validateCanister = async (canisterId: string, userPrincipal: string
     Principal.fromUint8Array(x).toText()
   );
 
-  if (!controllers.includes(userPrincipal)) {
-    throw UnauthorizedPrincipal;
+  if (!controllers.includes(ownerId)) {
+    throw UnauthorizedOwner;
   }
 };
 
@@ -107,15 +107,15 @@ export const validateSignature = (canisterId: string, signature: string, publicK
   }
 };
 
-export const validatePrincipal = (userPrincipal: string, publicKey: string) => {
+export const validatePrincipal = (ownerId: string, publicKey: string) => {
   const ed25519PublicKey = Ed25519PublicKey.fromRaw(Buffer.from(publicKey, "hex"));
   const secp256k1PublicKey = Secp256k1PublicKey.fromRaw(Buffer.from(publicKey, "hex"));
 
   const ed25519Principal = Principal.selfAuthenticating(new Uint8Array(ed25519PublicKey.toDer()));
   const secp256k1Principal = Principal.selfAuthenticating(new Uint8Array(secp256k1PublicKey.toDer()));
 
-  if (ed25519Principal.toText() !== userPrincipal && secp256k1Principal.toText() !== userPrincipal) {
-    throw InvalidUserPrincipal;
+  if (ed25519Principal.toText() !== ownerId && secp256k1Principal.toText() !== ownerId) {
+    throw InvalidOwner;
   }
 };
 

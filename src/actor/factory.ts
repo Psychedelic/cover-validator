@@ -26,6 +26,9 @@ export const idlFactory = ({ IDL }) => {
   });
   const BuildConfig = IDL.Record({
     'updated_at' : IDL.Text,
+    'signature' : IDL.Text,
+    'repo_access_token' : IDL.Text,
+    'public_key' : IDL.Text,
     'canister_id' : IDL.Principal,
     'created_at' : IDL.Text,
     'dfx_version' : IDL.Text,
@@ -88,6 +91,9 @@ export const idlFactory = ({ IDL }) => {
   const Error = IDL.Variant({ 'BuildInProgress' : IDL.Null });
   const Result = IDL.Variant({ 'Ok' : IDL.Null, 'Err' : Error });
   const SaveBuildConfig = IDL.Record({
+    'signature' : IDL.Text,
+    'repo_access_token' : IDL.Text,
+    'public_key' : IDL.Text,
     'canister_id' : IDL.Principal,
     'dfx_version' : IDL.Text,
     'owner_id' : IDL.Principal,

@@ -6,6 +6,9 @@ export interface Activity {
 }
 export interface BuildConfig {
   'updated_at' : string,
+  'signature' : string,
+  'repo_access_token' : string,
+  'public_key' : string,
   'canister_id' : Principal,
   'created_at' : string,
   'dfx_version' : string,
@@ -63,6 +66,9 @@ export interface RegisterVerification {
 export type Result = { 'Ok' : null } |
   { 'Err' : Error };
 export interface SaveBuildConfig {
+  'signature' : string,
+  'repo_access_token' : string,
+  'public_key' : string,
   'canister_id' : Principal,
   'dfx_version' : string,
   'owner_id' : Principal,

@@ -99,7 +99,7 @@ ${COVER_VALIDATOR_URL}/build -d \
 ```
 curl -X POST \
 -H 'content-type: application/json' \
-https://pxy2xvb1k3.execute-api.us-east-1.amazonaws.com/development/build-with-config -d \
+${COVER_VALIDATOR_URL}/build-with-config -d \
 '{
     "canisterId": "xyzoo-abcd-aaaai-abgca-cai",
     "ownerId": "12345-46f74-s45g5-54321-c5vyq-4zv7t-54321-omikc-54321-olpgg-rqe"

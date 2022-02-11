@@ -8,7 +8,7 @@ Cover validator is a set of lambda functions that help validate user request’s
   - The inputs are in the right format?
   - The caller has the right canister repo access permission?
   - The caller is the controller of the canister?
-  - The caller really owned the provided `userPrincipal`?
+  - The caller really owned the provided `ownerId`?
 - How to get `signature` and `publicKey`:
   - `signature` is signed with the `canisterId` being the message.
   - You can refer to these documents: [Secp256k1](https://github.com/dfinity/keysmith) or [Ed25519](https://github.com/Psychedelic/dfx-key)
@@ -25,23 +25,28 @@ Cover validator is a set of lambda functions that help validate user request’s
   - `rustVersion` (string): Rust version to build the wasm, optional if you don’t use ic-cdk-optimizer, must be specified if you want to optimize your wasm.
   - `dfxVersion` (string): Dfx version to build the wasm
   - `optimizeCount` (number): The times you want to optimize your wasm. 1 is recommended (after the first time, the wasm isn’t going to be significantly smaller anymore). If `optimizeCount` > 0, `rustVersion` must be specified.
-  - `publicKey` (hex string): public key of `userPrincipal`
-  - `signature` (hex string): signature of `userPrincipal`
-  - `userPrincipal` (hex string): the controller of the canister
+  - `publicKey` (hex string): public key of `ownerId`
+  - `signature` (hex string): signature of `ownerId`
+  - `ownerId` (hex string): the controller of the canister
 - Example:
 
 ```
-  curl -X POST \
-     -H 'content-type: application/json' \
-     ${COVER_VALIDATOR_SAVE_BUILD_CONFIG_URL} \
-     -d '{ "canisterId":"yumdn-oaaai-aaaai-obeva-cai",
-     "canisterName":"cover-validator","repoUrl":"Psychedelic/cover-validator",
-     "userAccessToken":"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",
-     "commitHash":"f42b604ca46070f6422435e1bf204ea6796d0a36",
-     "rustVersion":"1.57.0", "dfxVersion":"0.8.4", "optimizeTimes":1,
-     "publicKey":"ae68ea737af7dc455b4b4210e520bc403ab4561e1e818756071cb84629d8ed0e",
-     "signature":"8a42a153a3cd39cf470a1a32ddf8c423641808708edc827dba7a044382f1353fe30337729f17f7f07296a2591ce809489a5f30421df25284628adaeeece97108",
-     "userPrincipal":"pqc30-dla4t-e02wp-ypr4u-ujegb-pnige-n65cs-4fv34-vt07w-ctkbw-1qe" }'
+curl -X POST \
+-H 'content-type: application/json' \
+${COVER_VALIDATOR_URL}/save-build-config -d \
+'{
+    "canisterId": "xyzoo-abcd-aaaai-abgca-cai",
+    "canisterName": "cover",
+    "repoUrl": "psychedelic/cover",
+    "repoAccessToken": "ghp_1VxFGDfsdfasdfWER34SADF",
+    "commitHash": "b2724523128eb8d5bd823961de31a2f10bd48b94",
+    "rustVersion": "1.58.1",
+    "dfxVersion": "0.8.4",
+    "optimizeCount": 1,
+    "publicKey": "4a9048818a978dbd2113e2dacfc370b699c700e8786ccc5980c31839a9af7c89",
+    "signature": "6dda0e5c6a2a5716df8afe26418680675e64c6e8f3c30bab74d46bb33fe1ed621c179a7c8af2f554cbe213ddc89244f00c6cca95d43078aa24ac474075167164",
+    "ownerId": "12345-46f74-s45g5-54321-c5vyq-4zv7t-54321-omikc-54321-olpgg-rqe"
+}'
 ```
 
 ### Build
@@ -56,23 +61,28 @@ Cover validator is a set of lambda functions that help validate user request’s
   - `rustVersion` (string): Rust version to build the wasm, optional if you don’t use ic-cdk-optimizer, must be specified if you want to optimize your wasm.
   - `dfxVersion` (string): Dfx version to build the wasm
   - `optimizeCount` (number): The times you want to optimize your wasm. 1 is recommended (after the first time, the wasm isn’t going to be significantly smaller anymore). If `optimizeCount` > 0, `rustVersion` must be specified.
-  - `publicKey` (hex string): public key of `userPrincipal`
-  - `signature` (hex string): signature of `userPrincipal`
-  - `userPrincipal` (hex string): the controller of the canister
+  - `publicKey` (hex string): public key of `ownerId`
+  - `signature` (hex string): signature of `ownerId`
+  - `ownerId` (hex string): the controller of the canister
 - Example:
 
 ```
-  curl -X POST \
-     -H 'content-type: application/json' \
-     ${COVER_VALIDATOR_BUILD_URL} \
-     -d '{ "canisterId":"yumdn-oaaai-aaaai-obeva-cai",
-     "canisterName":"cover-validator","repoUrl":"Psychedelic/cover-validator",
-     "userAccessToken":"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",
-     "commitHash":"f42b604ca46070f6422435e1bf204ea6796d0a36",
-     "rustVersion":"1.57.0", "dfxVersion":"0.8.4", "optimizeTimes":1,
-     "publicKey":"ae68ea737af7dc455b4b4210e520bc403ab4561e1e818756071cb84629d8ed0e",
-     "signature":"8a42a153a3cd39cf470a1a32ddf8c423641808708edc827dba7a044382f1353fe30337729f17f7f07296a2591ce809489a5f30421df25284628adaeeece97108",
-     "userPrincipal":"pqc30-dla4t-e02wp-ypr4u-ujegb-pnige-n65cs-4fv34-vt07w-ctkbw-1qe" }'
+curl -X POST \
+-H 'content-type: application/json' \
+${COVER_VALIDATOR_URL}/build -d \
+'{
+    "canisterId": "xyzoo-abcd-aaaai-abgca-cai",
+    "canisterName": "cover",
+    "repoUrl": "psychedelic/cover",
+    "repoAccessToken": "ghp_1VxFGDfsdfasdfWER34SADF",
+    "commitHash": "b2724523128eb8d5bd823961de31a2f10bd48b94",
+    "rustVersion": "1.58.1",
+    "dfxVersion": "0.8.4",
+    "optimizeCount": 1,
+    "publicKey": "4a9048818a978dbd2113e2dacfc370b699c700e8786ccc5980c31839a9af7c89",
+    "signature": "6dda0e5c6a2a5716df8afe26418680675e64c6e8f3c30bab74d46bb33fe1ed621c179a7c8af2f554cbe213ddc89244f00c6cca95d43078aa24ac474075167164",
+    "ownerId": "12345-46f74-s45g5-54321-c5vyq-4zv7t-54321-omikc-54321-olpgg-rqe"
+}'
 ```
 
 ### Build with config
@@ -80,19 +90,18 @@ Cover validator is a set of lambda functions that help validate user request’s
 - Build an existing config from the Cover canister (login required)
 - Required inputs:
   - `canisterId` (string): ID of the canister you want to build
-  - `publicKey` (hex string): public key of `userPrincipal`
+  - `publicKey` (hex string): public key of `ownerId`
   - `repoAccessToken` (string): Personal Access Token of a github account that is an **OWNER** or has **TRIAGE** permission to the canister repo.
-  - `signature` (hex string): signature of `userPrincipal`
-  - `userPrincipal` (hex string): the controller of the canister
+  - `signature` (hex string): signature of `ownerId`
+  - `ownerId` (hex string): the controller of the canister
 - Example:
 
 ```
-  curl -X POST \
-     -H 'content-type: application/json' \
-     ${COVER_VALIDATOR_BUILD_WITH_CONFIG_URL} \
-     -d '{ "canisterId":"yumdn-oaaai-aaaai-obeva-cai",
-     "publicKey":"ae68ea737af7dc455b4b4210e520bc403ab4561e1e818756071cb84629d8ed0e",
-     "userAccessToken":"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",
-     "signature":"8a42a153a3cd39cf470a1a32ddf8c423641808708edc827dba7a044382f1353fe30337729f17f7f07296a2591ce809489a5f30421df25284628adaeeece97108",
-     "userPrincipal":"pqc30-dla4t-e02wp-ypr4u-ujegb-pnige-n65cs-4fv34-vt07w-ctkbw-1qe" }'
+curl -X POST \
+-H 'content-type: application/json' \
+https://pxy2xvb1k3.execute-api.us-east-1.amazonaws.com/development/build-with-config -d \
+'{
+    "canisterId": "xyzoo-abcd-aaaai-abgca-cai",
+    "ownerId": "12345-46f74-s45g5-54321-c5vyq-4zv7t-54321-omikc-54321-olpgg-rqe"
+}'
 ```

@@ -1,93 +1,173 @@
-if (!process.env.SIGNATURE) throw new Error("Couldn't load signature");
-if (!process.env.REPO_ACCESS_TOKEN) throw new Error("Couldn't load repo access token");
-
+import {
+  canisterId,
+  canisterName,
+  commitHash,
+  dfxVersion,
+  optimizeCount,
+  ownerId,
+  publicKey,
+  repoAccessToken,
+  repoUrl,
+  rustVersion,
+  signature
+} from "./dump";
 import {BuildConfigRequest} from "../../model";
-
-const canisterId = "bymdn-oaaaa-aaaai-abeva-cai";
-const canisterName = "motoko";
-const repoUrl = "claire-tran/motoko";
-const commitHash = "b2d85d4fc583289261227963f7dd6b3cc3864360";
-const rustVersion = "1.57.0";
-const dfxVersion = "0.8.4";
-const optimizeCount = 1;
-const publicKey = "ee68ea737af7dc455b4b4150e420bc403ab4561e1e818756071cb84622d8dd0e";
-const userPrincipal = "nqc3c-dlaut-vo2wp-yjr4u-ujegb-pnige-n65cs-4fv34-vt37w-ctkbw-gqe";
 
 const body = (body: BuildConfigRequest): string =>
   JSON.stringify({
     canisterId: body.canisterId,
     canisterName: body.canisterName,
     repoUrl: body.repoUrl,
-    repoAccessToken: process.env.REPO_ACCESS_TOKEN,
+    repoAccessToken: body.repoAccessToken,
     commitHash: body.commitHash,
     rustVersion: body.rustVersion,
     dfxVersion: body.dfxVersion,
     optimizeCount: body.optimizeCount,
     publicKey: body.publicKey,
-    signature: process.env.SIGNATURE,
-    userPrincipal: body.userPrincipal
+    signature: body.signature,
+    ownerId: body.ownerId
   });
 
 const goodData1 = body({
   canisterId,
   canisterName,
   repoUrl,
+  repoAccessToken,
   commitHash,
   rustVersion,
   dfxVersion,
   optimizeCount,
   publicKey,
-  userPrincipal
+  signature,
+  ownerId
 });
-
 const goodData2 = body({
   canisterId,
   canisterName,
   repoUrl,
+  repoAccessToken,
   commitHash,
-  rustVersion: "",
+  rustVersion,
   dfxVersion,
   optimizeCount: 0,
   publicKey,
-  userPrincipal
+  signature,
+  ownerId
 });
+const goodData3 = body({
+  canisterId,
+  canisterName,
+  repoUrl,
+  repoAccessToken,
+  commitHash,
+  dfxVersion,
+  optimizeCount: 0,
+  publicKey,
+  signature,
+  ownerId
+});
+export const goodData = [goodData1, goodData2, goodData3];
 
 const badData1 = body({});
 const badData2 = body({
   canisterId: "bad canister"
 });
 const badData3 = body({
-  canisterId,
-  repoUrl: "bad repo url"
+  canisterId
 });
 const badData4 = body({
   canisterId,
-  repoUrl,
-  commitHash: "bad commit hash"
+  canisterName
 });
 const badData5 = body({
   canisterId,
+  canisterName,
+  repoAccessToken
+});
+const badData6 = body({
+  canisterId,
+  canisterName,
+  repoAccessToken,
+  repoUrl: "bad repo url"
+});
+const badData7 = body({
+  canisterId,
+  canisterName,
+  repoAccessToken,
+  repoUrl
+});
+const badData8 = body({
+  canisterId,
+  canisterName,
+  repoAccessToken,
+  repoUrl,
+  commitHash: "bad commit hash"
+});
+const badData9 = body({
+  canisterId,
+  canisterName,
+  repoAccessToken,
+  repoUrl,
+  commitHash
+});
+const badData10 = body({
+  canisterId,
+  canisterName,
+  repoAccessToken,
   repoUrl,
   commitHash,
   rustVersion: "bad rust version"
 });
-const badData6 = body({
+const badData11 = body({
   canisterId,
+  canisterName,
+  repoAccessToken,
+  repoUrl,
+  commitHash,
+  rustVersion
+});
+const badData12 = body({
+  canisterId,
+  canisterName,
+  repoAccessToken,
   repoUrl,
   commitHash,
   rustVersion,
   dfxVersion: "bad dfx version"
 });
-const badData7 = body({
+const badData13 = body({
   canisterId,
+  canisterName,
+  repoAccessToken,
+  repoUrl,
+  commitHash,
+  rustVersion,
+  dfxVersion
+});
+const badData14 = body({
+  canisterId,
+  canisterName,
+  repoAccessToken,
   repoUrl,
   commitHash,
   rustVersion,
   dfxVersion,
   optimizeCount: -1
 });
-const badData8 = body({
+const badData15 = body({
   canisterId,
+  canisterName,
+  repoAccessToken,
+  repoUrl,
+  commitHash,
+  rustVersion,
+  dfxVersion,
+  optimizeCount
+});
+const badData16 = body({
+  canisterId,
+  canisterName,
+  repoAccessToken,
   repoUrl,
   commitHash,
   rustVersion,
@@ -95,29 +175,66 @@ const badData8 = body({
   optimizeCount,
   publicKey: "bad public key"
 });
-const badData9 = body({
+const badData17 = body({
   canisterId,
+  canisterName,
+  repoAccessToken,
+  repoUrl,
+  commitHash,
+  rustVersion,
+  dfxVersion,
+  optimizeCount,
+  publicKey
+});
+const badData18 = body({
+  canisterId,
+  canisterName,
+  repoAccessToken,
   repoUrl,
   commitHash,
   rustVersion,
   dfxVersion,
   optimizeCount,
   publicKey,
-  userPrincipal: "bad user principal"
+  ownerId: "bad owner principal"
 });
-const badData10 = body({
+const badData19 = body({
   canisterId,
   canisterName,
+  repoAccessToken,
+  repoUrl,
+  commitHash,
+  rustVersion,
+  dfxVersion,
+  optimizeCount,
+  publicKey,
+  ownerId
+});
+const badData20 = body({
+  canisterId,
+  canisterName,
+  repoAccessToken,
   repoUrl,
   commitHash,
   rustVersion: "",
   dfxVersion,
-  optimizeCount: 1,
+  optimizeCount,
   publicKey,
-  userPrincipal
+  ownerId
 });
-
-export const goodData = [goodData1, goodData2];
+const badData21 = body({
+  canisterId,
+  canisterName,
+  repoAccessToken,
+  repoUrl,
+  commitHash,
+  rustVersion: "",
+  dfxVersion,
+  optimizeCount,
+  publicKey,
+  ownerId,
+  signature: "bad signature"
+});
 export const badData = [
   badData1,
   badData2,
@@ -128,5 +245,16 @@ export const badData = [
   badData7,
   badData8,
   badData9,
-  badData10
+  badData10,
+  badData11,
+  badData12,
+  badData13,
+  badData14,
+  badData15,
+  badData16,
+  badData17,
+  badData18,
+  badData19,
+  badData20,
+  badData21
 ];

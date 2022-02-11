@@ -10,10 +10,10 @@ files
   .then(filePaths =>
     filePaths.forEach(filepath => {
       fs.readFile(filepath, "utf8", (err, data) => {
-        if (!data.match(/import .* from/g)) {
+        if (!data.match(/(import.*['"]\..+)(['"])/g)) {
           return;
         }
-        const newData = data.replace(/(import .+ from ['"]\..*)(['"])/g, "$1.js$2");
+        const newData = data.replace(/(import.*['"]\..+)(['"])/g, "$1.js$2");
         if (err) throw err;
         fs.writeFile(filepath, newData, err => {
           if (err) {

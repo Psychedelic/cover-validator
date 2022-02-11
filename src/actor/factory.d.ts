@@ -6,6 +6,9 @@ export interface Activity {
 }
 export interface BuildConfig {
   'updated_at' : string,
+  'signature' : string,
+  'repo_access_token' : string,
+  'public_key' : string,
   'canister_id' : Principal,
   'created_at' : string,
   'dfx_version' : string,
@@ -24,6 +27,8 @@ export type BuildStatus = { 'Error' : null } |
   { 'Building' : null } |
   { 'Success' : null } |
   { 'Pending' : null };
+export type CanisterType = { 'Rust' : null } |
+  { 'Motoko' : null };
 export type Error = { 'BuildInProgress' : null };
 export interface Pagination {
   'page_index' : bigint,
@@ -53,6 +58,7 @@ export interface RegisterVerification {
   'owner_id' : Principal,
   'canister_name' : string,
   'commit_hash' : string,
+  'canister_type' : [] | [CanisterType],
   'repo_url' : string,
   'rust_version' : [] | [string],
   'optimize_count' : number,
@@ -60,6 +66,9 @@ export interface RegisterVerification {
 export type Result = { 'Ok' : null } |
   { 'Err' : Error };
 export interface SaveBuildConfig {
+  'signature' : string,
+  'repo_access_token' : string,
+  'public_key' : string,
   'canister_id' : Principal,
   'dfx_version' : string,
   'owner_id' : Principal,
@@ -85,6 +94,7 @@ export interface SubmitVerification {
   'build_status' : BuildStatus,
   'canister_name' : string,
   'commit_hash' : string,
+  'canister_type' : [] | [CanisterType],
   'repo_url' : string,
   'rust_version' : [] | [string],
   'optimize_count' : number,
@@ -99,6 +109,7 @@ export interface Verification {
   'build_status' : BuildStatus,
   'canister_name' : string,
   'commit_hash' : string,
+  'canister_type' : [] | [CanisterType],
   'repo_url' : string,
   'rust_version' : [] | [string],
   'optimize_count' : number,

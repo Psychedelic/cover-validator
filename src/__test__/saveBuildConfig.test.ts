@@ -1,9 +1,11 @@
+import "./__test_data__/env";
 import {badData, goodData} from "./__test_data__/buildConfigRequest";
 import {getAPIEvent} from "./__test_utils__/utils";
-import {handler} from "../handlers/saveBuildConfig";
 import test from "ava";
 
-test("Create build config failed with bad data", async t => {
+const {handler} = await import("../handlers/build");
+
+test("Failed with bad data", async t => {
   const results = await Promise.all(badData.map(data => handler(getAPIEvent(data))));
   results.forEach(result => {
     t.like(result, {
@@ -15,7 +17,7 @@ test("Create build config failed with bad data", async t => {
   });
 });
 
-test("Create build config successfully", async t => {
+test("Success", async t => {
   const results = await Promise.all(goodData.map(data => handler(getAPIEvent(data))));
   results.forEach(result => {
     t.deepEqual(result, {

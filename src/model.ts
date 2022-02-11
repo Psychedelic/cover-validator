@@ -49,26 +49,15 @@ export class BuildConfigRequest {
 
   @IsNotEmpty()
   @Validate(IsValidPrincipalFormat)
-  userPrincipal?: string;
+  ownerId?: string;
 }
 
-export class BuildWasmRequest {
+export class BuildWithConfigRequest {
   @IsNotEmpty()
   @Validate(IsValidPrincipalFormat)
   canisterId?: string;
 
   @IsNotEmpty()
-  @Validate(IsHexString)
-  publicKey?: string;
-
-  @IsNotEmpty()
-  repoAccessToken?: string;
-
-  @IsNotEmpty()
-  @Validate(IsHexString)
-  signature?: string;
-
-  @IsNotEmpty()
   @Validate(IsValidPrincipalFormat)
-  userPrincipal?: string;
+  ownerId?: string;
 }

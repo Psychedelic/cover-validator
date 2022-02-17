@@ -24,10 +24,7 @@ const saveBuildConfig = async (event: APIGatewayProxyEvent): Promise<void> => {
     canister_name: req.canisterName as string,
     commit_hash: req.commitHash as string,
     repo_url: req.repoUrl as string,
-    rust_version: req.rustVersion ? [req.rustVersion] : [],
-    repo_access_token: req.repoAccessToken as string,
-    public_key: req.publicKey as string,
-    signature: req.signature as string
+    rust_version: req.rustVersion ? [req.rustVersion] : []
   });
 };
 

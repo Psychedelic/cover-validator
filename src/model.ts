@@ -54,10 +54,21 @@ export class BuildConfigRequest {
 
 export class BuildWithConfigRequest {
   @IsNotEmpty()
+  repoAccessToken?: string;
+
+  @IsNotEmpty()
   @Validate(IsValidPrincipalFormat)
   canisterId?: string;
 
   @IsNotEmpty()
   @Validate(IsValidPrincipalFormat)
   ownerId?: string;
+
+  @IsNotEmpty()
+  @Validate(IsHexString)
+  publicKey?: string;
+
+  @IsNotEmpty()
+  @Validate(IsHexString)
+  signature?: string;
 }

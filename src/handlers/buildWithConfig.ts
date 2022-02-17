@@ -11,6 +11,12 @@ import {httpResponse} from "../httpResponse";
 const buildWithConfig = async (event: APIGatewayProxyEvent): Promise<void> => {
   const req = await transformAndValidateData<BuildWithConfigRequest>(event.body as string, BuildWithConfigRequest);
 
+  validatePrincipal(req.ownerId as string, req.publicKey as string);
+
+  validateSignature(req.canisterId as string, req.signature as string, req.publicKey as string);
+
+  await validateCanister(req.canisterId as string, req.ownerId as string);
+
   const buildConfig = await coverActor.getBuildConfigValidator({
     canister_id: Principal.fromText(req.canisterId as string),
     owner_id: Principal.fromText(req.ownerId as string)
@@ -20,13 +26,7 @@ const buildWithConfig = async (event: APIGatewayProxyEvent): Promise<void> => {
     throw BuildConfigNotFound;
   }
 
-  validatePrincipal(buildConfig[0].owner_id.toText(), buildConfig[0].public_key as string);
-
-  validateSignature(buildConfig[0].canister_id.toText(), buildConfig[0].signature, buildConfig[0].public_key);
-
-  await validateCanister(buildConfig[0].canister_id.toText(), buildConfig[0].owner_id.toText());
-
-  await validateRepo(buildConfig[0].repo_url, buildConfig[0].repo_access_token);
+  await validateRepo(buildConfig[0].repo_url, req.repoAccessToken as string);
 
   const result = await coverActor.registerVerification({
     owner_id: buildConfig[0].owner_id,
@@ -58,7 +58,7 @@ const buildWithConfig = async (event: APIGatewayProxyEvent): Promise<void> => {
       canister_id: buildConfig[0].canister_id.toText(),
       canister_name: buildConfig[0].canister_name,
       repo_url: `github.com/${buildConfig[0].repo_url}`,
-      repo_access_token: buildConfig[0].repo_access_token,
+      repo_access_token: req.repoAccessToken as string,
       commit_hash: buildConfig[0].commit_hash,
       rust_version: buildConfig[0].rust_version[0] || "",
       dfx_version: buildConfig[0].dfx_version,

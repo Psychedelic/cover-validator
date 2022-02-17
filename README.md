@@ -1,6 +1,6 @@
 # Cover Validator
 
-Cover validator is a set of lambda functions that help validate user request’s inputs before getting forwarded to Cover canister or Cover builder.
+Cover validator is a set of AWS lambda functions that help validate user request’s inputs before getting forwarded to Cover canister or Cover builder.
 
 ## REST API
 
@@ -102,6 +102,9 @@ curl -X POST \
 ${COVER_VALIDATOR_URL}/build-with-config -d \
 '{
     "canisterId": "xyzoo-abcd-aaaai-abgca-cai",
-    "ownerId": "12345-46f74-s45g5-54321-c5vyq-4zv7t-54321-omikc-54321-olpgg-rqe"
+    "ownerId": "12345-46f74-s45g5-54321-c5vyq-4zv7t-54321-omikc-54321-olpgg-rqe",
+    "publicKey": "4a9048818a978dbd2113e2dacfc370b699c700e8786ccc5980c31839a9af7c89",
+    "signature": "6dda0e5c6a2a5716df8afe26418680675e64c6e8f3c30bab74d46bb33fe1ed621c179a7c8af2f554cbe213ddc89244f00c6cca95d43078aa24ac474075167164",
+    "repoAccessToken": "ghp_1VxFGDfsdfasdfWER34SADF"
 }'
 ```

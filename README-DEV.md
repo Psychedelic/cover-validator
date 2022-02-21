@@ -22,3 +22,4 @@ TODO:
 6. Mapping domain
 7. Test coverage with CI github action (both storage and validator)
 8. README with badges
+9. remove ic-kit

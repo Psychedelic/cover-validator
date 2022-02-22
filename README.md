@@ -1,6 +1,8 @@
+![](https://docs.covercode.ooo/overview/imgs/mainn.png)
+
 # Cover Validator
 
-Cover validator is a set of AWS lambda functions that help validate user request’s inputs before getting forwarded to Cover canister or Cover builder.
+Cover validator is a set of AWS lambda functions that help validate user request’s inputs before getting forwarded to [Cover](https://covercode.ooo/) canister or Cover builder.
 
 ## REST API
 

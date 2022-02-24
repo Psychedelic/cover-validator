@@ -9,6 +9,7 @@ Cover validator is a set of AWS lambda functions that help validate user request
 
 ## REST API
 
+- **_Cover only support DFX 0.8.4 or above_**
 - These APIs will check if:
   - The inputs are in the right format?
   - The caller has the right canister repo access permission?
@@ -17,6 +18,7 @@ Cover validator is a set of AWS lambda functions that help validate user request
 - How to get `signature` and `publicKey`:
   - `signature` is signed with the `canisterId` being the message.
   - You can refer to these documents: [Secp256k1](https://github.com/dfinity/keysmith) or [Ed25519](https://github.com/Psychedelic/dfx-key)
+- Cover validator and builder will update the build status for you to follow. You can only re-build your canister when the Cover builder finishes its job and updates the status to either Error or Success. If the Cover builder failed to update build status, you’ll have to wait **5 minutes** before rebuilding your canister. So make sure to fill your input correctly.
 
 ### Save a build config
 

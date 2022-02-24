@@ -4,8 +4,8 @@
 
 Cover validator is a set of AWS lambda functions that help validate user request’s inputs before getting forwarded to [Cover](https://covercode.ooo/) canister or Cover builder.
 
--  [Main Repo](https://github.com/Psychedelic/cover/)
--  [Cover Builder](https://github.com/Psychedelic/cover-builder/)
+- [Main Repo](https://github.com/Psychedelic/cover/)
+- [Cover Builder](https://github.com/Psychedelic/cover-builder/)
 
 ## REST API
 

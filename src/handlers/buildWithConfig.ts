@@ -36,8 +36,7 @@ const buildWithConfig = async (event: APIGatewayProxyEvent): Promise<void> => {
     canister_name: buildConfig[0].canister_name,
     commit_hash: buildConfig[0].commit_hash,
     repo_url: buildConfig[0].repo_url,
-    rust_version: buildConfig[0].rust_version,
-    canister_type: []
+    rust_version: buildConfig[0].rust_version
   });
 
   if ("Err" in result) {
@@ -57,7 +56,7 @@ const buildWithConfig = async (event: APIGatewayProxyEvent): Promise<void> => {
       owner_id: buildConfig[0].owner_id.toText(),
       canister_id: buildConfig[0].canister_id.toText(),
       canister_name: buildConfig[0].canister_name,
-      repo_url: `github.com/${buildConfig[0].repo_url}`,
+      repo_url: buildConfig[0].repo_url,
       repo_access_token: req.repoAccessToken as string,
       commit_hash: buildConfig[0].commit_hash,
       rust_version: buildConfig[0].rust_version[0] || "",

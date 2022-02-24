@@ -1,5 +1,10 @@
 // @ts-nocheck
 export const idlFactory = ({ IDL }) => {
+  const Config = IDL.Record({
+    'admin' : IDL.Opt(IDL.Vec(IDL.Principal)),
+    'validator' : IDL.Opt(IDL.Vec(IDL.Principal)),
+    'builder' : IDL.Opt(IDL.Vec(IDL.Principal)),
+  });
   const PaginationInfo = IDL.Record({
     'page_index' : IDL.Nat64,
     'items_per_page' : IDL.Nat64,
@@ -60,6 +65,7 @@ export const idlFactory = ({ IDL }) => {
     'commit_hash' : IDL.Text,
     'canister_type' : IDL.Opt(CanisterType),
     'repo_url' : IDL.Text,
+    'repo_visibility' : IDL.Opt(IDL.Text),
     'rust_version' : IDL.Opt(IDL.Text),
     'optimize_count' : IDL.Nat8,
     'build_url' : IDL.Opt(IDL.Text),
@@ -80,7 +86,6 @@ export const idlFactory = ({ IDL }) => {
     'owner_id' : IDL.Principal,
     'canister_name' : IDL.Text,
     'commit_hash' : IDL.Text,
-    'canister_type' : IDL.Opt(CanisterType),
     'repo_url' : IDL.Text,
     'rust_version' : IDL.Opt(IDL.Text),
     'optimize_count' : IDL.Nat8,
@@ -106,6 +111,7 @@ export const idlFactory = ({ IDL }) => {
     'commit_hash' : IDL.Text,
     'canister_type' : IDL.Opt(CanisterType),
     'repo_url' : IDL.Text,
+    'repo_visibility' : IDL.Opt(IDL.Text),
     'rust_version' : IDL.Opt(IDL.Text),
     'optimize_count' : IDL.Nat8,
     'build_url' : IDL.Text,
@@ -146,4 +152,11 @@ export const idlFactory = ({ IDL }) => {
     'submitVerification' : IDL.Func([SubmitVerification], [], []),
   });
 };
-export const init = ({ IDL }) => { return []; };
+export const init = ({ IDL }) => {
+  const Config = IDL.Record({
+    'admin' : IDL.Opt(IDL.Vec(IDL.Principal)),
+    'validator' : IDL.Opt(IDL.Vec(IDL.Principal)),
+    'builder' : IDL.Opt(IDL.Vec(IDL.Principal)),
+  });
+  return [IDL.Opt(Config)];
+};

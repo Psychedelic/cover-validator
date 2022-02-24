@@ -26,6 +26,11 @@ export type BuildStatus = { 'Error' : null } |
   { 'Pending' : null };
 export type CanisterType = { 'Rust' : null } |
   { 'Motoko' : null };
+export interface Config {
+  'admin' : [] | [Array<Principal>],
+  'validator' : [] | [Array<Principal>],
+  'builder' : [] | [Array<Principal>],
+}
 export type Error = { 'BuildInProgress' : null };
 export interface Pagination {
   'page_index' : bigint,
@@ -55,7 +60,6 @@ export interface RegisterVerification {
   'owner_id' : Principal,
   'canister_name' : string,
   'commit_hash' : string,
-  'canister_type' : [] | [CanisterType],
   'repo_url' : string,
   'rust_version' : [] | [string],
   'optimize_count' : number,
@@ -90,6 +94,7 @@ export interface SubmitVerification {
   'commit_hash' : string,
   'canister_type' : [] | [CanisterType],
   'repo_url' : string,
+  'repo_visibility' : [] | [string],
   'rust_version' : [] | [string],
   'optimize_count' : number,
   'build_url' : string,
@@ -105,6 +110,7 @@ export interface Verification {
   'commit_hash' : string,
   'canister_type' : [] | [CanisterType],
   'repo_url' : string,
+  'repo_visibility' : [] | [string],
   'rust_version' : [] | [string],
   'optimize_count' : number,
   'build_url' : [] | [string],

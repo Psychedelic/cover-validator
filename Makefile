@@ -1,4 +1,4 @@
-.PHONY: build-RuntimeDependenciesLayer build-lambda-common
+.PHONY: build-lambda-common
 .PHONY: build-SaveBuildConfigFunction
 .PHONY: build-BuildWithConfigFunction
 .PHONY: build-BuildFunction

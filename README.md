@@ -10,6 +10,7 @@ Cover validator is a set of AWS lambda functions that help validate user request
 ## REST API
 
 - **_Cover only support DFX 0.8.4 or above_**
+- If you're using DFX 0.9.3 and above, when you build your wasm, DFX might automatically optimize the wasm for you, so beware of that when input the`optimize_count`
 - These APIs will check if:
   - The inputs are in the right format?
   - The caller has the right canister repo access permission?
@@ -37,7 +38,7 @@ Cover validator is a set of AWS lambda functions that help validate user request
   - `ownerId` (hex string): the controller of the canister
 - Example:
 
-```
+```bash
 curl -X POST \
 -H 'content-type: application/json' \
 ${COVER_VALIDATOR_URL}/save-build-config -d \
@@ -73,7 +74,7 @@ ${COVER_VALIDATOR_URL}/save-build-config -d \
   - `ownerId` (hex string): the controller of the canister
 - Example:
 
-```
+```bash
 curl -X POST \
 -H 'content-type: application/json' \
 ${COVER_VALIDATOR_URL}/build -d \
@@ -103,7 +104,7 @@ ${COVER_VALIDATOR_URL}/build -d \
   - `ownerId` (hex string): the controller of the canister
 - Example:
 
-```
+```bash
 curl -X POST \
 -H 'content-type: application/json' \
 ${COVER_VALIDATOR_URL}/build-with-config -d \

@@ -6,9 +6,11 @@
 $ npm t
 ```
 
-## Deploy
+## Build & deploy
 
 ```bash
+$ sam build
+
 $ sam deploy --config-env $ENVIRONMENT
 ```
 

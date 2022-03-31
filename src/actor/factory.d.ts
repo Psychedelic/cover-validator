@@ -7,7 +7,6 @@ export interface Activity {
 export interface BuildConfig {
   'updated_at' : string,
   'canister_id' : Principal,
-  'created_at' : string,
   'dfx_version' : string,
   'owner_id' : Principal,
   'canister_name' : string,
@@ -32,9 +31,18 @@ export interface Config {
   'builder' : [] | [Array<Principal>],
 }
 export type Error = { 'BuildInProgress' : null };
-export interface Pagination {
+export interface ManualReply {
   'page_index' : bigint,
   'data' : Array<Activity>,
+  'total_pages' : bigint,
+  'total_items' : bigint,
+  'is_first_page' : boolean,
+  'items_per_page' : bigint,
+  'is_last_page' : boolean,
+}
+export interface ManualReply_1 {
+  'page_index' : bigint,
+  'data' : Array<Verification>,
   'total_pages' : bigint,
   'total_items' : bigint,
   'is_first_page' : boolean,
@@ -44,15 +52,6 @@ export interface Pagination {
 export interface PaginationInfo {
   'page_index' : bigint,
   'items_per_page' : bigint,
-}
-export interface Pagination_1 {
-  'page_index' : bigint,
-  'data' : Array<Verification>,
-  'total_pages' : bigint,
-  'total_items' : bigint,
-  'is_first_page' : boolean,
-  'items_per_page' : bigint,
-  'is_last_page' : boolean,
 }
 export interface RegisterVerification {
   'canister_id' : Principal,
@@ -124,7 +123,7 @@ export interface _SERVICE {
   'deleteBuildConfig' : (arg_0: Principal) => Promise<undefined>,
   'deleteBuilder' : (arg_0: Principal) => Promise<undefined>,
   'deleteValidator' : (arg_0: Principal) => Promise<undefined>,
-  'getActivities' : (arg_0: PaginationInfo) => Promise<Pagination>,
+  'getActivities' : (arg_0: PaginationInfo) => Promise<ManualReply>,
   'getAdmins' : () => Promise<Array<Principal>>,
   'getBuildConfigById' : (arg_0: Principal) => Promise<[] | [BuildConfig]>,
   'getBuildConfigValidator' : (arg_0: BuildConfigInfo) => Promise<
@@ -132,12 +131,12 @@ export interface _SERVICE {
     >,
   'getBuildConfigs' : () => Promise<Array<BuildConfig>>,
   'getBuilders' : () => Promise<Array<Principal>>,
-  'getStats' : () => Promise<Stats>,
   'getValidators' : () => Promise<Array<Principal>>,
   'getVerificationByCanisterId' : (arg_0: Principal) => Promise<
       [] | [Verification]
     >,
-  'getVerifications' : (arg_0: PaginationInfo) => Promise<Pagination_1>,
+  'getVerifications' : (arg_0: PaginationInfo) => Promise<ManualReply_1>,
+  'getVerificationsStats' : () => Promise<Stats>,
   'registerVerification' : (arg_0: RegisterVerification) => Promise<Result>,
   'saveBuildConfig' : (arg_0: SaveBuildConfig) => Promise<undefined>,
   'submitVerification' : (arg_0: SubmitVerification) => Promise<undefined>,

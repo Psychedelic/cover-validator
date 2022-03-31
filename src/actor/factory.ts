@@ -1,4 +1,4 @@
-// @ts-nocheck
+//@ts-nocheck
 export const idlFactory = ({ IDL }) => {
   const Config = IDL.Record({
     'admin' : IDL.Opt(IDL.Vec(IDL.Principal)),
@@ -20,7 +20,7 @@ export const idlFactory = ({ IDL }) => {
     'canister_id' : IDL.Principal,
     'build_status' : BuildStatus,
   });
-  const Pagination = IDL.Record({
+  const ManualReply = IDL.Record({
     'page_index' : IDL.Nat64,
     'data' : IDL.Vec(Activity),
     'total_pages' : IDL.Nat64,
@@ -32,7 +32,6 @@ export const idlFactory = ({ IDL }) => {
   const BuildConfig = IDL.Record({
     'updated_at' : IDL.Text,
     'canister_id' : IDL.Principal,
-    'created_at' : IDL.Text,
     'dfx_version' : IDL.Text,
     'owner_id' : IDL.Principal,
     'canister_name' : IDL.Text,
@@ -44,15 +43,6 @@ export const idlFactory = ({ IDL }) => {
   const BuildConfigInfo = IDL.Record({
     'canister_id' : IDL.Principal,
     'owner_id' : IDL.Principal,
-  });
-  const Stats = IDL.Record({
-    'build_error_count' : IDL.Nat64,
-    'build_in_progress_count' : IDL.Nat64,
-    'rust_canisters_count' : IDL.Nat64,
-    'build_pending_count' : IDL.Nat64,
-    'motoko_canisters_count' : IDL.Nat64,
-    'total_canisters' : IDL.Nat64,
-    'build_success_count' : IDL.Nat64,
   });
   const CanisterType = IDL.Variant({ 'Rust' : IDL.Null, 'Motoko' : IDL.Null });
   const Verification = IDL.Record({
@@ -71,7 +61,7 @@ export const idlFactory = ({ IDL }) => {
     'build_url' : IDL.Opt(IDL.Text),
     'wasm_hash' : IDL.Opt(IDL.Text),
   });
-  const Pagination_1 = IDL.Record({
+  const ManualReply_1 = IDL.Record({
     'page_index' : IDL.Nat64,
     'data' : IDL.Vec(Verification),
     'total_pages' : IDL.Nat64,
@@ -79,6 +69,15 @@ export const idlFactory = ({ IDL }) => {
     'is_first_page' : IDL.Bool,
     'items_per_page' : IDL.Nat64,
     'is_last_page' : IDL.Bool,
+  });
+  const Stats = IDL.Record({
+    'build_error_count' : IDL.Nat64,
+    'build_in_progress_count' : IDL.Nat64,
+    'rust_canisters_count' : IDL.Nat64,
+    'build_pending_count' : IDL.Nat64,
+    'motoko_canisters_count' : IDL.Nat64,
+    'total_canisters' : IDL.Nat64,
+    'build_success_count' : IDL.Nat64,
   });
   const RegisterVerification = IDL.Record({
     'canister_id' : IDL.Principal,
@@ -125,7 +124,7 @@ export const idlFactory = ({ IDL }) => {
     'deleteBuildConfig' : IDL.Func([IDL.Principal], [], []),
     'deleteBuilder' : IDL.Func([IDL.Principal], [], []),
     'deleteValidator' : IDL.Func([IDL.Principal], [], []),
-    'getActivities' : IDL.Func([PaginationInfo], [Pagination], ['query']),
+    'getActivities' : IDL.Func([PaginationInfo], [ManualReply], ['query']),
     'getAdmins' : IDL.Func([], [IDL.Vec(IDL.Principal)], ['query']),
     'getBuildConfigById' : IDL.Func(
         [IDL.Principal],
@@ -139,14 +138,14 @@ export const idlFactory = ({ IDL }) => {
       ),
     'getBuildConfigs' : IDL.Func([], [IDL.Vec(BuildConfig)], ['query']),
     'getBuilders' : IDL.Func([], [IDL.Vec(IDL.Principal)], ['query']),
-    'getStats' : IDL.Func([], [Stats], ['query']),
     'getValidators' : IDL.Func([], [IDL.Vec(IDL.Principal)], ['query']),
     'getVerificationByCanisterId' : IDL.Func(
         [IDL.Principal],
         [IDL.Opt(Verification)],
         ['query'],
       ),
-    'getVerifications' : IDL.Func([PaginationInfo], [Pagination_1], ['query']),
+    'getVerifications' : IDL.Func([PaginationInfo], [ManualReply_1], ['query']),
+    'getVerificationsStats' : IDL.Func([], [Stats], ['query']),
     'registerVerification' : IDL.Func([RegisterVerification], [Result], []),
     'saveBuildConfig' : IDL.Func([SaveBuildConfig], [], []),
     'submitVerification' : IDL.Func([SubmitVerification], [], []),

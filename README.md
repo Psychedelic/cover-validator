@@ -10,14 +10,14 @@ Cover validator is a set of AWS lambda functions that help validate user request
 ## REST API
 
 - **_Cover only support DFX 0.8.4 or above_**
-- If you're using DFX 0.9.3 and above, when you build your wasm, DFX might automatically optimize the wasm for you, so beware of that when input the`optimize_count`
+- If you're using DFX 0.9.3 and above, when you build your wasm, DFX might automatically optimize the wasm for you, so beware of that when input the`optimizeCount`
 - These APIs will check if:
   - The inputs are in the right format?
   - The caller has the right canister repo access permission?
   - The caller is the controller of the canister?
   - The caller really owned the provided `ownerId`?
 - How to get `signature` and `publicKey`:
-  - You can use [Cover SDK]() to call the validator APIs and the SDK will take care of the `signature`, `publicKey` part for you, at the same time provides methods to get them yourself.
+  - You can use [Cover SDK](https://github.com/Psychedelic/cover-sdk) to call the validator APIs and the SDK will take care of the `signature`, `publicKey` part for you, at the same time provides methods to get them yourself.
   - Other ways to get can be found here: [Secp256k1](https://github.com/dfinity/keysmith) or [Ed25519](https://github.com/Psychedelic/dfx-key)
 - Cover validator and builder will update the build status for you to follow. You can only re-build your canister when the Cover builder finishes its job and updates the status to either Error or Success. If the Cover builder failed to update build status, you’ll have to wait **5 minutes** before rebuilding your canister. So make sure to fill your inputs correctly.
 

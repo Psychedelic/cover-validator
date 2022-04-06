@@ -1,4 +1,12 @@
+import {Principal} from "@dfinity/principal";
+import {Octokit} from "@octokit/core";
+import {APIGatewayProxyEvent} from "aws-lambda";
+
+import {coverActor} from "../actor/coverActor";
+import {config} from "../config";
 import {BuildConfigNotFound, CanisterResponseError} from "../error";
+import {httpResponse} from "../httpResponse";
+import {BuildWithConfigRequest} from "../model";
 import {
   transformAndValidateData,
   validateCanister,
@@ -7,13 +15,6 @@ import {
   validateSignature,
   validateTimestamp
 } from "../utils";
-import {APIGatewayProxyEvent} from "aws-lambda";
-import {BuildWithConfigRequest} from "../model";
-import {Octokit} from "@octokit/core";
-import {Principal} from "@dfinity/principal";
-import {config} from "../config";
-import {coverActor} from "../actor/coverActor";
-import {httpResponse} from "../httpResponse";
 
 const buildWithConfig = async (event: APIGatewayProxyEvent): Promise<void> => {
   const req = await transformAndValidateData<BuildWithConfigRequest>(event.body as string, BuildWithConfigRequest);

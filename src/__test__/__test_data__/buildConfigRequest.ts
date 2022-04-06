@@ -1,3 +1,4 @@
+import {BuildConfigRequest} from "../../model";
 import {
   canisterId,
   canisterName,
@@ -12,7 +13,6 @@ import {
   signature,
   timestamp
 } from "./dump";
-import {BuildConfigRequest} from "../../model";
 
 const body = (body: BuildConfigRequest): string =>
   JSON.stringify({
@@ -64,6 +64,7 @@ const goodData3 = body({
   repoUrl,
   repoAccessToken,
   commitHash,
+  rustVersion: "",
   dfxVersion,
   optimizeCount: 0,
   publicKey,
@@ -233,12 +234,39 @@ const badData21 = body({
   repoAccessToken,
   repoUrl,
   commitHash,
-  rustVersion: "",
+  rustVersion,
   dfxVersion,
   optimizeCount,
   publicKey,
   ownerId,
   signature: "bad signature"
+});
+const badData22 = body({
+  canisterId,
+  canisterName,
+  repoAccessToken,
+  repoUrl,
+  commitHash,
+  rustVersion,
+  dfxVersion,
+  optimizeCount,
+  publicKey,
+  ownerId,
+  signature
+});
+const badData23 = body({
+  canisterId,
+  canisterName,
+  repoAccessToken,
+  repoUrl,
+  commitHash,
+  rustVersion,
+  dfxVersion,
+  optimizeCount,
+  publicKey,
+  ownerId,
+  signature,
+  timestamp: 1649274029457 + 300001
 });
 export const badData = [
   badData1,
@@ -261,5 +289,7 @@ export const badData = [
   badData18,
   badData19,
   badData20,
-  badData21
+  badData21,
+  badData22,
+  badData23
 ];

@@ -1,7 +1,8 @@
 import "./__test_data__/env";
+import test from "ava";
+
 import {badData, goodData} from "./__test_data__/buildWithConfigRequest";
 import {getAPIEvent} from "./__test_utils__/utils";
-import test from "ava";
 
 const {handler} = await import("../handlers/buildWithConfig");
 

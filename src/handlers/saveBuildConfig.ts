@@ -1,3 +1,9 @@
+import {Principal} from "@dfinity/principal";
+import {APIGatewayProxyEvent} from "aws-lambda";
+
+import {coverActor} from "../actor/coverActor";
+import {httpResponse} from "../httpResponse";
+import {BuildConfigRequest} from "../model";
 import {
   transformAndValidateData,
   validateCanister,
@@ -6,11 +12,6 @@ import {
   validateSignature,
   validateTimestamp
 } from "../utils";
-import {APIGatewayProxyEvent} from "aws-lambda";
-import {BuildConfigRequest} from "../model";
-import {Principal} from "@dfinity/principal";
-import {coverActor} from "../actor/coverActor";
-import {httpResponse} from "../httpResponse";
 
 const saveBuildConfig = async (event: APIGatewayProxyEvent): Promise<void> => {
   const req = await transformAndValidateData<BuildConfigRequest>(event.body as string, BuildConfigRequest);

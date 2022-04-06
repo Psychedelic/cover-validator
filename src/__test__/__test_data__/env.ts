@@ -1,4 +1,8 @@
+import {Principal} from "@dfinity/principal";
+import {Decoder} from "cbor";
+import MockDate from "mockdate";
 import * as td from "testdouble";
+
 import {
   canisterId,
   canisterName,
@@ -12,8 +16,6 @@ import {
   rustVersion,
   signature
 } from "./dump";
-import {Decoder} from "cbor";
-import {Principal} from "@dfinity/principal";
 
 //  MOCK - cbor
 td.replace(Decoder, "decodeFirstSync", () => ({
@@ -91,3 +93,5 @@ td.when(requestMock(td.matchers.contains("GET /repos/{owner}/{repo}"), td.matche
 td.when(new Octokit(td.matchers.anything())).thenReturn({
   request: requestMock
 });
+
+MockDate.set(1649274029457); // 2022-04-06T19:40:29.457Z

@@ -1,3 +1,14 @@
+import {Certificate, HttpAgent} from "@dfinity/agent";
+import {Ed25519PublicKey, Secp256k1PublicKey} from "@dfinity/identity";
+import {Principal} from "@dfinity/principal";
+import {Octokit} from "@octokit/core";
+import {Decoder} from "cbor";
+import {ClassType, transformAndValidate} from "class-transformer-validator";
+import fetch from "isomorphic-fetch";
+import {sha256} from "js-sha256";
+import secp256k1 from "secp256k1";
+import tweetnacl from "tweetnacl";
+
 import {
   BadInputRequest,
   GettingCanisterInfoFailed,
@@ -8,16 +19,7 @@ import {
   UnauthorizedOwner,
   ValidateRepoFail
 } from "./error";
-import {Certificate, HttpAgent} from "@dfinity/agent";
-import {ClassType, transformAndValidate} from "class-transformer-validator";
-import {Ed25519PublicKey, Secp256k1PublicKey} from "@dfinity/identity";
-import {Decoder} from "cbor";
-import {Octokit} from "@octokit/core";
-import {Principal} from "@dfinity/principal";
-import fetch from "isomorphic-fetch";
-import secp256k1 from "secp256k1";
-import {sha256} from "js-sha256";
-import tweetnacl from "tweetnacl";
+import {getTime} from "./timeUtils";
 
 export const validateRepo = async (url: string, token: string) => {
   const urlSplit = url.split("/");
@@ -132,7 +134,7 @@ export const transformAndValidateData = async <T extends object>(
 };
 
 export const validateTimestamp = (timestamp: number) => {
-  const millisecondsDifferent = new Date().getTime() - timestamp;
+  const millisecondsDifferent = getTime() - timestamp;
 
   // need to be less than 5 minutes
   if (millisecondsDifferent > 300000 || millisecondsDifferent < 0) {

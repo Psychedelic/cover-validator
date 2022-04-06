@@ -1,3 +1,5 @@
+import {IsInt, IsNotEmpty, IsString, Max, Min, Validate} from "class-validator";
+
 import {
   IsHexString,
   IsNotEmptyIfOptimized,
@@ -5,32 +7,38 @@ import {
   IsValidUrlFormat,
   IsValidVersionFormat
 } from "./validators";
-import {IsInt, IsNotEmpty, Max, Min, Validate} from "class-validator";
 
 export class BuildConfigRequest {
   @IsNotEmpty()
+  @IsString()
   @Validate(IsValidPrincipalFormat)
   canisterId?: string;
 
   @IsNotEmpty()
+  @IsString()
   canisterName?: string;
 
   @IsNotEmpty()
+  @IsString()
   @Validate(IsValidUrlFormat)
   repoUrl?: string;
 
   @IsNotEmpty()
+  @IsString()
   repoAccessToken?: string;
 
   @IsNotEmpty()
+  @IsString()
   @Validate(IsHexString)
   commitHash?: string;
 
   @IsNotEmptyIfOptimized()
+  @IsString()
   @Validate(IsValidVersionFormat)
   rustVersion?: string;
 
   @IsNotEmpty()
+  @IsString()
   @Validate(IsValidVersionFormat)
   dfxVersion?: string;
 
@@ -40,41 +48,51 @@ export class BuildConfigRequest {
   optimizeCount?: number;
 
   @IsNotEmpty()
+  @IsString()
   @Validate(IsHexString)
   publicKey?: string;
 
   @IsNotEmpty()
+  @IsString()
   @Validate(IsHexString)
   signature?: string;
 
   @IsNotEmpty()
+  @IsString()
   @Validate(IsValidPrincipalFormat)
   ownerId?: string;
 
   @IsNotEmpty()
+  @IsInt()
   timestamp?: number;
 }
 
 export class BuildWithConfigRequest {
   @IsNotEmpty()
+  @IsString()
   repoAccessToken?: string;
 
   @IsNotEmpty()
+  @IsString()
   @Validate(IsValidPrincipalFormat)
   canisterId?: string;
 
   @IsNotEmpty()
+  @IsString()
   @Validate(IsValidPrincipalFormat)
   ownerId?: string;
 
   @IsNotEmpty()
+  @IsString()
   @Validate(IsHexString)
   publicKey?: string;
 
   @IsNotEmpty()
+  @IsString()
   @Validate(IsHexString)
   signature?: string;
 
   @IsNotEmpty()
+  @IsInt()
   timestamp?: number;
 }

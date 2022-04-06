@@ -1,5 +1,5 @@
-import {canisterId, ownerId, publicKey, repoAccessToken, signature, timestamp} from "./dump";
 import {BuildWithConfigRequest} from "../../model";
+import {canisterId, ownerId, publicKey, repoAccessToken, signature, timestamp} from "./dump";
 
 const body = (body: BuildWithConfigRequest): string =>
   JSON.stringify({
@@ -55,5 +55,13 @@ const badData8 = body({
   publicKey,
   signature: "bad signature"
 });
+const badData9 = body({
+  canisterId,
+  ownerId,
+  repoAccessToken,
+  publicKey,
+  signature,
+  timestamp: 1649274029457 + 300001
+});
 
-export const badData = [badData1, badData2, badData3, badData4, badData5, badData6, badData7, badData8];
+export const badData = [badData1, badData2, badData3, badData4, badData5, badData6, badData7, badData8, badData9];

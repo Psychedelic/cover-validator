@@ -50,6 +50,9 @@ export class BuildConfigRequest {
   @IsNotEmpty()
   @Validate(IsValidPrincipalFormat)
   ownerId?: string;
+
+  @IsNotEmpty()
+  timestamp?: number;
 }
 
 export class BuildWithConfigRequest {
@@ -71,4 +74,7 @@ export class BuildWithConfigRequest {
   @IsNotEmpty()
   @Validate(IsHexString)
   signature?: string;
+
+  @IsNotEmpty()
+  timestamp?: number;
 }

@@ -9,7 +9,8 @@ import {
   repoAccessToken,
   repoUrl,
   rustVersion,
-  signature
+  signature,
+  timestamp
 } from "./dump";
 import {BuildConfigRequest} from "../../model";
 
@@ -25,7 +26,8 @@ const body = (body: BuildConfigRequest): string =>
     optimizeCount: body.optimizeCount,
     publicKey: body.publicKey,
     signature: body.signature,
-    ownerId: body.ownerId
+    ownerId: body.ownerId,
+    timestamp: body.timestamp
   });
 
 const goodData1 = body({
@@ -39,7 +41,8 @@ const goodData1 = body({
   optimizeCount,
   publicKey,
   signature,
-  ownerId
+  ownerId,
+  timestamp
 });
 const goodData2 = body({
   canisterId,
@@ -52,7 +55,8 @@ const goodData2 = body({
   optimizeCount: 0,
   publicKey,
   signature,
-  ownerId
+  ownerId,
+  timestamp
 });
 const goodData3 = body({
   canisterId,
@@ -64,7 +68,8 @@ const goodData3 = body({
   optimizeCount: 0,
   publicKey,
   signature,
-  ownerId
+  ownerId,
+  timestamp
 });
 export const goodData = [goodData1, goodData2, goodData3];
 

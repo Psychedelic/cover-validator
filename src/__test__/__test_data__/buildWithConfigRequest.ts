@@ -1,4 +1,4 @@
-import {canisterId, ownerId, publicKey, repoAccessToken, signature} from "./dump";
+import {canisterId, ownerId, publicKey, repoAccessToken, signature, timestamp} from "./dump";
 import {BuildWithConfigRequest} from "../../model";
 
 const body = (body: BuildWithConfigRequest): string =>
@@ -7,7 +7,8 @@ const body = (body: BuildWithConfigRequest): string =>
     ownerId: body.ownerId,
     repoAccessToken: body.repoAccessToken,
     publicKey: body.publicKey,
-    signature: body.signature
+    signature: body.signature,
+    timestamp: body.timestamp
   });
 
 export const goodData = body({
@@ -15,7 +16,8 @@ export const goodData = body({
   ownerId,
   repoAccessToken,
   publicKey,
-  signature
+  signature,
+  timestamp
 });
 
 const badData1 = body({});

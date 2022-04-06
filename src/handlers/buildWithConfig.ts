@@ -1,5 +1,12 @@
 import {BuildConfigNotFound, CanisterResponseError} from "../error";
-import {transformAndValidateData, validateCanister, validatePrincipal, validateRepo, validateSignature} from "../utils";
+import {
+  transformAndValidateData,
+  validateCanister,
+  validatePrincipal,
+  validateRepo,
+  validateSignature,
+  validateTimestamp
+} from "../utils";
 import {APIGatewayProxyEvent} from "aws-lambda";
 import {BuildWithConfigRequest} from "../model";
 import {Octokit} from "@octokit/core";
@@ -13,7 +20,9 @@ const buildWithConfig = async (event: APIGatewayProxyEvent): Promise<void> => {
 
   validatePrincipal(req.ownerId as string, req.publicKey as string);
 
-  validateSignature(req.canisterId as string, req.signature as string, req.publicKey as string);
+  validateTimestamp(req.timestamp as number);
+
+  validateSignature(req.timestamp as number, req.signature as string, req.publicKey as string);
 
   await validateCanister(req.canisterId as string, req.ownerId as string);
 

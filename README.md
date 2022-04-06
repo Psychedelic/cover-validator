@@ -17,8 +17,8 @@ Cover validator is a set of AWS lambda functions that help validate user request
   - The caller is the controller of the canister?
   - The caller really owned the provided `ownerId`?
 - How to get `signature` and `publicKey`:
-  - `signature` is signed with the `canisterId` being the message.
-  - You can refer to these documents: [Secp256k1](https://github.com/dfinity/keysmith) or [Ed25519](https://github.com/Psychedelic/dfx-key)
+  - You can use [Cover SDK]() to call the validator APIs and the SDK will take care of the `signature`, `publicKey` part for you, at the same time provides methods to get them yourself.
+  - Other ways to get can be found here: [Secp256k1](https://github.com/dfinity/keysmith) or [Ed25519](https://github.com/Psychedelic/dfx-key)
 - Cover validator and builder will update the build status for you to follow. You can only re-build your canister when the Cover builder finishes its job and updates the status to either Error or Success. If the Cover builder failed to update build status, you’ll have to wait **5 minutes** before rebuilding your canister. So make sure to fill your inputs correctly.
 
 ### Save a build config
@@ -34,14 +34,15 @@ Cover validator is a set of AWS lambda functions that help validate user request
   - `dfxVersion` (string): Dfx version to build the wasm
   - `optimizeCount` (number): The times you want to optimize your wasm. 1 is recommended (after the first time, the wasm isn’t going to be significantly smaller anymore). If `optimizeCount` > 0, `rustVersion` must be specified.
   - `publicKey` (hex string): public key of `ownerId`
-  - `signature` (hex string): signature of `ownerId`
+  - `signature` is signed with the `timestamp` being the message and will be expired after 5 minutes.
   - `ownerId` (hex string): the controller of the canister
+  - `timestamp`: the current time in milliseconds since the UNIX epoch, details [here](https://currentmillis.com/)
 - Example:
 
 ```bash
 curl -X POST \
 -H 'content-type: application/json' \
-${COVER_VALIDATOR_URL}/save-build-config -d \
+https://h969vfa2pa.execute-api.us-east-1.amazonaws.com/production/save-build-config -d \
 '{
     "canisterId": "xyzoo-abcd-aaaai-abgca-cai",
     "canisterName": "cover",
@@ -53,7 +54,8 @@ ${COVER_VALIDATOR_URL}/save-build-config -d \
     "optimizeCount": 1,
     "publicKey": "4a9048818a978dbd2113e2dacfc370b699c700e8786ccc5980c31839a9af7c89",
     "signature": "6dda0e5c6a2a5716df8afe26418680675e64c6e8f3c30bab74d46bb33fe1ed621c179a7c8af2f554cbe213ddc89244f00c6cca95d43078aa24ac474075167164",
-    "ownerId": "12345-46f74-s45g5-54321-c5vyq-4zv7t-54321-omikc-54321-olpgg-rqe"
+    "ownerId": "12345-46f74-s45g5-54321-c5vyq-4zv7t-54321-omikc-54321-olpgg-rqe",
+    "timestamp": 1649281583096
 }'
 ```
 
@@ -70,14 +72,15 @@ ${COVER_VALIDATOR_URL}/save-build-config -d \
   - `dfxVersion` (string): Dfx version to build the wasm
   - `optimizeCount` (number): The times you want to optimize your wasm. 1 is recommended (after the first time, the wasm isn’t going to be significantly smaller anymore). If `optimizeCount` > 0, `rustVersion` must be specified.
   - `publicKey` (hex string): public key of `ownerId`
-  - `signature` (hex string): signature of `ownerId`
+  - `signature` is signed with the `timestamp` being the message and will be expired after 5 minutes.
   - `ownerId` (hex string): the controller of the canister
+  - `timestamp`: the current time in milliseconds since the UNIX epoch, details [here](https://currentmillis.com/)
 - Example:
 
 ```bash
 curl -X POST \
 -H 'content-type: application/json' \
-${COVER_VALIDATOR_URL}/build -d \
+https://h969vfa2pa.execute-api.us-east-1.amazonaws.com/production/build -d \
 '{
     "canisterId": "xyzoo-abcd-aaaai-abgca-cai",
     "canisterName": "cover",
@@ -89,7 +92,8 @@ ${COVER_VALIDATOR_URL}/build -d \
     "optimizeCount": 1,
     "publicKey": "4a9048818a978dbd2113e2dacfc370b699c700e8786ccc5980c31839a9af7c89",
     "signature": "6dda0e5c6a2a5716df8afe26418680675e64c6e8f3c30bab74d46bb33fe1ed621c179a7c8af2f554cbe213ddc89244f00c6cca95d43078aa24ac474075167164",
-    "ownerId": "12345-46f74-s45g5-54321-c5vyq-4zv7t-54321-omikc-54321-olpgg-rqe"
+    "ownerId": "12345-46f74-s45g5-54321-c5vyq-4zv7t-54321-omikc-54321-olpgg-rqe",
+    "timestamp": 1649281583096
 }'
 ```
 
@@ -100,19 +104,21 @@ ${COVER_VALIDATOR_URL}/build -d \
   - `canisterId` (string): ID of the canister you want to build
   - `publicKey` (hex string): public key of `ownerId`
   - `repoAccessToken` (string): Personal Access Token of a github account that is an **OWNER** or has **TRIAGE** permission to the canister repo.
-  - `signature` (hex string): signature of `ownerId`
+  - `signature` is signed with the `timestamp` being the message and will be expired after 5 minutes.
   - `ownerId` (hex string): the controller of the canister
+  - `timestamp`: the current time in milliseconds since the UNIX epoch, details [here](https://currentmillis.com/)
 - Example:
 
 ```bash
 curl -X POST \
 -H 'content-type: application/json' \
-${COVER_VALIDATOR_URL}/build-with-config -d \
+https://h969vfa2pa.execute-api.us-east-1.amazonaws.com/production/build-with-config -d \
 '{
     "canisterId": "xyzoo-abcd-aaaai-abgca-cai",
     "ownerId": "12345-46f74-s45g5-54321-c5vyq-4zv7t-54321-omikc-54321-olpgg-rqe",
     "publicKey": "4a9048818a978dbd2113e2dacfc370b699c700e8786ccc5980c31839a9af7c89",
     "signature": "6dda0e5c6a2a5716df8afe26418680675e64c6e8f3c30bab74d46bb33fe1ed621c179a7c8af2f554cbe213ddc89244f00c6cca95d43078aa24ac474075167164",
-    "repoAccessToken": "ghp_1VxFGDfsdfasdfWER34SADF"
+    "repoAccessToken": "ghp_1VxFGDfsdfasdfWER34SADF",
+    "timestamp": 1649281583096
 }'
 ```

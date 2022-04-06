@@ -23,5 +23,6 @@ export const UnauthorizedOwner: ErrorResponse = new ErrorResponse("ERR_005", "Un
 export const InvalidOwner: ErrorResponse = new ErrorResponse("ERR_006", "Invalid owner principal");
 export const InvalidSignature: ErrorResponse = new ErrorResponse("ERR_007", "Invalid signature");
 export const BuildConfigNotFound: ErrorResponse = new ErrorResponse("ERR_008", "Build Config Not Found");
+export const InvalidTimestamp: ErrorResponse = new ErrorResponse("ERR_009", "Expired or invalid timestamp");
 export const CanisterResponseError = (err: CanisterError): ErrorResponse =>
-  new ErrorResponse("ERR_009", "Canister error", err);
+  new ErrorResponse("ERR_010", "Canister error", err);

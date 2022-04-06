@@ -1,3 +1,4 @@
+import {Principal} from "@dfinity/principal";
 import {
   ValidationArguments,
   ValidatorConstraint,
@@ -5,8 +6,8 @@ import {
   isEmpty,
   registerDecorator
 } from "class-validator";
+
 import {BuildConfigRequest} from "./model";
-import {Principal} from "@dfinity/principal";
 
 @ValidatorConstraint({name: "isValidUrlFormat", async: false})
 export class IsValidUrlFormat implements ValidatorConstraintInterface {

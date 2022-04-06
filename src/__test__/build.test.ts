@@ -1,9 +1,10 @@
 import "./__test_data__/env";
-import {badData, goodData} from "./__test_data__/buildConfigRequest";
-import {getAPIEvent} from "./__test_utils__/utils";
 import test from "ava";
 
-const {handler} = await import("../handlers/saveBuildConfig");
+import {badData, goodData} from "./__test_data__/buildConfigRequest";
+import {getAPIEvent} from "./__test_utils__/utils";
+
+const {handler} = await import("../handlers/build");
 
 test("Failed with bad data", async t => {
   const results = await Promise.all(badData.map(data => handler(getAPIEvent(data))));

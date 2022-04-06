@@ -6,8 +6,13 @@ export const commitHash = "b2d85d4fc583289261227922f7dd6b3cc3ab4360";
 export const rustVersion = "1.57.0";
 export const dfxVersion = "0.8.4";
 export const optimizeCount = 1;
-export const publicKey = "4c9c47e160e80edfe7ac9b05f25eb30502c03be6dce94230318a523683ce48f0";
+// for testing only
+export const privateKey =
+  "059a4b9c02ec96401aa6cf3ecb21c0c4a6937b0dac066fd30f6dc42382223f1f" +
+  "d229ec193145a1ffa082e7ed78059956eba700bca75dbe4bc4610a4399439b30";
+export const publicKey = privateKey.slice(64, 129);
 export const signature =
-  "8e4975269ba82451b4b03e7546e9997d17d4bc6c90506061afbbe285ca025c2a" +
-  "083eacf253cf5299394236e1a98e5b9cdf71f7a87f0391bd95b836f0ae6cd70a";
-export const ownerId = "prczd-2ozn3-zvq6j-vnp35-wjqnk-g2fdx-xcvvu-7i5ty-3pa53-scizs-eae";
+  "3963cd8c9fb2fe3da30cedf02fcd4635dbc9aedafd96ebcc8bbfb2aecb1efe36" +
+  "11d5dadc0a8c5b2ec3e729ef777f846a96ae70c65d11ab6644a38daa6aa1f200";
+export const ownerId = "v4ehh-6sqi7-irvn2-s43ef-enl26-h7vtu-kymgf-ikejl-k7mdv-wypuo-kqe";
+export const timestamp = 1649274029457;

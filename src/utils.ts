@@ -1,22 +1,25 @@
+import {Certificate, HttpAgent} from "@dfinity/agent";
+import {Ed25519PublicKey, Secp256k1PublicKey} from "@dfinity/identity";
+import {Principal} from "@dfinity/principal";
+import {Octokit} from "@octokit/core";
+import {Decoder} from "cbor";
+import {ClassType, transformAndValidate} from "class-transformer-validator";
+import fetch from "isomorphic-fetch";
+import {sha256} from "js-sha256";
+import secp256k1 from "secp256k1";
+import tweetnacl from "tweetnacl";
+
 import {
   BadInputRequest,
   GettingCanisterInfoFailed,
   InvalidOwner,
   InvalidRepoPermission,
   InvalidSignature,
+  InvalidTimestamp,
   UnauthorizedOwner,
   ValidateRepoFail
 } from "./error";
-import {Certificate, HttpAgent} from "@dfinity/agent";
-import {ClassType, transformAndValidate} from "class-transformer-validator";
-import {Ed25519PublicKey, Secp256k1PublicKey} from "@dfinity/identity";
-import {Decoder} from "cbor";
-import {Octokit} from "@octokit/core";
-import {Principal} from "@dfinity/principal";
-import fetch from "isomorphic-fetch";
-import secp256k1 from "secp256k1";
-import {sha256} from "js-sha256";
-import tweetnacl from "tweetnacl";
+import {getTime} from "./timeUtils";
 
 export const validateRepo = async (url: string, token: string) => {
   const urlSplit = url.split("/");
@@ -72,8 +75,8 @@ export const validateCanister = async (canisterId: string, ownerId: string) => {
   }
 };
 
-const validateSecp256k1Signature = (canisterId: string, signature: string, publicKey: string): boolean => {
-  const challenge = Buffer.from(canisterId, "utf8");
+const validateSecp256k1Signature = (timestamp: number, signature: string, publicKey: string): boolean => {
+  const challenge = Buffer.from(timestamp.toString(), "utf8");
   const hash = sha256.create();
   hash.update(challenge);
   try {
@@ -87,10 +90,10 @@ const validateSecp256k1Signature = (canisterId: string, signature: string, publi
   }
 };
 
-const validateEd25519Signature = (canisterId: string, signature: string, publicKey: string): boolean => {
+const validateEd25519Signature = (timestamp: number, signature: string, publicKey: string): boolean => {
   try {
     return tweetnacl.sign.detached.verify(
-      Buffer.from(canisterId, "utf8"),
+      Buffer.from(timestamp.toString(), "utf8"),
       Buffer.from(signature, "hex"),
       Buffer.from(publicKey, "hex")
     );
@@ -99,9 +102,9 @@ const validateEd25519Signature = (canisterId: string, signature: string, publicK
   }
 };
 
-export const validateSignature = (canisterId: string, signature: string, publicKey: string) => {
-  const validSecp256k1Signature = validateSecp256k1Signature(canisterId, signature, publicKey);
-  const validEd25519Signature = validateEd25519Signature(canisterId, signature, publicKey);
+export const validateSignature = (timestamp: number, signature: string, publicKey: string) => {
+  const validSecp256k1Signature = validateSecp256k1Signature(timestamp, signature, publicKey);
+  const validEd25519Signature = validateEd25519Signature(timestamp, signature, publicKey);
   if (!validSecp256k1Signature && !validEd25519Signature) {
     throw InvalidSignature;
   }
@@ -127,5 +130,14 @@ export const transformAndValidateData = async <T extends object>(
     return (await transformAndValidate(classType, event)) as T;
   } catch (error) {
     throw BadInputRequest(error);
+  }
+};
+
+export const validateTimestamp = (timestamp: number) => {
+  const millisecondsDifferent = getTime() - timestamp;
+
+  // need to be less than 5 minutes
+  if (millisecondsDifferent > 300000 || millisecondsDifferent < 0) {
+    throw InvalidTimestamp;
   }
 };

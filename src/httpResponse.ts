@@ -1,4 +1,5 @@
 import {APIGatewayProxyEvent, APIGatewayProxyResultV2} from "aws-lambda";
+
 import {ErrorResponse, UnexpectedError} from "./error";
 
 const response = (statusCode: number, body?: unknown): APIGatewayProxyResultV2 => ({

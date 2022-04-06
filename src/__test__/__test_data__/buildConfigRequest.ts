@@ -1,3 +1,4 @@
+import {BuildConfigRequest} from "../../model";
 import {
   canisterId,
   canisterName,
@@ -9,9 +10,9 @@ import {
   repoAccessToken,
   repoUrl,
   rustVersion,
-  signature
+  signature,
+  timestamp
 } from "./dump";
-import {BuildConfigRequest} from "../../model";
 
 const body = (body: BuildConfigRequest): string =>
   JSON.stringify({
@@ -25,7 +26,8 @@ const body = (body: BuildConfigRequest): string =>
     optimizeCount: body.optimizeCount,
     publicKey: body.publicKey,
     signature: body.signature,
-    ownerId: body.ownerId
+    ownerId: body.ownerId,
+    timestamp: body.timestamp
   });
 
 const goodData1 = body({
@@ -39,7 +41,8 @@ const goodData1 = body({
   optimizeCount,
   publicKey,
   signature,
-  ownerId
+  ownerId,
+  timestamp
 });
 const goodData2 = body({
   canisterId,
@@ -52,7 +55,8 @@ const goodData2 = body({
   optimizeCount: 0,
   publicKey,
   signature,
-  ownerId
+  ownerId,
+  timestamp
 });
 const goodData3 = body({
   canisterId,
@@ -60,11 +64,13 @@ const goodData3 = body({
   repoUrl,
   repoAccessToken,
   commitHash,
+  rustVersion: "",
   dfxVersion,
   optimizeCount: 0,
   publicKey,
   signature,
-  ownerId
+  ownerId,
+  timestamp
 });
 export const goodData = [goodData1, goodData2, goodData3];
 
@@ -228,12 +234,39 @@ const badData21 = body({
   repoAccessToken,
   repoUrl,
   commitHash,
-  rustVersion: "",
+  rustVersion,
   dfxVersion,
   optimizeCount,
   publicKey,
   ownerId,
   signature: "bad signature"
+});
+const badData22 = body({
+  canisterId,
+  canisterName,
+  repoAccessToken,
+  repoUrl,
+  commitHash,
+  rustVersion,
+  dfxVersion,
+  optimizeCount,
+  publicKey,
+  ownerId,
+  signature
+});
+const badData23 = body({
+  canisterId,
+  canisterName,
+  repoAccessToken,
+  repoUrl,
+  commitHash,
+  rustVersion,
+  dfxVersion,
+  optimizeCount,
+  publicKey,
+  ownerId,
+  signature,
+  timestamp: 1649274029457 + 300001
 });
 export const badData = [
   badData1,
@@ -256,5 +289,7 @@ export const badData = [
   badData18,
   badData19,
   badData20,
-  badData21
+  badData21,
+  badData22,
+  badData23
 ];

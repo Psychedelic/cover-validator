@@ -18,7 +18,8 @@ Cover validator is a set of AWS lambda functions that help validate user request
   - The caller really owned the provided `ownerId`?
 - How to get `signature` and `publicKey`:
   - You can use [Cover SDK](https://github.com/Psychedelic/cover-sdk) to call the validator APIs and the SDK will take care of the `signature`, `publicKey` part for you, at the same time provides methods to get them yourself.
-  - Other ways to get can be found here: [Secp256k1](https://github.com/dfinity/keysmith) or [Ed25519](https://github.com/Psychedelic/dfx-key)
+  - Example extract identity from PEM using [Cover SDK](https://github.com/Psychedelic/dfx-key/blob/main/cover-sdk.js)
+  - Other ways to get can be found here: [Secp256k1](https://github.com/dfinity/keysmith) or [Ed25519](https://github.com/Psychedelic/dfx-key/blob/main/cover-sdk.js)
 - Cover validator and builder will update the build status for you to follow. You can only re-build your canister when the Cover builder finishes its job and updates the status to either Error or Success. If the Cover builder failed to update build status, you’ll have to wait **5 minutes** before rebuilding your canister. So make sure to fill your inputs correctly.
 
 ### Save a build config

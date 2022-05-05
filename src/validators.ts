@@ -24,7 +24,7 @@ export class IsValidUrlFormat implements ValidatorConstraintInterface {
 @ValidatorConstraint({name: "isValidVersionFormat", async: false})
 export class IsValidVersionFormat implements ValidatorConstraintInterface {
   validate(value?: string) {
-    const versionPattern = /^[0-9]+.[0-9]+.[0-9]+$/;
+    const versionPattern = /^[0-9]+\.[0-9]+\.[0-9]+$/;
     return !value || versionPattern.test(value);
   }
 

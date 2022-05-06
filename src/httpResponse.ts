@@ -5,7 +5,10 @@ import {ErrorResponse, UnexpectedError} from "./error";
 const response = (statusCode: number, body?: unknown): APIGatewayProxyResultV2 => ({
   statusCode,
   headers: {
-    "Content-Type": "application/json"
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
   },
   body: JSON.stringify(body)
 });

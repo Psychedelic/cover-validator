@@ -4,6 +4,10 @@ Description: Cover Validator
 Globals:
   Api:
     OpenApiVersion: 3.0.1
+    Cors:
+      AllowMethods: "'GET,POST,OPTIONS'"
+      AllowHeaders: "'Content-Type'"
+      AllowOrigin: "'*'"
 
   Function:
     Runtime: nodejs14.x

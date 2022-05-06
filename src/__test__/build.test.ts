@@ -11,7 +11,10 @@ test("Failed with bad data", async t => {
   results.forEach(result => {
     t.like(result, {
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
       },
       statusCode: 400
     });
@@ -24,7 +27,10 @@ test("Success", async t => {
     t.deepEqual(result, {
       body: undefined,
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
       },
       statusCode: 200
     });

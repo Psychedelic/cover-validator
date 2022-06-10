@@ -13,7 +13,6 @@ import {
   BadInputRequest,
   GettingCanisterInfoFailed,
   InvalidOwner,
-  InvalidRepoPermission,
   InvalidSignature,
   InvalidTimestamp,
   UnauthorizedOwner,
@@ -38,11 +37,6 @@ export const validateRepo = async (url: string, token: string): Promise<string> 
   } catch (error) {
     console.error("Validate repo fail: ", error);
     throw ValidateRepoFail;
-  }
-
-  // Owner has triage permission by default
-  if (!res.data.permissions?.triage) {
-    throw InvalidRepoPermission;
   }
 
   return res.data.visibility as string;

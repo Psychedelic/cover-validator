@@ -29,7 +29,7 @@ Cover validator is a set of AWS lambda functions that help validate user request
   - `canisterId` (string): ID of the canister you want to build
   - `canisterName` (string): name of the canister
   - `repoUrl` (string): github repo of the canister in format **{server}/{repo}**
-  - `repoAccessToken` (string): Personal Access Token of a github account that is an **OWNER** or has **TRIAGE** permission to the canister repo. Leave it empty if your repo is public [How to create Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
+  - `repoAccessToken` (string): Personal Access Token of a github account that has `READ` permission. Leave it empty if your repo is public [How to create Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
   - `commitHash` (hex string): the commit hash that gets built
   - `rustVersion` (string): Leave it empty if you don’t use Rust, must be specified if you want to optimize your wasm.
   - `dfxVersion` (string): Dfx version to build the wasm
@@ -67,7 +67,7 @@ https://h969vfa2pa.execute-api.us-east-1.amazonaws.com/production/save-build-con
   - `canisterId` (string): ID of the canister you want to build
   - `canisterName` (string): name of the canister
   - `repoUrl` (string): github repo of the canister in format **{server}/{repo}**
-  - `repoAccessToken` (string): Personal Access Token of a github account that is an **OWNER** or has **TRIAGE** permission to the canister repo. Leave it empty if your repo is public [How to create Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
+  - `repoAccessToken` (string): Personal Access Token of a github account that has `READ` permission. Leave it empty if your repo is public [How to create Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
   - `commitHash` (hex string): the commit hash that gets built
   - `rustVersion` (string): Leave it empty if you don’t use Rust, must be specified if you want to optimize your wasm.
   - `dfxVersion` (string): Dfx version to build the wasm
@@ -104,7 +104,7 @@ https://h969vfa2pa.execute-api.us-east-1.amazonaws.com/production/build -d \
 - Required inputs:
   - `canisterId` (string): ID of the canister you want to build
   - `publicKey` (hex string): public key of `ownerId`
-  - `repoAccessToken` (string): Personal Access Token of a github account that is an **OWNER** or has **TRIAGE** permission to the canister repo. Leave it empty if your repo is public [How to create Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
+  - `repoAccessToken` (string): Personal Access Token of a github account that has `READ` permission. Leave it empty if your repo is public [How to create Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
   - `signature` is signed with the `timestamp` being the message and will be expired after 5 minutes.
   - `ownerId` (hex string): the controller of the canister
   - `timestamp`: the current time in milliseconds since the UNIX epoch, details [here](https://currentmillis.com/)

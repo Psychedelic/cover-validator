@@ -61,7 +61,7 @@ const buildWithConfig = async (event: APIGatewayProxyEvent): Promise<void> => {
     owner: "Psychedelic",
     repo: "cover-builder",
     workflow_id: "cover_builder.yml",
-    ref: "main",
+    ref: config.builderBranch,
     inputs: {
       owner_id: buildConfig[0].owner_id.toText(),
       canister_id: buildConfig[0].canister_id.toText(),

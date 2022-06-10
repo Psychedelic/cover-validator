@@ -52,7 +52,7 @@ const build = async (event: APIGatewayProxyEvent): Promise<void> => {
     owner: "Psychedelic",
     repo: "cover-builder",
     workflow_id: "cover_builder.yml",
-    ref: "main",
+    ref: config.builderBranch,
     inputs: {
       owner_id: req.ownerId as string,
       canister_id: req.canisterId as string,

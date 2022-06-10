@@ -7,6 +7,7 @@ interface Config {
   nodeEnv: string;
   identity: Ed25519KeyIdentity;
   coverGithubToken: string;
+  builderBranch: string;
 }
 
 interface SecretData {
@@ -21,6 +22,8 @@ if (!coverCanisterId) {
 }
 
 const nodeEnv = process.env.NODE_ENV || "local";
+
+const builderBranch = nodeEnv === "production" ? "main" : "develop";
 
 const icHost = nodeEnv === "local" ? "http://host.docker.internal:8000" : "https://ic0.app";
 
@@ -42,6 +45,13 @@ if (!secretData.coverValidatorPrivateKey) {
 
 const identity = Ed25519KeyIdentity.fromSecretKey(Buffer.from(secretData.coverValidatorPrivateKey, "hex"));
 
-const config: Config = {coverCanisterId, icHost, nodeEnv, identity, coverGithubToken: secretData.coverGithubToken};
+const config: Config = {
+  coverCanisterId,
+  icHost,
+  nodeEnv,
+  identity,
+  coverGithubToken: secretData.coverGithubToken,
+  builderBranch
+};
 
 export {config};

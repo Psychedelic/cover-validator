@@ -36,7 +36,7 @@ const buildWithConfig = async (event: APIGatewayProxyEvent): Promise<void> => {
     throw BuildConfigNotFound;
   }
 
-  await validateRepo(buildConfig[0].repo_url, req.repoAccessToken as string);
+  const repoVisibility = await validateRepo(buildConfig[0].repo_url, req.repoAccessToken as string);
 
   const result = await coverActor.registerVerification({
     owner_id: buildConfig[0].owner_id,
@@ -67,7 +67,7 @@ const buildWithConfig = async (event: APIGatewayProxyEvent): Promise<void> => {
       canister_id: buildConfig[0].canister_id.toText(),
       canister_name: buildConfig[0].canister_name,
       repo_url: buildConfig[0].repo_url,
-      repo_access_token: req.repoAccessToken as string,
+      repo_access_token: repoVisibility === "public" ? "" : (req.repoAccessToken as string),
       commit_hash: buildConfig[0].commit_hash,
       rust_version: buildConfig[0].rust_version[0] || "",
       dfx_version: buildConfig[0].dfx_version,

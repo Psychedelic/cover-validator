@@ -27,7 +27,7 @@ const build = async (event: APIGatewayProxyEvent): Promise<void> => {
 
   await validateCanister(req.canisterId as string, req.ownerId as string);
 
-  await validateRepo(req.repoUrl as string, req.repoAccessToken as string);
+  const repoVisibility = await validateRepo(req.repoUrl as string, req.repoAccessToken as string);
 
   const result = await coverActor.registerVerification({
     owner_id: Principal.fromText(req.ownerId as string),
@@ -58,7 +58,7 @@ const build = async (event: APIGatewayProxyEvent): Promise<void> => {
       canister_id: req.canisterId as string,
       canister_name: req.canisterName as string,
       repo_url: req.repoUrl as string,
-      repo_access_token: req.repoAccessToken as string,
+      repo_access_token: repoVisibility === "public" ? "" : (req.repoAccessToken as string),
       commit_hash: req.commitHash as string,
       rust_version: req.rustVersion as string,
       dfx_version: req.dfxVersion as string,

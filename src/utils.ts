@@ -21,7 +21,8 @@ import {
 } from "./error";
 import {getTime} from "./timeUtils";
 
-export const validateRepo = async (url: string, token: string) => {
+// Validate and return repo visibility
+export const validateRepo = async (url: string, token: string): Promise<string> => {
   const urlSplit = url.split("/");
 
   const octokit = new Octokit({
@@ -39,9 +40,12 @@ export const validateRepo = async (url: string, token: string) => {
     throw ValidateRepoFail;
   }
 
+  // Owner has triage permission by default
   if (!res.data.permissions?.triage) {
     throw InvalidRepoPermission;
   }
+
+  return res.data.visibility as string;
 };
 
 export const validateCanister = async (canisterId: string, ownerId: string) => {
@@ -136,7 +140,7 @@ export const transformAndValidateData = async <T extends object>(
 export const validateTimestamp = (timestamp: number) => {
   const millisecondsDifferent = getTime() - timestamp;
 
-  // need to be less than 5 minutes
+  // Need to be less than 5 minutes
   if (millisecondsDifferent > 300000 || millisecondsDifferent < 0) {
     throw InvalidTimestamp;
   }

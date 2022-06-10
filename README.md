@@ -29,9 +29,9 @@ Cover validator is a set of AWS lambda functions that help validate user request
   - `canisterId` (string): ID of the canister you want to build
   - `canisterName` (string): name of the canister
   - `repoUrl` (string): github repo of the canister in format **{server}/{repo}**
-  - `repoAccessToken` (string): Personal Access Token of a github account that is an **OWNER** or has **TRIAGE** permission to the canister repo. [How to create Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
+  - `repoAccessToken` (string): Personal Access Token of a github account that is an **OWNER** or has **TRIAGE** permission to the canister repo. Leave it empty if your repo is public [How to create Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
   - `commitHash` (hex string): the commit hash that gets built
-  - `rustVersion` (string): Rust version to build the wasm, optional if you don’t use ic-cdk-optimizer, must be specified if you want to optimize your wasm.
+  - `rustVersion` (string): Leave it empty if you don’t use Rust, must be specified if you want to optimize your wasm.
   - `dfxVersion` (string): Dfx version to build the wasm
   - `optimizeCount` (number): The times you want to optimize your wasm. 1 is recommended (after the first time, the wasm isn’t going to be significantly smaller anymore). If `optimizeCount` > 0, `rustVersion` must be specified.
   - `publicKey` (hex string): public key of `ownerId`
@@ -67,9 +67,9 @@ https://h969vfa2pa.execute-api.us-east-1.amazonaws.com/production/save-build-con
   - `canisterId` (string): ID of the canister you want to build
   - `canisterName` (string): name of the canister
   - `repoUrl` (string): github repo of the canister in format **{server}/{repo}**
-  - `repoAccessToken` (string): Personal Access Token of a github account that is an **OWNER** or has **TRIAGE** permission to the canister repo. [How to create Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
+  - `repoAccessToken` (string): Personal Access Token of a github account that is an **OWNER** or has **TRIAGE** permission to the canister repo. Leave it empty if your repo is public [How to create Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
   - `commitHash` (hex string): the commit hash that gets built
-  - `rustVersion` (string): Rust version to build the wasm, optional if you don’t use ic-cdk-optimizer, must be specified if you want to optimize your wasm.
+  - `rustVersion` (string): Leave it empty if you don’t use Rust, must be specified if you want to optimize your wasm.
   - `dfxVersion` (string): Dfx version to build the wasm
   - `optimizeCount` (number): The times you want to optimize your wasm. 1 is recommended (after the first time, the wasm isn’t going to be significantly smaller anymore). If `optimizeCount` > 0, `rustVersion` must be specified.
   - `publicKey` (hex string): public key of `ownerId`
@@ -84,13 +84,13 @@ curl -X POST \
 https://h969vfa2pa.execute-api.us-east-1.amazonaws.com/production/build -d \
 '{
     "canisterId": "xyzoo-abcd-aaaai-abgca-cai",
-    "canisterName": "cover",
-    "repoUrl": "psychedelic/cover",
+    "canisterName": "motoko_canister",
+    "repoUrl": "example/motoko_canister",
     "repoAccessToken": "ghp_1VxFGDfsdfasdfWER34SADF",
     "commitHash": "b2724523128eb8d5bd823961de31a2f10bd48b94",
-    "rustVersion": "1.58.1",
+    "rustVersion": "",
     "dfxVersion": "0.8.4",
-    "optimizeCount": 1,
+    "optimizeCount": 0,
     "publicKey": "4a9048818a978dbd2113e2dacfc370b699c700e8786ccc5980c31839a9af7c89",
     "signature": "6dda0e5c6a2a5716df8afe26418680675e64c6e8f3c30bab74d46bb33fe1ed621c179a7c8af2f554cbe213ddc89244f00c6cca95d43078aa24ac474075167164",
     "ownerId": "12345-46f74-s45g5-54321-c5vyq-4zv7t-54321-omikc-54321-olpgg-rqe",
@@ -104,7 +104,7 @@ https://h969vfa2pa.execute-api.us-east-1.amazonaws.com/production/build -d \
 - Required inputs:
   - `canisterId` (string): ID of the canister you want to build
   - `publicKey` (hex string): public key of `ownerId`
-  - `repoAccessToken` (string): Personal Access Token of a github account that is an **OWNER** or has **TRIAGE** permission to the canister repo. [How to create Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
+  - `repoAccessToken` (string): Personal Access Token of a github account that is an **OWNER** or has **TRIAGE** permission to the canister repo. Leave it empty if your repo is public [How to create Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
   - `signature` is signed with the `timestamp` being the message and will be expired after 5 minutes.
   - `ownerId` (hex string): the controller of the canister
   - `timestamp`: the current time in milliseconds since the UNIX epoch, details [here](https://currentmillis.com/)
@@ -119,7 +119,7 @@ https://h969vfa2pa.execute-api.us-east-1.amazonaws.com/production/build-with-con
     "ownerId": "12345-46f74-s45g5-54321-c5vyq-4zv7t-54321-omikc-54321-olpgg-rqe",
     "publicKey": "4a9048818a978dbd2113e2dacfc370b699c700e8786ccc5980c31839a9af7c89",
     "signature": "6dda0e5c6a2a5716df8afe26418680675e64c6e8f3c30bab74d46bb33fe1ed621c179a7c8af2f554cbe213ddc89244f00c6cca95d43078aa24ac474075167164",
-    "repoAccessToken": "ghp_1VxFGDfsdfasdfWER34SADF",
+    "repoAccessToken": "",
     "timestamp": 1649281583096
 }'
 ```

@@ -23,7 +23,6 @@ export class BuildConfigRequest {
   @Validate(IsValidUrlFormat)
   repoUrl?: string;
 
-  @IsNotEmpty()
   @IsString()
   repoAccessToken?: string;
 
@@ -68,7 +67,6 @@ export class BuildConfigRequest {
 }
 
 export class BuildWithConfigRequest {
-  @IsNotEmpty()
   @IsString()
   repoAccessToken?: string;
 

@@ -1,24 +1,24 @@
-import {APIGatewayProxyEvent} from "aws-lambda";
+import {APIGatewayProxyEvent} from 'aws-lambda';
 
 const getAPIEvent = (body: string): APIGatewayProxyEvent => ({
   body,
   headers: {},
   multiValueHeaders: {},
-  httpMethod: "",
+  httpMethod: '',
   isBase64Encoded: false,
-  path: "",
+  path: '',
   pathParameters: {},
   queryStringParameters: {},
   multiValueQueryStringParameters: {},
   stageVariables: {},
   requestContext: {
-    accountId: "",
-    apiId: "",
+    accountId: '',
+    apiId: '',
     authorizer: {},
-    protocol: "",
-    httpMethod: "",
+    protocol: '',
+    httpMethod: '',
     identity: {
-      sourceIp: "",
+      sourceIp: '',
       accessKey: null,
       accountId: null,
       apiKey: null,
@@ -34,14 +34,14 @@ const getAPIEvent = (body: string): APIGatewayProxyEvent => ({
       userAgent: null,
       userArn: null
     },
-    path: "",
-    stage: "",
-    requestId: "",
+    path: '',
+    stage: '',
+    requestId: '',
     requestTimeEpoch: 0,
-    resourceId: "",
-    resourcePath: ""
+    resourceId: '',
+    resourcePath: ''
   },
-  resource: ""
+  resource: ''
 });
 
 export {getAPIEvent};

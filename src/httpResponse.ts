@@ -1,14 +1,14 @@
-import {APIGatewayProxyEvent, APIGatewayProxyResultV2} from "aws-lambda";
+import {APIGatewayProxyEvent, APIGatewayProxyResultV2} from 'aws-lambda';
 
-import {ErrorResponse, UnexpectedError} from "./error";
+import {ErrorResponse, UnexpectedError} from './error';
 
 const response = (statusCode: number, body?: unknown): APIGatewayProxyResultV2 => ({
   statusCode,
   headers: {
-    "Content-Type": "application/json",
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
   },
   body: JSON.stringify(body)
 });
@@ -25,7 +25,7 @@ export const httpResponse =
       if (error instanceof ErrorResponse) {
         return response(400, error);
       }
-      console.error("Unexpected Error:", error);
+      console.error('Unexpected Error:', error);
       return response(500, UnexpectedError);
     }
   };

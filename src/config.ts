@@ -1,5 +1,5 @@
-import {GetSecretValueCommand, SecretsManagerClient} from "@aws-sdk/client-secrets-manager";
-import {Ed25519KeyIdentity} from "@dfinity/identity";
+import {GetSecretValueCommand, SecretsManagerClient} from '@aws-sdk/client-secrets-manager';
+import {Ed25519KeyIdentity} from '@dfinity/identity';
 
 interface Config {
   coverCanisterId: string;
@@ -21,13 +21,13 @@ if (!coverCanisterId) {
   throw new Error("Couldn't load cover canister Id");
 }
 
-const nodeEnv = process.env.NODE_ENV || "local";
+const nodeEnv = process.env.NODE_ENV || 'local';
 
-const builderBranch = nodeEnv === "production" ? "main" : "develop";
+const builderBranch = nodeEnv === 'production' ? 'main' : 'develop';
 
-const icHost = nodeEnv === "local" ? "http://host.docker.internal:8000" : "https://ic0.app";
+const icHost = nodeEnv === 'local' ? 'http://host.docker.internal:8000' : 'https://ic0.app';
 
-const client = new SecretsManagerClient({region: "us-east-1"});
+const client = new SecretsManagerClient({region: 'us-east-1'});
 
 const command = new GetSecretValueCommand({SecretId: `cover-${nodeEnv}`});
 
@@ -43,7 +43,7 @@ if (!secretData.coverValidatorPrivateKey) {
   throw new Error("Couldn't load cover validator private key");
 }
 
-const identity = Ed25519KeyIdentity.fromSecretKey(Buffer.from(secretData.coverValidatorPrivateKey, "hex"));
+const identity = Ed25519KeyIdentity.fromSecretKey(Buffer.from(secretData.coverValidatorPrivateKey, 'hex'));
 
 const config: Config = {
   coverCanisterId,

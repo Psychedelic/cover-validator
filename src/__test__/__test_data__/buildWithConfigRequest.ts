@@ -1,14 +1,14 @@
-import {BuildWithConfigRequest} from "../../model";
-import {canisterId, ownerId, publicKey, repoAccessToken, signature, timestamp} from "./dump";
+import {BuildWithConfigRequest} from '../../model';
+import {canisterId, ownerId, publicKey, repoAccessToken, signature, timestamp} from './dump';
 
-const body = (body: BuildWithConfigRequest): string =>
+const body = (data: BuildWithConfigRequest): string =>
   JSON.stringify({
-    canisterId: body.canisterId,
-    ownerId: body.ownerId,
-    repoAccessToken: body.repoAccessToken,
-    publicKey: body.publicKey,
-    signature: body.signature,
-    timestamp: body.timestamp
+    canisterId: data.canisterId,
+    ownerId: data.ownerId,
+    repoAccessToken: data.repoAccessToken,
+    publicKey: data.publicKey,
+    signature: data.signature,
+    timestamp: data.timestamp
   });
 
 export const goodData = body({
@@ -22,14 +22,14 @@ export const goodData = body({
 
 const badData1 = body({});
 const badData2 = body({
-  canisterId: "bad canister"
+  canisterId: 'bad canister'
 });
 const badData3 = body({
   canisterId
 });
 const badData4 = body({
   canisterId,
-  ownerId: "bad owner principal"
+  ownerId: 'bad owner principal'
 });
 const badData5 = body({
   canisterId,
@@ -40,7 +40,7 @@ const badData6 = body({
   canisterId,
   ownerId,
   repoAccessToken,
-  publicKey: "bad public key"
+  publicKey: 'bad public key'
 });
 const badData7 = body({
   canisterId,
@@ -53,7 +53,7 @@ const badData8 = body({
   ownerId,
   repoAccessToken,
   publicKey,
-  signature: "bad signature"
+  signature: 'bad signature'
 });
 const badData9 = body({
   canisterId,

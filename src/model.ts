@@ -1,4 +1,5 @@
-import {IsInt, IsNotEmpty, IsString, Max, Min, Validate} from "class-validator";
+/* eslint-disable new-cap, max-classes-per-file */
+import {IsInt, IsNotEmpty, IsString, Max, Min, Validate} from 'class-validator';
 
 import {
   IsHexString,
@@ -6,7 +7,7 @@ import {
   IsValidPrincipalFormat,
   IsValidUrlFormat,
   IsValidVersionFormat
-} from "./validators";
+} from './validators';
 
 export class BuildConfigRequest {
   @IsNotEmpty()

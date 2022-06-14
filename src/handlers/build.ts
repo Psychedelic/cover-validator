@@ -1,12 +1,12 @@
-import {Principal} from "@dfinity/principal";
-import {Octokit} from "@octokit/core";
-import {APIGatewayProxyEvent} from "aws-lambda";
+import {Principal} from '@dfinity/principal';
+import {Octokit} from '@octokit/core';
+import {APIGatewayProxyEvent} from 'aws-lambda';
 
-import {coverActor} from "../actor/coverActor";
-import {config} from "../config";
-import {CanisterResponseError} from "../error";
-import {httpResponse} from "../httpResponse";
-import {BuildConfigRequest} from "../model";
+import {coverActor} from '../actor/coverActor';
+import {config} from '../config';
+import {throwCanisterResponseError} from '../error';
+import {httpResponse} from '../httpResponse';
+import {BuildConfigRequest} from '../model';
 import {
   transformAndValidateData,
   validateCanister,
@@ -14,7 +14,7 @@ import {
   validateRepo,
   validateSignature,
   validateTimestamp
-} from "../utils";
+} from '../utils';
 
 const build = async (event: APIGatewayProxyEvent): Promise<void> => {
   const req = await transformAndValidateData<BuildConfigRequest>(event.body as string, BuildConfigRequest);
@@ -40,25 +40,25 @@ const build = async (event: APIGatewayProxyEvent): Promise<void> => {
     rust_version: req.rustVersion ? [req.rustVersion] : []
   });
 
-  if ("Err" in result) {
-    throw CanisterResponseError(result.Err);
+  if ('Err' in result) {
+    throw throwCanisterResponseError(result.Err);
   }
 
   const octokit = new Octokit({
     auth: config.coverGithubToken
   });
 
-  await octokit.request("POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches", {
-    owner: "Psychedelic",
-    repo: "cover-builder",
-    workflow_id: "cover_builder.yml",
+  await octokit.request('POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches', {
+    owner: 'Psychedelic',
+    repo: 'cover-builder',
+    workflow_id: 'cover_builder.yml',
     ref: config.builderBranch,
     inputs: {
       owner_id: req.ownerId as string,
       canister_id: req.canisterId as string,
       canister_name: req.canisterName as string,
       repo_url: req.repoUrl as string,
-      repo_access_token: repoVisibility === "public" ? "" : (req.repoAccessToken as string),
+      repo_access_token: repoVisibility === 'public' ? '' : (req.repoAccessToken as string),
       commit_hash: req.commitHash as string,
       rust_version: req.rustVersion as string,
       dfx_version: req.dfxVersion as string,

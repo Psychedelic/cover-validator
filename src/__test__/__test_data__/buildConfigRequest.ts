@@ -3,6 +3,7 @@ import {
   canisterId,
   canisterName,
   commitHash,
+  delegateCanisterId,
   dfxVersion,
   optimizeCount,
   ownerId,
@@ -17,6 +18,7 @@ import {
 const body = (data: BuildConfigRequest): string =>
   JSON.stringify({
     canisterId: data.canisterId,
+    delegateCanisterId: data.delegateCanisterId,
     canisterName: data.canisterName,
     repoUrl: data.repoUrl,
     repoAccessToken: data.repoAccessToken,
@@ -32,6 +34,7 @@ const body = (data: BuildConfigRequest): string =>
 
 const goodData1 = body({
   canisterId,
+  delegateCanisterId,
   canisterName,
   repoUrl,
   repoAccessToken,
@@ -46,6 +49,7 @@ const goodData1 = body({
 });
 const goodData2 = body({
   canisterId,
+  delegateCanisterId,
   canisterName,
   repoUrl,
   repoAccessToken,
@@ -60,6 +64,7 @@ const goodData2 = body({
 });
 const goodData3 = body({
   canisterId,
+  delegateCanisterId,
   canisterName,
   repoUrl,
   repoAccessToken,
@@ -72,7 +77,52 @@ const goodData3 = body({
   ownerId,
   timestamp
 });
-export const goodData = [goodData1, goodData2, goodData3];
+const goodData4 = body({
+  canisterId,
+  delegateCanisterId: '',
+  canisterName,
+  repoUrl,
+  repoAccessToken,
+  commitHash,
+  rustVersion,
+  dfxVersion,
+  optimizeCount,
+  publicKey,
+  signature,
+  ownerId,
+  timestamp
+});
+const goodData5 = body({
+  canisterId,
+  delegateCanisterId: '',
+  canisterName,
+  repoUrl,
+  repoAccessToken,
+  commitHash,
+  rustVersion,
+  dfxVersion,
+  optimizeCount: 0,
+  publicKey,
+  signature,
+  ownerId,
+  timestamp
+});
+const goodData6 = body({
+  canisterId,
+  delegateCanisterId: '',
+  canisterName,
+  repoUrl,
+  repoAccessToken,
+  commitHash,
+  rustVersion: '',
+  dfxVersion,
+  optimizeCount: 0,
+  publicKey,
+  signature,
+  ownerId,
+  timestamp
+});
+export const goodData = [goodData1, goodData2, goodData3, goodData4, goodData5, goodData6];
 
 const badData1 = body({});
 const badData2 = body({
@@ -83,40 +133,48 @@ const badData3 = body({
 });
 const badData4 = body({
   canisterId,
-  canisterName
+  delegateCanisterId: 'bad delegateCanisterId'
 });
 const badData5 = body({
+  canisterId,
+  delegateCanisterId,
+});
+const badData6 = body({
+  canisterId,
+  canisterName
+});
+const badData7 = body({
   canisterId,
   canisterName,
   repoAccessToken
 });
-const badData6 = body({
+const badData8 = body({
   canisterId,
   canisterName,
   repoAccessToken,
   repoUrl: 'bad repo url'
 });
-const badData7 = body({
+const badData9 = body({
   canisterId,
   canisterName,
   repoAccessToken,
   repoUrl
 });
-const badData8 = body({
+const badData10 = body({
   canisterId,
   canisterName,
   repoAccessToken,
   repoUrl,
   commitHash: 'bad commit hash'
 });
-const badData9 = body({
+const badData11 = body({
   canisterId,
   canisterName,
   repoAccessToken,
   repoUrl,
   commitHash
 });
-const badData10 = body({
+const badData12 = body({
   canisterId,
   canisterName,
   repoAccessToken,
@@ -124,7 +182,7 @@ const badData10 = body({
   commitHash,
   rustVersion: 'bad rust version'
 });
-const badData11 = body({
+const badData13 = body({
   canisterId,
   canisterName,
   repoAccessToken,
@@ -132,7 +190,7 @@ const badData11 = body({
   commitHash,
   rustVersion
 });
-const badData12 = body({
+const badData14 = body({
   canisterId,
   canisterName,
   repoAccessToken,
@@ -141,7 +199,7 @@ const badData12 = body({
   rustVersion,
   dfxVersion: 'bad dfx version'
 });
-const badData13 = body({
+const badData15 = body({
   canisterId,
   canisterName,
   repoAccessToken,
@@ -150,7 +208,7 @@ const badData13 = body({
   rustVersion,
   dfxVersion
 });
-const badData14 = body({
+const badData16 = body({
   canisterId,
   canisterName,
   repoAccessToken,
@@ -160,7 +218,7 @@ const badData14 = body({
   dfxVersion,
   optimizeCount: -1
 });
-const badData15 = body({
+const badData17 = body({
   canisterId,
   canisterName,
   repoAccessToken,
@@ -170,7 +228,7 @@ const badData15 = body({
   dfxVersion,
   optimizeCount
 });
-const badData16 = body({
+const badData18 = body({
   canisterId,
   canisterName,
   repoAccessToken,
@@ -181,7 +239,7 @@ const badData16 = body({
   optimizeCount,
   publicKey: 'bad public key'
 });
-const badData17 = body({
+const badData19 = body({
   canisterId,
   canisterName,
   repoAccessToken,
@@ -192,7 +250,7 @@ const badData17 = body({
   optimizeCount,
   publicKey
 });
-const badData18 = body({
+const badData20 = body({
   canisterId,
   canisterName,
   repoAccessToken,
@@ -204,30 +262,6 @@ const badData18 = body({
   publicKey,
   ownerId: 'bad owner principal'
 });
-const badData19 = body({
-  canisterId,
-  canisterName,
-  repoAccessToken,
-  repoUrl,
-  commitHash,
-  rustVersion,
-  dfxVersion,
-  optimizeCount,
-  publicKey,
-  ownerId
-});
-const badData20 = body({
-  canisterId,
-  canisterName,
-  repoAccessToken,
-  repoUrl,
-  commitHash,
-  rustVersion: '',
-  dfxVersion,
-  optimizeCount,
-  publicKey,
-  ownerId
-});
 const badData21 = body({
   canisterId,
   canisterName,
@@ -238,8 +272,7 @@ const badData21 = body({
   dfxVersion,
   optimizeCount,
   publicKey,
-  ownerId,
-  signature: 'bad signature'
+  ownerId
 });
 const badData22 = body({
   canisterId,
@@ -247,12 +280,11 @@ const badData22 = body({
   repoAccessToken,
   repoUrl,
   commitHash,
-  rustVersion,
+  rustVersion: '',
   dfxVersion,
   optimizeCount,
   publicKey,
-  ownerId,
-  signature
+  ownerId
 });
 const badData23 = body({
   canisterId,
@@ -265,8 +297,34 @@ const badData23 = body({
   optimizeCount,
   publicKey,
   ownerId,
+  signature: 'bad signature'
+});
+const badData24 = body({
+  canisterId,
+  canisterName,
+  repoAccessToken,
+  repoUrl,
+  commitHash,
+  rustVersion,
+  dfxVersion,
+  optimizeCount,
+  publicKey,
+  ownerId,
+  signature
+});
+const badData25 = body({
+  canisterId,
+  canisterName,
+  repoAccessToken,
+  repoUrl,
+  commitHash,
+  rustVersion,
+  dfxVersion,
+  optimizeCount,
+  publicKey,
+  ownerId,
   signature,
-  timestamp: 1649274029457 + 300001
+  timestamp: 1649274029457 + 300000
 });
 export const badData = [
   badData1,
@@ -291,5 +349,7 @@ export const badData = [
   badData20,
   badData21,
   badData22,
-  badData23
+  badData23,
+  badData24,
+  badData25,
 ];

@@ -1,5 +1,5 @@
 /* eslint-disable new-cap, max-classes-per-file */
-import {IsInt, IsNotEmpty, IsString, Max, Min, Validate} from 'class-validator';
+import {IsInt, IsNotEmpty, IsString, Max, Min, Validate, ValidateIf} from 'class-validator';
 
 import {
   IsHexString,
@@ -14,6 +14,11 @@ export class BuildConfigRequest {
   @IsString()
   @Validate(IsValidPrincipalFormat)
   canisterId?: string;
+
+  @IsString()
+  @ValidateIf((req: BuildConfigRequest) => req.delegateCanisterId !== '')
+  @Validate(IsValidPrincipalFormat)
+  delegateCanisterId?: string;
 
   @IsNotEmpty()
   @IsString()

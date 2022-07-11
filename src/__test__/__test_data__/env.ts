@@ -7,6 +7,7 @@ import {
   canisterId,
   canisterName,
   commitHash,
+  delegateCanisterId,
   dfxVersion,
   optimizeCount,
   ownerId,
@@ -19,7 +20,7 @@ import {
 
 //  MOCK - cbor
 td.replace(Decoder, 'decodeFirstSync', () => ({
-  value: [Principal.fromText(ownerId).toUint8Array()]
+  value: [Principal.fromText(ownerId).toUint8Array(), Principal.fromText(delegateCanisterId).toUint8Array()]
 }));
 
 // MOCK - cover canister id
@@ -50,6 +51,7 @@ const {HttpAgent} = td.replace('@dfinity/agent', {
       getBuildConfigValidator: () => [
         {
           owner_id: Principal.fromText(ownerId),
+          delegate_canister_id: [Principal.fromText(delegateCanisterId)],
           canister_id: Principal.fromText(canisterId),
           canister_name: canisterName,
           repo_url: repoUrl,

@@ -25,8 +25,6 @@ const buildWithConfig = async (event: APIGatewayProxyEvent): Promise<void> => {
 
   validateSignature(req.timestamp as number, req.signature as string, req.publicKey as string);
 
-  await validateCanister(req.canisterId as string, req.ownerId as string);
-
   const buildConfig = await coverActor.getBuildConfigValidator({
     canister_id: Principal.fromText(req.canisterId as string),
     owner_id: Principal.fromText(req.ownerId as string)
@@ -34,6 +32,15 @@ const buildWithConfig = async (event: APIGatewayProxyEvent): Promise<void> => {
 
   if (!buildConfig.length) {
     throw BuildConfigNotFound;
+  }
+
+  if (buildConfig[0].delegate_canister_id.length) {
+    await Promise.all([
+      validateCanister(buildConfig[0].delegate_canister_id[0].toText(), buildConfig[0].owner_id.toText()),
+      validateCanister(buildConfig[0].canister_id.toText(), buildConfig[0].delegate_canister_id[0].toText())
+    ]);
+  } else {
+    validateCanister(buildConfig[0].canister_id.toText(), buildConfig[0].owner_id.toText());
   }
 
   const repoVisibility = await validateRepo(buildConfig[0].repo_url, req.repoAccessToken as string);

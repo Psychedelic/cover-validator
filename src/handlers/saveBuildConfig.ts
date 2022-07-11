@@ -22,7 +22,14 @@ const saveBuildConfig = async (event: APIGatewayProxyEvent): Promise<void> => {
 
   validateSignature(req.timestamp as number, req.signature as string, req.publicKey as string);
 
-  await validateCanister(req.canisterId as string, req.ownerId as string);
+  if (req.delegateCanisterId) {
+    await Promise.all([
+      validateCanister(req.delegateCanisterId as string, req.ownerId as string),
+      validateCanister(req.canisterId as string, req.delegateCanisterId as string)
+    ]);
+  } else {
+    await validateCanister(req.canisterId as string, req.ownerId as string);
+  }
 
   await validateRepo(req.repoUrl as string, req.repoAccessToken as string);
 

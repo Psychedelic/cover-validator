@@ -38,7 +38,7 @@ td.when(new SecretsManagerClient(td.matchers.anything())).thenReturn({
 });
 
 // MOCK - @dfinity agent
-const {HttpAgent, Certificate} = td.replace('@dfinity/agent', {
+const {HttpAgent} = td.replace('@dfinity/agent', {
   Actor: {
     createActor: () => ({
       registerVerification: () => ({
@@ -66,14 +66,14 @@ const {HttpAgent, Certificate} = td.replace('@dfinity/agent', {
   },
   HttpAgent: td.func(),
   SignIdentity: td.func(),
-  Certificate: td.func()
+  Certificate: {
+    create: () => ({
+      lookup: () => 'fakeLookup'
+    })
+  }
 });
 td.when(new HttpAgent(td.matchers.anything())).thenReturn({
   readState: () => 'fakeState'
-});
-td.when(new Certificate(td.matchers.anything(), td.matchers.anything())).thenReturn({
-  verify: () => 'fakeVerify',
-  lookup: () => 'fakeLookup'
 });
 
 // MOCK - @dfinity identity

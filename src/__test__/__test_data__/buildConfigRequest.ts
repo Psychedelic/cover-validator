@@ -137,7 +137,7 @@ const badData4 = body({
 });
 const badData5 = body({
   canisterId,
-  delegateCanisterId,
+  delegateCanisterId
 });
 const badData6 = body({
   canisterId,
@@ -351,5 +351,5 @@ export const badData = [
   badData22,
   badData23,
   badData24,
-  badData25,
+  badData25
 ];

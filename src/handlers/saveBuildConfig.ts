@@ -28,6 +28,7 @@ const saveBuildConfig = async (event: APIGatewayProxyEvent): Promise<void> => {
 
   await coverActor.saveBuildConfig({
     owner_id: Principal.fromText(req.ownerId as string),
+    delegate_canister_id: req.delegateCanisterId ? [Principal.fromText(req.delegateCanisterId as string)] : [],
     canister_id: Principal.fromText(req.canisterId as string),
     dfx_version: req.dfxVersion as string,
     optimize_count: req.optimizeCount as number,

@@ -36,17 +36,19 @@ const buildWithConfig = async (event: APIGatewayProxyEvent): Promise<void> => {
     throw BuildConfigNotFound;
   }
 
-  await validateRepo(buildConfig[0].repo_url, req.repoAccessToken as string);
+  const repoVisibility = await validateRepo(buildConfig[0].repo_url, req.repoAccessToken as string);
 
   const result = await coverActor.registerVerification({
     owner_id: buildConfig[0].owner_id,
+    delegate_canister_id: buildConfig[0].delegate_canister_id,
     canister_id: buildConfig[0].canister_id,
     dfx_version: buildConfig[0].dfx_version,
     optimize_count: buildConfig[0].optimize_count,
     canister_name: buildConfig[0].canister_name,
     commit_hash: buildConfig[0].commit_hash,
     repo_url: buildConfig[0].repo_url,
-    rust_version: buildConfig[0].rust_version
+    rust_version: buildConfig[0].rust_version,
+    repo_visibility: repoVisibility
   });
 
   if ('Err' in result) {
@@ -61,13 +63,13 @@ const buildWithConfig = async (event: APIGatewayProxyEvent): Promise<void> => {
     owner: 'Psychedelic',
     repo: 'cover-builder',
     workflow_id: 'cover_builder.yml',
-    ref: 'main',
+    ref: config.builderBranch,
     inputs: {
-      owner_id: buildConfig[0].owner_id.toText(),
+      owner_id: `${buildConfig[0].owner_id.toText()}|${buildConfig[0].delegate_canister_id}`,
       canister_id: buildConfig[0].canister_id.toText(),
       canister_name: buildConfig[0].canister_name,
       repo_url: buildConfig[0].repo_url,
-      repo_access_token: req.repoAccessToken as string,
+      repo_access_token: `${req.repoAccessToken}|${repoVisibility}`,
       commit_hash: buildConfig[0].commit_hash,
       rust_version: buildConfig[0].rust_version[0] || '',
       dfx_version: buildConfig[0].dfx_version,

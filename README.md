@@ -1,6 +1,6 @@
-![](https://docs.covercode.ooo/overview/imgs/mainn.png)
-
 # Cover Validator
+
+![logo](https://docs.covercode.ooo/overview/imgs/mainn.png)
 
 Cover validator is a set of AWS lambda functions that help validate user request’s inputs before getting forwarded to [Cover](https://covercode.ooo/) canister or Cover builder.
 
@@ -27,6 +27,7 @@ Cover validator is a set of AWS lambda functions that help validate user request
 - Save a build config to Cover canister to reuse later (login required)
 - Required inputs:
   - `canisterId` (string): ID of the canister you want to build
+  - `delegateCanisterId` (string): Leave it empty if you don't use it. The canister controller of the `canisterId`, useful when the controller is the cycle wallet canister or proxy canister.
   - `canisterName` (string): name of the canister
   - `repoUrl` (string): github repo of the canister in format **{server}/{repo}**
   - `repoAccessToken` (string): Personal Access Token of a github account that has `READ` permission. Leave it empty if your repo is public [How to create Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
@@ -36,7 +37,7 @@ Cover validator is a set of AWS lambda functions that help validate user request
   - `optimizeCount` (number): The times you want to optimize your wasm. 1 is recommended (after the first time, the wasm isn’t going to be significantly smaller anymore). If `optimizeCount` > 0, `rustVersion` must be specified.
   - `publicKey` (hex string): public key of `ownerId`
   - `signature` is signed with the `timestamp` being the message and will be expired after 5 minutes.
-  - `ownerId` (hex string): the controller of the canister
+  - `ownerId` (hex string): the controller of the `canisterId` or `delegateCanisterId`.
   - `timestamp`: the current time in milliseconds since the UNIX epoch, details [here](https://currentmillis.com/)
 - Example:
 
@@ -46,6 +47,7 @@ curl -X POST \
 https://h969vfa2pa.execute-api.us-east-1.amazonaws.com/production/save-build-config -d \
 '{
     "canisterId": "xyzoo-abcd-aaaai-abgca-cai",
+    "delegateCanisterId": "jklas-abcd-aaaai-abgca-cai",
     "canisterName": "cover",
     "repoUrl": "psychedelic/cover",
     "repoAccessToken": "ghp_1VxFGDfsdfasdfWER34SADF",
@@ -65,6 +67,7 @@ https://h969vfa2pa.execute-api.us-east-1.amazonaws.com/production/save-build-con
 - Build provided config without login or save the config to Cover canister (user has to re-enter all the fields everytime send a build request since the config hasn't been saved)
 - Required inputs:
   - `canisterId` (string): ID of the canister you want to build
+  - `delegateCanisterId` (string): Leave it empty if you don't use it. The canister controller of the `canisterId`, useful when the controller is the cycle wallet canister or proxy canister.
   - `canisterName` (string): name of the canister
   - `repoUrl` (string): github repo of the canister in format **{server}/{repo}**
   - `repoAccessToken` (string): Personal Access Token of a github account that has `READ` permission. Leave it empty if your repo is public [How to create Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
@@ -74,7 +77,7 @@ https://h969vfa2pa.execute-api.us-east-1.amazonaws.com/production/save-build-con
   - `optimizeCount` (number): The times you want to optimize your wasm. 1 is recommended (after the first time, the wasm isn’t going to be significantly smaller anymore). If `optimizeCount` > 0, `rustVersion` must be specified.
   - `publicKey` (hex string): public key of `ownerId`
   - `signature` is signed with the `timestamp` being the message and will be expired after 5 minutes.
-  - `ownerId` (hex string): the controller of the canister
+  - `ownerId` (hex string): the controller of the `canisterId` or `delegateCanisterId`.
   - `timestamp`: the current time in milliseconds since the UNIX epoch, details [here](https://currentmillis.com/)
 - Example:
 
@@ -84,6 +87,7 @@ curl -X POST \
 https://h969vfa2pa.execute-api.us-east-1.amazonaws.com/production/build -d \
 '{
     "canisterId": "xyzoo-abcd-aaaai-abgca-cai",
+    "delegateCanisterId": "jklas-abcd-aaaai-abgca-cai",
     "canisterName": "motoko_canister",
     "repoUrl": "example/motoko_canister",
     "repoAccessToken": "ghp_1VxFGDfsdfasdfWER34SADF",

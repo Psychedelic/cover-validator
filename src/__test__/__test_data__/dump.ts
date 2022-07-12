@@ -1,4 +1,5 @@
 export const canisterId = 'bymdn-oaaaa-aaaai-abeva-cai';
+export const delegateCanisterId = 'tjnrr-qqaaa-aaaam-qaafa-cai';
 export const canisterName = 'test canister name';
 export const repoUrl = 'test-owner-github-repo/test-repository';
 export const repoAccessToken = 'test repo access token';

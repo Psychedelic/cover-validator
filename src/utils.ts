@@ -49,12 +49,11 @@ export const validateCanister = async (canisterId: string, ownerId: string) => {
 
   let cert: Certificate;
   try {
-    const res = await agent.readState(canisterPrincipal, {
+    const {certificate} = await agent.readState(canisterPrincipal, {
       paths: [path]
     });
 
-    cert = new Certificate(res, agent);
-    await cert.verify();
+    cert = await Certificate.create({certificate, rootKey: agent.rootKey, canisterId: canisterPrincipal});
   } catch (error) {
     console.error('Validate canister owner fail: ', error);
     throw GettingCanisterInfoFailed;

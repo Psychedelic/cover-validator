@@ -7,6 +7,7 @@ import {
   canisterId,
   canisterName,
   commitHash,
+  delegateCanisterId,
   dfxVersion,
   optimizeCount,
   ownerId,
@@ -14,12 +15,13 @@ import {
   repoAccessToken,
   repoUrl,
   rustVersion,
-  signature
+  signature,
+  timestamp
 } from './dump';
 
 //  MOCK - cbor
 td.replace(Decoder, 'decodeFirstSync', () => ({
-  value: [Principal.fromText(ownerId).toUint8Array()]
+  value: [Principal.fromText(ownerId).toUint8Array(), Principal.fromText(delegateCanisterId).toUint8Array()]
 }));
 
 // MOCK - cover canister id
@@ -38,7 +40,7 @@ td.when(new SecretsManagerClient(td.matchers.anything())).thenReturn({
 });
 
 // MOCK - @dfinity agent
-const {HttpAgent, Certificate} = td.replace('@dfinity/agent', {
+const {HttpAgent} = td.replace('@dfinity/agent', {
   Actor: {
     createActor: () => ({
       registerVerification: () => ({
@@ -50,6 +52,7 @@ const {HttpAgent, Certificate} = td.replace('@dfinity/agent', {
       getBuildConfigValidator: () => [
         {
           owner_id: Principal.fromText(ownerId),
+          delegate_canister_id: [Principal.fromText(delegateCanisterId)],
           canister_id: Principal.fromText(canisterId),
           canister_name: canisterName,
           repo_url: repoUrl,
@@ -66,14 +69,14 @@ const {HttpAgent, Certificate} = td.replace('@dfinity/agent', {
   },
   HttpAgent: td.func(),
   SignIdentity: td.func(),
-  Certificate: td.func()
+  Certificate: {
+    create: () => ({
+      lookup: () => 'fakeLookup'
+    })
+  }
 });
 td.when(new HttpAgent(td.matchers.anything())).thenReturn({
   readState: () => 'fakeState'
-});
-td.when(new Certificate(td.matchers.anything(), td.matchers.anything())).thenReturn({
-  verify: () => 'fakeVerify',
-  lookup: () => 'fakeLookup'
 });
 
 // MOCK - @dfinity identity
@@ -97,4 +100,4 @@ td.when(new Octokit(td.matchers.anything())).thenReturn({
 });
 
 // 2022-04-06T19:40:29.457Z
-MockDate.set(1649274029457);
+MockDate.set(timestamp);

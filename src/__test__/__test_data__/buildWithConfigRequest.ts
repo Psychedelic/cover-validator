@@ -60,8 +60,9 @@ const badData9 = body({
   ownerId,
   repoAccessToken,
   publicKey,
-  signature,
-  timestamp: 1649274029457 + 300001
+  signature:
+    'f49f23f076ba550f70e1080066a47ea961f97941e3691ac0233b2e69c8715312ff2645ec019981afcf52a57ab3c301625475c382849db93b06006e4b3d11e400',
+  timestamp: timestamp - 300001
 });
 
 export const badData = [badData1, badData2, badData3, badData4, badData5, badData6, badData7, badData8, badData9];

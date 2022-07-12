@@ -3,6 +3,7 @@ import {
   canisterId,
   canisterName,
   commitHash,
+  delegateCanisterId,
   dfxVersion,
   optimizeCount,
   ownerId,
@@ -17,6 +18,7 @@ import {
 const body = (data: BuildConfigRequest): string =>
   JSON.stringify({
     canisterId: data.canisterId,
+    delegateCanisterId: data.delegateCanisterId,
     canisterName: data.canisterName,
     repoUrl: data.repoUrl,
     repoAccessToken: data.repoAccessToken,
@@ -32,6 +34,7 @@ const body = (data: BuildConfigRequest): string =>
 
 const goodData1 = body({
   canisterId,
+  delegateCanisterId,
   canisterName,
   repoUrl,
   repoAccessToken,
@@ -46,6 +49,7 @@ const goodData1 = body({
 });
 const goodData2 = body({
   canisterId,
+  delegateCanisterId,
   canisterName,
   repoUrl,
   repoAccessToken,
@@ -60,6 +64,7 @@ const goodData2 = body({
 });
 const goodData3 = body({
   canisterId,
+  delegateCanisterId,
   canisterName,
   repoUrl,
   repoAccessToken,
@@ -72,7 +77,52 @@ const goodData3 = body({
   ownerId,
   timestamp
 });
-export const goodData = [goodData1, goodData2, goodData3];
+const goodData4 = body({
+  canisterId,
+  delegateCanisterId: '',
+  canisterName,
+  repoUrl,
+  repoAccessToken,
+  commitHash,
+  rustVersion,
+  dfxVersion,
+  optimizeCount,
+  publicKey,
+  signature,
+  ownerId,
+  timestamp
+});
+const goodData5 = body({
+  canisterId,
+  delegateCanisterId: '',
+  canisterName,
+  repoUrl,
+  repoAccessToken,
+  commitHash,
+  rustVersion,
+  dfxVersion,
+  optimizeCount: 0,
+  publicKey,
+  signature,
+  ownerId,
+  timestamp
+});
+const goodData6 = body({
+  canisterId,
+  delegateCanisterId: '',
+  canisterName,
+  repoUrl,
+  repoAccessToken,
+  commitHash,
+  rustVersion: '',
+  dfxVersion,
+  optimizeCount: 0,
+  publicKey,
+  signature,
+  ownerId,
+  timestamp
+});
+export const goodData = [goodData1, goodData2, goodData3, goodData4, goodData5, goodData6];
 
 const badData1 = body({});
 const badData2 = body({
@@ -83,57 +133,74 @@ const badData3 = body({
 });
 const badData4 = body({
   canisterId,
-  canisterName
+  delegateCanisterId: 'bad delegateCanisterId'
 });
 const badData5 = body({
   canisterId,
-  canisterName,
-  repoAccessToken
+  delegateCanisterId
 });
 const badData6 = body({
   canisterId,
+  delegateCanisterId,
+  canisterName
+});
+const badData7 = body({
+  canisterId,
+  delegateCanisterId,
+  canisterName,
+  repoAccessToken
+});
+const badData8 = body({
+  canisterId,
+  delegateCanisterId,
   canisterName,
   repoAccessToken,
   repoUrl: 'bad repo url'
 });
-const badData7 = body({
+const badData9 = body({
   canisterId,
+  delegateCanisterId,
   canisterName,
   repoAccessToken,
   repoUrl
 });
-const badData8 = body({
+const badData10 = body({
   canisterId,
+  delegateCanisterId,
   canisterName,
   repoAccessToken,
   repoUrl,
   commitHash: 'bad commit hash'
 });
-const badData9 = body({
+const badData11 = body({
   canisterId,
+  delegateCanisterId,
   canisterName,
   repoAccessToken,
   repoUrl,
   commitHash
 });
-const badData10 = body({
+const badData12 = body({
   canisterId,
+  delegateCanisterId,
   canisterName,
   repoAccessToken,
   repoUrl,
   commitHash,
   rustVersion: 'bad rust version'
 });
-const badData11 = body({
+const badData13 = body({
   canisterId,
+  delegateCanisterId,
   canisterName,
   repoAccessToken,
   repoUrl,
   commitHash,
   rustVersion
 });
-const badData12 = body({
+const badData14 = body({
   canisterId,
+  delegateCanisterId,
   canisterName,
   repoAccessToken,
   repoUrl,
@@ -141,8 +208,9 @@ const badData12 = body({
   rustVersion,
   dfxVersion: 'bad dfx version'
 });
-const badData13 = body({
+const badData15 = body({
   canisterId,
+  delegateCanisterId,
   canisterName,
   repoAccessToken,
   repoUrl,
@@ -150,8 +218,9 @@ const badData13 = body({
   rustVersion,
   dfxVersion
 });
-const badData14 = body({
+const badData16 = body({
   canisterId,
+  delegateCanisterId,
   canisterName,
   repoAccessToken,
   repoUrl,
@@ -160,8 +229,9 @@ const badData14 = body({
   dfxVersion,
   optimizeCount: -1
 });
-const badData15 = body({
+const badData17 = body({
   canisterId,
+  delegateCanisterId,
   canisterName,
   repoAccessToken,
   repoUrl,
@@ -170,8 +240,9 @@ const badData15 = body({
   dfxVersion,
   optimizeCount
 });
-const badData16 = body({
+const badData18 = body({
   canisterId,
+  delegateCanisterId,
   canisterName,
   repoAccessToken,
   repoUrl,
@@ -181,8 +252,9 @@ const badData16 = body({
   optimizeCount,
   publicKey: 'bad public key'
 });
-const badData17 = body({
+const badData19 = body({
   canisterId,
+  delegateCanisterId,
   canisterName,
   repoAccessToken,
   repoUrl,
@@ -192,8 +264,9 @@ const badData17 = body({
   optimizeCount,
   publicKey
 });
-const badData18 = body({
+const badData20 = body({
   canisterId,
+  delegateCanisterId,
   canisterName,
   repoAccessToken,
   repoUrl,
@@ -204,8 +277,9 @@ const badData18 = body({
   publicKey,
   ownerId: 'bad owner principal'
 });
-const badData19 = body({
+const badData21 = body({
   canisterId,
+  delegateCanisterId,
   canisterName,
   repoAccessToken,
   repoUrl,
@@ -216,8 +290,9 @@ const badData19 = body({
   publicKey,
   ownerId
 });
-const badData20 = body({
+const badData22 = body({
   canisterId,
+  delegateCanisterId,
   canisterName,
   repoAccessToken,
   repoUrl,
@@ -228,8 +303,9 @@ const badData20 = body({
   publicKey,
   ownerId
 });
-const badData21 = body({
+const badData23 = body({
   canisterId,
+  delegateCanisterId,
   canisterName,
   repoAccessToken,
   repoUrl,
@@ -241,8 +317,9 @@ const badData21 = body({
   ownerId,
   signature: 'bad signature'
 });
-const badData22 = body({
+const badData24 = body({
   canisterId,
+  delegateCanisterId,
   canisterName,
   repoAccessToken,
   repoUrl,
@@ -254,8 +331,9 @@ const badData22 = body({
   ownerId,
   signature
 });
-const badData23 = body({
+const badData25 = body({
   canisterId,
+  delegateCanisterId,
   canisterName,
   repoAccessToken,
   repoUrl,
@@ -265,9 +343,11 @@ const badData23 = body({
   optimizeCount,
   publicKey,
   ownerId,
-  signature,
-  timestamp: 1649274029457 + 300001
+  signature:
+    'f49f23f076ba550f70e1080066a47ea961f97941e3691ac0233b2e69c8715312ff2645ec019981afcf52a57ab3c301625475c382849db93b06006e4b3d11e400',
+  timestamp: timestamp - 300001
 });
+
 export const badData = [
   badData1,
   badData2,
@@ -291,5 +371,7 @@ export const badData = [
   badData20,
   badData21,
   badData22,
-  badData23
+  badData23,
+  badData24,
+  badData25
 ];

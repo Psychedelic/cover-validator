@@ -47,6 +47,7 @@ curl -X POST \
 https://h969vfa2pa.execute-api.us-east-1.amazonaws.com/production/save-build-config -d \
 '{
     "canisterId": "xyzoo-abcd-aaaai-abgca-cai",
+    "delegateCanisterId": "jklas-abcd-aaaai-abgca-cai",
     "canisterName": "cover",
     "repoUrl": "psychedelic/cover",
     "repoAccessToken": "ghp_1VxFGDfsdfasdfWER34SADF",
@@ -86,6 +87,7 @@ curl -X POST \
 https://h969vfa2pa.execute-api.us-east-1.amazonaws.com/production/build -d \
 '{
     "canisterId": "xyzoo-abcd-aaaai-abgca-cai",
+    "delegateCanisterId": "jklas-abcd-aaaai-abgca-cai",
     "canisterName": "motoko_canister",
     "repoUrl": "example/motoko_canister",
     "repoAccessToken": "ghp_1VxFGDfsdfasdfWER34SADF",

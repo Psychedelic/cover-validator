@@ -72,10 +72,10 @@ const buildWithConfig = async (event: APIGatewayProxyEvent): Promise<void> => {
     workflow_id: 'cover_builder.yml',
     ref: config.builderBranch,
     inputs: {
-      owner_id: `${buildConfig[0].owner_id.toText()}|${buildConfig[0].delegate_canister_id}`,
+      owner_id_and_delegate_canister_id: `${buildConfig[0].owner_id.toText()}|${buildConfig[0].delegate_canister_id}`,
       canister_id: buildConfig[0].canister_id.toText(),
       canister_name: buildConfig[0].canister_name,
-      repo_url: buildConfig[0].repo_url,
+      repo_url_and_visibility: buildConfig[0].repo_url,
       repo_access_token: `${req.repoAccessToken}|${repoVisibility}`,
       commit_hash: buildConfig[0].commit_hash,
       rust_version: buildConfig[0].rust_version[0] || '',

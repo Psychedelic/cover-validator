@@ -63,10 +63,10 @@ const build = async (event: APIGatewayProxyEvent): Promise<void> => {
     workflow_id: 'cover_builder.yml',
     ref: config.builderBranch,
     inputs: {
-      owner_id: `${req.ownerId}|${req.delegateCanisterId}`,
+      owner_id_and_delegate_canister_id: `${req.ownerId}|${req.delegateCanisterId}`,
       canister_id: req.canisterId as string,
       canister_name: req.canisterName as string,
-      repo_url: req.repoUrl as string,
+      repo_url_and_visibility: req.repoUrl as string,
       repo_access_token: `${req.repoAccessToken}|${repoVisibility}`,
       commit_hash: req.commitHash as string,
       rust_version: req.rustVersion as string,

@@ -15,7 +15,8 @@ import {
   repoAccessToken,
   repoUrl,
   rustVersion,
-  signature
+  signature,
+  timestamp
 } from './dump';
 
 //  MOCK - cbor
@@ -99,4 +100,4 @@ td.when(new Octokit(td.matchers.anything())).thenReturn({
 });
 
 // 2022-04-06T19:40:29.457Z
-MockDate.set(1649274029457);
+MockDate.set(timestamp);

@@ -10,7 +10,8 @@ Cover validator is a set of AWS lambda functions that help validate user request
 ## REST API
 
 - **_Cover only support DFX 0.8.4 or above_**
-- If you're using DFX 0.9.3 and above, when you build your wasm, DFX might automatically optimize the wasm for you, so beware of that when input the`optimizeCount`
+- **NOTE**: If you're using DFX 0.9.3 and above, when you build your wasm, DFX might automatically optimize the wasm for you, so beware of that when input the `optimizeCount`
+- **NOTE**: DFX 0.11.0 and above by default it runs optimization automatically. So we recommended to input `optimizeCount = 0`
 - These APIs will check if:
   - The inputs are in the right format?
   - The caller has the right canister repo access permission?

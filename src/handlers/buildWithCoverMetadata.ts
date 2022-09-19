@@ -16,12 +16,16 @@ const buildWithCoverMetadata = async (event: APIGatewayProxyEvent): Promise<void
     BuildWithCoverMetadataRequest
   );
 
+  // TODO: test pid
   const actor = getCoverMetadataActor(req.canisterId as string);
 
+  // TODO: test request & controllers
   const [coverMetadata, controllers] = await Promise.all([
     actor.coverMetadata(),
     getCanisterControllers(req.canisterId as string)
   ]);
+
+  // TODO: validate format
 
   const repoVisibility = await validateRepo(coverMetadata.repo_url, req.repoAccessToken as string);
 

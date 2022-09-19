@@ -11,7 +11,10 @@ import {BuildWithCoverMetadataRequest} from '../model';
 import {getCanisterControllers, transformAndValidateData, validateRepo} from '../utils';
 
 const buildWithCoverMetadata = async (event: APIGatewayProxyEvent): Promise<void> => {
-  const req = await transformAndValidateData<BuildWithCoverMetadataRequest>(event.body as string, BuildWithCoverMetadataRequest);
+  const req = await transformAndValidateData<BuildWithCoverMetadataRequest>(
+    event.body as string,
+    BuildWithCoverMetadataRequest
+  );
 
   const actor = getCoverMetadataActor(req.canisterId as string);
 
@@ -20,7 +23,7 @@ const buildWithCoverMetadata = async (event: APIGatewayProxyEvent): Promise<void
     getCanisterControllers(req.canisterId as string)
   ]);
 
-  const repoVisibility = await validateRepo(coverMetadata.repo_url as string, req.repoAccessToken as string);
+  const repoVisibility = await validateRepo(coverMetadata.repo_url, req.repoAccessToken as string);
 
   const result = await coverActor.registerVerification({
     owner_id: Principal.fromText(controllers[0]),

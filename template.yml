@@ -93,6 +93,21 @@ Resources:
             RestApiId: !Ref BasicAWSApiGateway
             Path: /build
             Method: POST
+
+  BuildFunction:
+    Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: makefile
+    Properties:
+      Handler: dist/handlers/build.handler
+      Description: build wasm
+      Events:
+        AddBuildConfigApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref BasicAWSApiGateway
+            Path: /build
+            Method: POST
       Policies:
         - AWSSecretsManagerGetSecretValuePolicy:
             SecretArn: !Sub arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:${SecretArn}

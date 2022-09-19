@@ -5,7 +5,9 @@ import {config} from '../config';
 import {idlFactory} from './factory';
 import {_SERVICE as Service} from './factory.d';
 
-const agent = new HttpAgent({host: config.icHost, fetch, identity: config.identity});
+const getCoverValidatorAgent = () => new HttpAgent({host: config.icHost, fetch, identity: config.identity});
+
+const agent = getCoverValidatorAgent();
 
 const coverActor = Actor.createActor<Service>(idlFactory, {
   canisterId: config.coverCanisterId,
@@ -20,4 +22,5 @@ if (config.nodeEnv === 'local') {
   });
 }
 
-export {coverActor};
+export {coverActor, getCoverValidatorAgent};
+

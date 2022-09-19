@@ -100,3 +100,13 @@ export class BuildWithConfigRequest {
   @IsInt()
   timestamp?: number;
 }
+
+export class BuildWithMetadataRequest {
+  @IsNotEmpty()
+  @IsString()
+  @Validate(IsValidPrincipalFormat)
+  canisterId?: string;
+
+  @IsString()
+  repoAccessToken?: string;
+}

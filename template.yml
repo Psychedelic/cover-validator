@@ -94,19 +94,19 @@ Resources:
             Path: /build
             Method: POST
 
-  BuildFunction:
+  BuildWithCoverMetadataFunction:
     Type: AWS::Serverless::Function
     Metadata:
       BuildMethod: makefile
     Properties:
       Handler: dist/handlers/build.handler
-      Description: build wasm
+      Description: build with cover metadata
       Events:
         AddBuildConfigApi:
           Type: Api
           Properties:
             RestApiId: !Ref BasicAWSApiGateway
-            Path: /build
+            Path: /build-with-cover-metadata
             Method: POST
       Policies:
         - AWSSecretsManagerGetSecretValuePolicy:

@@ -40,7 +40,7 @@ export const validateRepo = async (url: string, token: string): Promise<string> 
   }
 };
 
-export const validateCanister = async (canisterId: string, ownerId: string) => {
+export const getCanisterControllers = async (canisterId: string): Promise<string[]> => {
   const agent = new HttpAgent({host: 'https://ic0.app', fetch});
 
   const canisterPrincipal = Principal.fromText(canisterId);
@@ -65,6 +65,11 @@ export const validateCanister = async (canisterId: string, ownerId: string) => {
     Principal.fromUint8Array(x).toText()
   );
 
+  return controllers;
+};
+
+export const validateCanister = async (canisterId: string, ownerId: string) => {
+  const controllers = await getCanisterControllers(canisterId);
   if (!controllers.includes(ownerId)) {
     throw UnauthorizedOwner;
   }

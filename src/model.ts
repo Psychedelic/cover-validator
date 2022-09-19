@@ -101,7 +101,7 @@ export class BuildWithConfigRequest {
   timestamp?: number;
 }
 
-export class BuildWithMetadataRequest {
+export class BuildWithCoverMetadataRequest {
   @IsNotEmpty()
   @IsString()
   @Validate(IsValidPrincipalFormat)

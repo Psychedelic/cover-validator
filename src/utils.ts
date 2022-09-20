@@ -9,8 +9,11 @@ import {sha256} from 'js-sha256';
 import secp256k1 from 'secp256k1';
 import tweetnacl from 'tweetnacl';
 
+import {getCoverMetadataActor} from './actor/coverMetadataActor';
+import {CoverMetadata} from './actor/coverMetadataFactory.d';
 import {
-  GettingCanisterInfoFailed,
+  GetCanisterInfoFailed,
+  GetCoverMetadataFailed,
   InvalidOwner,
   InvalidSignature,
   InvalidTimestamp,
@@ -56,7 +59,7 @@ export const getCanisterControllers = async (canisterId: string): Promise<string
     cert = await Certificate.create({certificate, rootKey: agent.rootKey, canisterId: canisterPrincipal});
   } catch (error) {
     console.error('Validate canister owner fail: ', error);
-    throw GettingCanisterInfoFailed;
+    throw GetCanisterInfoFailed;
   }
 
   const resEnc = cert.lookup(path);
@@ -72,6 +75,15 @@ export const validateCanister = async (canisterId: string, ownerId: string) => {
   const controllers = await getCanisterControllers(canisterId);
   if (!controllers.includes(ownerId)) {
     throw UnauthorizedOwner;
+  }
+};
+
+export const getCoverMetadata = async (canisterId: string): Promise<CoverMetadata> => {
+  try {
+    const actor = getCoverMetadataActor(canisterId);
+    return await actor.coverMetadata();
+  } catch (_) {
+    throw GetCoverMetadataFailed;
   }
 };
 

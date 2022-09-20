@@ -3,12 +3,11 @@ import {Octokit} from '@octokit/core';
 import {APIGatewayProxyEvent} from 'aws-lambda';
 
 import {coverActor} from '../actor/coverActor';
-import {getCoverMetadataActor} from '../actor/coverMetadataActor';
 import {config} from '../config';
 import {throwCanisterResponseError} from '../error';
 import {httpResponse} from '../httpResponse';
 import {BuildWithCoverMetadataRequest} from '../model';
-import {getCanisterControllers, transformAndValidateData, validateRepo} from '../utils';
+import {getCanisterControllers, getCoverMetadata, transformAndValidateData, validateRepo} from '../utils';
 
 const buildWithCoverMetadata = async (event: APIGatewayProxyEvent): Promise<void> => {
   const req = await transformAndValidateData<BuildWithCoverMetadataRequest>(
@@ -16,21 +15,14 @@ const buildWithCoverMetadata = async (event: APIGatewayProxyEvent): Promise<void
     BuildWithCoverMetadataRequest
   );
 
-  // TODO: test pid
-  const actor = getCoverMetadataActor(req.canisterId as string);
+  const coverMetadata = await getCoverMetadata(req.canisterId as string);
 
-  // TODO: test request & controllers
-  const [coverMetadata, controllers] = await Promise.all([
-    actor.coverMetadata(),
-    getCanisterControllers(req.canisterId as string)
-  ]);
-
-  // TODO: validate format
+  const [controller] = await getCanisterControllers(req.canisterId as string);
 
   const repoVisibility = await validateRepo(coverMetadata.repo_url, req.repoAccessToken as string);
 
   const result = await coverActor.registerVerification({
-    owner_id: Principal.fromText(controllers[0]),
+    owner_id: Principal.fromText(controller),
     delegate_canister_id: [],
     canister_id: Principal.fromText(req.canisterId as string),
     dfx_version: coverMetadata.dfx_version,
@@ -56,7 +48,7 @@ const buildWithCoverMetadata = async (event: APIGatewayProxyEvent): Promise<void
     workflow_id: 'cover_builder.yml',
     ref: config.builderBranch,
     inputs: {
-      owner_id_and_delegate_canister_id: `${controllers[0]}|`,
+      owner_id_and_delegate_canister_id: `${controller}|`,
       canister_id: req.canisterId as string,
       canister_name: coverMetadata.canister_name,
       repo_url_and_visibility: `${coverMetadata.repo_url}|${repoVisibility}`,

@@ -36,9 +36,9 @@ export class IsValidVersionFormat implements ValidatorConstraintInterface {
 }
 
 export class IsValidVersionFormatCoverMetadata implements ValidatorConstraintInterface {
-  validate(value?: string[]) {
+  validate(value: string[]) {
     const versionPattern = /^[0-9]+\.[0-9]+\.[0-9]+$/u;
-    return !value || versionPattern.test(value[0]);
+    return typeof value[0] === 'undefined' || versionPattern.test(value[0]);
   }
 
   defaultMessage() {
@@ -97,7 +97,7 @@ export const IsNotEmptyIfOptimizedCoverMetadata = () => (object: CoverMetadataVa
     validator: {
       validate(value: string[], args: ValidationArguments) {
         const optimizeCount = (args.object as CoverMetadataValidator).optimize_count as number;
-        return optimizeCount <= 0 || (Boolean(value) && value.length > 0);
+        return optimizeCount <= 0 || !isEmpty(value[0]);
       }
     }
   });

@@ -9,8 +9,11 @@ import {sha256} from 'js-sha256';
 import secp256k1 from 'secp256k1';
 import tweetnacl from 'tweetnacl';
 
+import {getCoverMetadataActor} from './actor/coverMetadataActor';
+import {CoverMetadata} from './actor/coverMetadataFactory.d';
 import {
-  GettingCanisterInfoFailed,
+  GetCanisterInfoFailed,
+  GetCoverMetadataFailed,
   InvalidOwner,
   InvalidSignature,
   InvalidTimestamp,
@@ -18,6 +21,7 @@ import {
   UnauthorizedOwner,
   ValidateRepoFail
 } from './error';
+import {CoverMetadataValidator} from './model';
 import {getTime} from './timeUtils';
 
 // Validate and return repo visibility
@@ -40,7 +44,7 @@ export const validateRepo = async (url: string, token: string): Promise<string> 
   }
 };
 
-export const validateCanister = async (canisterId: string, ownerId: string) => {
+export const getCanisterControllers = async (canisterId: string): Promise<string[]> => {
   const agent = new HttpAgent({host: 'https://ic0.app', fetch});
 
   const canisterPrincipal = Principal.fromText(canisterId);
@@ -56,7 +60,7 @@ export const validateCanister = async (canisterId: string, ownerId: string) => {
     cert = await Certificate.create({certificate, rootKey: agent.rootKey, canisterId: canisterPrincipal});
   } catch (error) {
     console.error('Validate canister owner fail: ', error);
-    throw GettingCanisterInfoFailed;
+    throw GetCanisterInfoFailed;
   }
 
   const resEnc = cert.lookup(path);
@@ -65,6 +69,11 @@ export const validateCanister = async (canisterId: string, ownerId: string) => {
     Principal.fromUint8Array(x).toText()
   );
 
+  return controllers;
+};
+
+export const validateCanister = async (canisterId: string, ownerId: string) => {
+  const controllers = await getCanisterControllers(canisterId);
   if (!controllers.includes(ownerId)) {
     throw UnauthorizedOwner;
   }
@@ -118,14 +127,29 @@ export const validatePrincipal = (ownerId: string, publicKey: string) => {
 };
 
 export const transformAndValidateData = async <T extends object>(
-  event: string,
+  event: string | object,
   classType: ClassType<T>
 ): Promise<T> => {
   try {
+    if (typeof event === 'string') {
+      return (await transformAndValidate(classType, event)) as T;
+    }
     return (await transformAndValidate(classType, event)) as T;
   } catch (error) {
     throw throwBadInputRequest(error);
   }
+};
+
+export const getCoverMetadataValidated = async (canisterId: string): Promise<CoverMetadata> => {
+  let coverMetadata: CoverMetadata;
+  try {
+    const actor = getCoverMetadataActor(canisterId);
+    coverMetadata = await actor.coverMetadata();
+  } catch (_) {
+    throw GetCoverMetadataFailed;
+  }
+  await transformAndValidateData<CoverMetadataValidator>(coverMetadata, CoverMetadataValidator);
+  return coverMetadata;
 };
 
 export const validateTimestamp = (timestamp: number) => {

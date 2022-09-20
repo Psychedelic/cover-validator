@@ -7,7 +7,7 @@ import {_SERVICE as Service} from './factory.d';
 
 const agent = new HttpAgent({host: config.icHost, fetch, identity: config.identity});
 
-const coverActor = Actor.createActor<Service>(idlFactory, {
+export const coverActor = Actor.createActor<Service>(idlFactory, {
   canisterId: config.coverCanisterId,
   agent
 });
@@ -19,5 +19,3 @@ if (config.nodeEnv === 'local') {
     throw err;
   });
 }
-
-export {coverActor};

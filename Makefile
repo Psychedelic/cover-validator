@@ -12,6 +12,9 @@ build-BuildWithConfigFunction:
 build-BuildFunction:
 	$(MAKE) HANDLER=src/handlers/build.ts build-lambda-common
 
+build-BuildWithCoverMetadataFunction:
+	$(MAKE) HANDLER=src/handlers/buildWithCoverMetadata.ts build-lambda-common
+
 build-lambda-common:
 	npm install --ignore-scripts
 	rm -rf dist

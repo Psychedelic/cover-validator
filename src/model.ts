@@ -4,9 +4,11 @@ import {IsInt, IsNotEmpty, IsString, Max, Min, Validate, ValidateIf} from 'class
 import {
   IsHexString,
   IsNotEmptyIfOptimized,
+  IsNotEmptyIfOptimizedCoverMetadata,
   IsValidPrincipalFormat,
   IsValidUrlFormat,
-  IsValidVersionFormat
+  IsValidVersionFormat,
+  IsValidVersionFormatCoverMetadata
 } from './validators';
 
 export class BuildConfigRequest {
@@ -99,4 +101,44 @@ export class BuildWithConfigRequest {
   @IsNotEmpty()
   @IsInt()
   timestamp?: number;
+}
+
+export class BuildWithCoverMetadataRequest {
+  @IsNotEmpty()
+  @IsString()
+  @Validate(IsValidPrincipalFormat)
+  canisterId?: string;
+
+  @IsString()
+  repoAccessToken?: string;
+}
+
+export class CoverMetadataValidator {
+  @IsNotEmpty()
+  @IsString()
+  canister_name?: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @Validate(IsValidUrlFormat)
+  repo_url?: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @Validate(IsHexString)
+  commit_hash?: string;
+
+  @IsNotEmptyIfOptimizedCoverMetadata()
+  @Validate(IsValidVersionFormatCoverMetadata)
+  rust_version?: string[];
+
+  @IsNotEmpty()
+  @IsString()
+  @Validate(IsValidVersionFormat)
+  dfx_version?: string;
+
+  @IsInt()
+  @Min(0)
+  @Max(10)
+  optimize_count?: number;
 }

@@ -102,7 +102,7 @@ Resources:
     Metadata:
       BuildMethod: makefile
     Properties:
-      Handler: dist/handlers/build.handler
+      Handler: dist/handlers/buildWithCoverMetadata.handler
       Description: build with cover metadata
       Events:
         AddBuildConfigApi:

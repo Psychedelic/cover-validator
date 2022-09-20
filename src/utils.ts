@@ -21,6 +21,7 @@ import {
   UnauthorizedOwner,
   ValidateRepoFail
 } from './error';
+import {CoverMetadataValidator} from './model';
 import {getTime} from './timeUtils';
 
 // Validate and return repo visibility
@@ -78,15 +79,6 @@ export const validateCanister = async (canisterId: string, ownerId: string) => {
   }
 };
 
-export const getCoverMetadata = async (canisterId: string): Promise<CoverMetadata> => {
-  try {
-    const actor = getCoverMetadataActor(canisterId);
-    return await actor.coverMetadata();
-  } catch (_) {
-    throw GetCoverMetadataFailed;
-  }
-};
-
 const validateSecp256k1Signature = (timestamp: number, signature: string, publicKey: string): boolean => {
   const challenge = Buffer.from(timestamp.toString(), 'utf8');
   const hash = sha256.create();
@@ -135,13 +127,27 @@ export const validatePrincipal = (ownerId: string, publicKey: string) => {
 };
 
 export const transformAndValidateData = async <T extends object>(
-  event: string,
+  event: string | object,
   classType: ClassType<T>
 ): Promise<T> => {
   try {
+    if (typeof event === 'string') {
+      return (await transformAndValidate(classType, event)) as T;
+    }
     return (await transformAndValidate(classType, event)) as T;
   } catch (error) {
     throw throwBadInputRequest(error);
+  }
+};
+
+export const getCoverMetadataValidated = async (canisterId: string): Promise<CoverMetadata> => {
+  try {
+    const actor = getCoverMetadataActor(canisterId);
+    const coverMetadata = await actor.coverMetadata();
+    await transformAndValidateData<CoverMetadataValidator>(coverMetadata, CoverMetadataValidator);
+    return coverMetadata;
+  } catch (_) {
+    throw GetCoverMetadataFailed;
   }
 };
 

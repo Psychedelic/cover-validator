@@ -9,7 +9,7 @@ import {
   ValidatorConstraintInterface
 } from 'class-validator';
 
-import {BuildConfigRequest} from './model';
+import {BuildConfigRequest, CoverMetadataValidator} from './model';
 
 @ValidatorConstraint({name: 'isValidUrlFormat', async: false})
 export class IsValidUrlFormat implements ValidatorConstraintInterface {
@@ -28,6 +28,17 @@ export class IsValidVersionFormat implements ValidatorConstraintInterface {
   validate(value?: string) {
     const versionPattern = /^[0-9]+\.[0-9]+\.[0-9]+$/u;
     return !value || versionPattern.test(value);
+  }
+
+  defaultMessage() {
+    return 'Invalid version format';
+  }
+}
+
+export class IsValidVersionFormatCoverMetadata implements ValidatorConstraintInterface {
+  validate(value?: string[]) {
+    const versionPattern = /^[0-9]+\.[0-9]+\.[0-9]+$/u;
+    return !value || versionPattern.test(value[0]);
   }
 
   defaultMessage() {
@@ -71,7 +82,22 @@ export const IsNotEmptyIfOptimized = () => (object: BuildConfigRequest, property
     validator: {
       validate(value: string, args: ValidationArguments) {
         const optimizeCount = (args.object as BuildConfigRequest).optimizeCount as number;
-        return optimizeCount <= 0 || (optimizeCount > 0 && !isEmpty(value));
+        return optimizeCount <= 0 || !isEmpty(value);
+      }
+    }
+  });
+};
+
+export const IsNotEmptyIfOptimizedCoverMetadata = () => (object: CoverMetadataValidator, propertyName: string) => {
+  registerDecorator({
+    name: 'IsNotEmptyIfOptimizedCoverMetadata',
+    target: object.constructor,
+    propertyName,
+    options: {message: 'Rust version must be specified to use the optimizer'},
+    validator: {
+      validate(value: string[], args: ValidationArguments) {
+        const optimizeCount = (args.object as CoverMetadataValidator).optimize_count as number;
+        return optimizeCount <= 0 || (Boolean(value) && value.length > 0);
       }
     }
   });

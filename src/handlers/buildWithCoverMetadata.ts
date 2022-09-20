@@ -7,7 +7,7 @@ import {config} from '../config';
 import {throwCanisterResponseError} from '../error';
 import {httpResponse} from '../httpResponse';
 import {BuildWithCoverMetadataRequest} from '../model';
-import {getCanisterControllers, getCoverMetadata, transformAndValidateData, validateRepo} from '../utils';
+import {getCanisterControllers, getCoverMetadataValidated, transformAndValidateData, validateRepo} from '../utils';
 
 const buildWithCoverMetadata = async (event: APIGatewayProxyEvent): Promise<void> => {
   const req = await transformAndValidateData<BuildWithCoverMetadataRequest>(
@@ -15,7 +15,7 @@ const buildWithCoverMetadata = async (event: APIGatewayProxyEvent): Promise<void
     BuildWithCoverMetadataRequest
   );
 
-  const coverMetadata = await getCoverMetadata(req.canisterId as string);
+  const coverMetadata = await getCoverMetadataValidated(req.canisterId as string);
 
   const [controller] = await getCanisterControllers(req.canisterId as string);
 

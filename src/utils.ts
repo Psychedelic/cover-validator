@@ -141,14 +141,15 @@ export const transformAndValidateData = async <T extends object>(
 };
 
 export const getCoverMetadataValidated = async (canisterId: string): Promise<CoverMetadata> => {
+  let coverMetadata: CoverMetadata;
   try {
     const actor = getCoverMetadataActor(canisterId);
-    const coverMetadata = await actor.coverMetadata();
-    await transformAndValidateData<CoverMetadataValidator>(coverMetadata, CoverMetadataValidator);
-    return coverMetadata;
+    coverMetadata = await actor.coverMetadata();
   } catch (_) {
     throw GetCoverMetadataFailed;
   }
+  await transformAndValidateData<CoverMetadataValidator>(coverMetadata, CoverMetadataValidator);
+  return coverMetadata;
 };
 
 export const validateTimestamp = (timestamp: number) => {

@@ -1,12 +1,12 @@
 import {BuildConfigRequest} from '../../model';
 import {
+  callerId,
   canisterId,
   canisterName,
   commitHash,
   delegateCanisterId,
   dfxVersion,
   optimizeCount,
-  ownerId,
   publicKey,
   repoAccessToken,
   repoUrl,
@@ -28,7 +28,7 @@ const body = (data: BuildConfigRequest): string =>
     optimizeCount: data.optimizeCount,
     publicKey: data.publicKey,
     signature: data.signature,
-    ownerId: data.ownerId,
+    callerId: data.callerId,
     timestamp: data.timestamp
   });
 
@@ -44,7 +44,7 @@ const goodData1 = body({
   optimizeCount,
   publicKey,
   signature,
-  ownerId,
+  callerId,
   timestamp
 });
 const goodData2 = body({
@@ -59,7 +59,7 @@ const goodData2 = body({
   optimizeCount: 0,
   publicKey,
   signature,
-  ownerId,
+  callerId,
   timestamp
 });
 const goodData3 = body({
@@ -74,7 +74,7 @@ const goodData3 = body({
   optimizeCount: 0,
   publicKey,
   signature,
-  ownerId,
+  callerId,
   timestamp
 });
 const goodData4 = body({
@@ -89,7 +89,7 @@ const goodData4 = body({
   optimizeCount,
   publicKey,
   signature,
-  ownerId,
+  callerId,
   timestamp
 });
 const goodData5 = body({
@@ -104,7 +104,7 @@ const goodData5 = body({
   optimizeCount: 0,
   publicKey,
   signature,
-  ownerId,
+  callerId,
   timestamp
 });
 const goodData6 = body({
@@ -119,7 +119,7 @@ const goodData6 = body({
   optimizeCount: 0,
   publicKey,
   signature,
-  ownerId,
+  callerId,
   timestamp
 });
 export const goodData = [goodData1, goodData2, goodData3, goodData4, goodData5, goodData6];
@@ -275,7 +275,7 @@ const badData20 = body({
   dfxVersion,
   optimizeCount,
   publicKey,
-  ownerId: 'bad owner principal'
+  callerId: 'bad caller principal'
 });
 const badData21 = body({
   canisterId,
@@ -288,7 +288,7 @@ const badData21 = body({
   dfxVersion,
   optimizeCount,
   publicKey,
-  ownerId
+  callerId
 });
 const badData22 = body({
   canisterId,
@@ -301,7 +301,7 @@ const badData22 = body({
   dfxVersion,
   optimizeCount,
   publicKey,
-  ownerId
+  callerId
 });
 const badData23 = body({
   canisterId,
@@ -314,7 +314,7 @@ const badData23 = body({
   dfxVersion,
   optimizeCount,
   publicKey,
-  ownerId,
+  callerId,
   signature: 'bad signature'
 });
 const badData24 = body({
@@ -328,7 +328,7 @@ const badData24 = body({
   dfxVersion,
   optimizeCount,
   publicKey,
-  ownerId,
+  callerId,
   signature
 });
 const badData25 = body({
@@ -342,7 +342,7 @@ const badData25 = body({
   dfxVersion,
   optimizeCount,
   publicKey,
-  ownerId,
+  callerId,
   signature:
     'f49f23f076ba550f70e1080066a47ea961f97941e3691ac0233b2e69c8715312ff2645ec019981afcf52a57ab3c301625475c382849db93b06006e4b3d11e400',
   timestamp: timestamp - 300001

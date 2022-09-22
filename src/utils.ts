@@ -10,15 +10,15 @@ import secp256k1 from 'secp256k1';
 import tweetnacl from 'tweetnacl';
 
 import {getCoverMetadataActor} from './actor/coverMetadataActor';
-import {CoverMetadata} from './actor/coverMetadataFactory.d';
+import {CoverMetadata} from './actor/idl/coverMetadata.did.d';
 import {
   GetCanisterInfoFailed,
   GetCoverMetadataFailed,
-  InvalidOwner,
+  InvalidCaller,
   InvalidSignature,
   InvalidTimestamp,
   throwBadInputRequest,
-  UnauthorizedOwner,
+  UnauthorizedCaller,
   ValidateRepoFail
 } from './error';
 import {CoverMetadataValidator} from './model';
@@ -59,7 +59,7 @@ export const getCanisterControllers = async (canisterId: string): Promise<string
 
     cert = await Certificate.create({certificate, rootKey: agent.rootKey, canisterId: canisterPrincipal});
   } catch (error) {
-    console.error('Validate canister owner fail: ', error);
+    console.error('Validate canister caller fail: ', error);
     throw GetCanisterInfoFailed;
   }
 
@@ -72,10 +72,10 @@ export const getCanisterControllers = async (canisterId: string): Promise<string
   return controllers;
 };
 
-export const validateCanister = async (canisterId: string, ownerId: string) => {
+export const validateCanister = async (canisterId: string, callerId: string) => {
   const controllers = await getCanisterControllers(canisterId);
-  if (!controllers.includes(ownerId)) {
-    throw UnauthorizedOwner;
+  if (!controllers.includes(callerId)) {
+    throw UnauthorizedCaller;
   }
 };
 
@@ -114,15 +114,15 @@ export const validateSignature = (timestamp: number, signature: string, publicKe
   }
 };
 
-export const validatePrincipal = (ownerId: string, publicKey: string) => {
+export const validatePrincipal = (callerId: string, publicKey: string) => {
   const ed25519PublicKey = Ed25519PublicKey.fromRaw(Buffer.from(publicKey, 'hex'));
   const secp256k1PublicKey = Secp256k1PublicKey.fromRaw(Buffer.from(publicKey, 'hex'));
 
   const ed25519Principal = Principal.selfAuthenticating(new Uint8Array(ed25519PublicKey.toDer()));
   const secp256k1Principal = Principal.selfAuthenticating(new Uint8Array(secp256k1PublicKey.toDer()));
 
-  if (ed25519Principal.toText() !== ownerId && secp256k1Principal.toText() !== ownerId) {
-    throw InvalidOwner;
+  if (ed25519Principal.toText() !== callerId && secp256k1Principal.toText() !== callerId) {
+    throw InvalidCaller;
   }
 };
 

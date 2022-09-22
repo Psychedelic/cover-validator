@@ -2,7 +2,4 @@ dist
 coverage
 public
 build
-factory.ts
-factory.d.ts
-coverMetadataFactory.ts
-coverMetadataFactory.d.ts
+idl

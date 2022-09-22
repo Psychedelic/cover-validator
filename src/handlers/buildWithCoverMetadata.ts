@@ -22,7 +22,7 @@ const buildWithCoverMetadata = async (event: APIGatewayProxyEvent): Promise<void
   const repoVisibility = await validateRepo(coverMetadata.repo_url, req.repoAccessToken as string);
 
   const result = await coverActor.registerVerification({
-    owner_id: Principal.fromText(controller),
+    caller_id: Principal.fromText(controller),
     delegate_canister_id: [],
     canister_id: Principal.fromText(req.canisterId as string),
     dfx_version: coverMetadata.dfx_version,
@@ -48,7 +48,7 @@ const buildWithCoverMetadata = async (event: APIGatewayProxyEvent): Promise<void
     workflow_id: 'cover_builder.yml',
     ref: config.builderBranch,
     inputs: {
-      owner_id_and_delegate_canister_id: `${controller}|`,
+      caller_id_and_delegate_canister_id: `${controller}|`,
       canister_id: req.canisterId as string,
       canister_name: coverMetadata.canister_name,
       repo_url_and_visibility: `${coverMetadata.repo_url}|${repoVisibility}`,

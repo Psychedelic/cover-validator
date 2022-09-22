@@ -2,8 +2,8 @@ import {Actor, HttpAgent} from '@dfinity/agent';
 import fetch from 'isomorphic-fetch';
 
 import {config} from '../config';
-import {idlFactory} from './factory';
-import {_SERVICE as Service} from './factory.d';
+import {idlFactory} from './idl/cover.did';
+import {_SERVICE as Service} from './idl/cover.did.d';
 
 const agent = new HttpAgent({host: config.icHost, fetch, identity: config.identity});
 

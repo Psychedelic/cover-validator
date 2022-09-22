@@ -19,7 +19,7 @@ import {
 const buildWithConfig = async (event: APIGatewayProxyEvent): Promise<void> => {
   const req = await transformAndValidateData<BuildWithConfigRequest>(event.body as string, BuildWithConfigRequest);
 
-  validatePrincipal(req.ownerId as string, req.publicKey as string);
+  validatePrincipal(req.callerId as string, req.publicKey as string);
 
   validateTimestamp(req.timestamp as number);
 
@@ -27,7 +27,7 @@ const buildWithConfig = async (event: APIGatewayProxyEvent): Promise<void> => {
 
   const buildConfig = await coverActor.getBuildConfigValidator({
     canister_id: Principal.fromText(req.canisterId as string),
-    owner_id: Principal.fromText(req.ownerId as string)
+    caller_id: Principal.fromText(req.callerId as string)
   });
 
   if (!buildConfig.length) {
@@ -36,17 +36,17 @@ const buildWithConfig = async (event: APIGatewayProxyEvent): Promise<void> => {
 
   if (buildConfig[0].delegate_canister_id.length) {
     await Promise.all([
-      validateCanister(buildConfig[0].delegate_canister_id[0].toText(), buildConfig[0].owner_id.toText()),
+      validateCanister(buildConfig[0].delegate_canister_id[0].toText(), buildConfig[0].caller_id.toText()),
       validateCanister(buildConfig[0].canister_id.toText(), buildConfig[0].delegate_canister_id[0].toText())
     ]);
   } else {
-    validateCanister(buildConfig[0].canister_id.toText(), buildConfig[0].owner_id.toText());
+    validateCanister(buildConfig[0].canister_id.toText(), buildConfig[0].caller_id.toText());
   }
 
   const repoVisibility = await validateRepo(buildConfig[0].repo_url, req.repoAccessToken as string);
 
   const result = await coverActor.registerVerification({
-    owner_id: buildConfig[0].owner_id,
+    caller_id: buildConfig[0].caller_id,
     delegate_canister_id: buildConfig[0].delegate_canister_id,
     canister_id: buildConfig[0].canister_id,
     dfx_version: buildConfig[0].dfx_version,
@@ -72,7 +72,7 @@ const buildWithConfig = async (event: APIGatewayProxyEvent): Promise<void> => {
     workflow_id: 'cover_builder.yml',
     ref: config.builderBranch,
     inputs: {
-      owner_id_and_delegate_canister_id: `${buildConfig[0].owner_id.toText()}|${buildConfig[0].delegate_canister_id}`,
+      caller_id_and_delegate_canister_id: `${buildConfig[0].caller_id.toText()}|${buildConfig[0].delegate_canister_id}`,
       canister_id: buildConfig[0].canister_id.toText(),
       canister_name: buildConfig[0].canister_name,
       repo_url_and_visibility: `${buildConfig[0].repo_url}|${repoVisibility}`,

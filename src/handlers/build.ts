@@ -19,7 +19,7 @@ import {
 const build = async (event: APIGatewayProxyEvent): Promise<void> => {
   const req = await transformAndValidateData<BuildConfigRequest>(event.body as string, BuildConfigRequest);
 
-  validatePrincipal(req.ownerId as string, req.publicKey as string);
+  validatePrincipal(req.callerId as string, req.publicKey as string);
 
   validateTimestamp(req.timestamp as number);
 
@@ -27,17 +27,17 @@ const build = async (event: APIGatewayProxyEvent): Promise<void> => {
 
   if (req.delegateCanisterId) {
     await Promise.all([
-      validateCanister(req.delegateCanisterId as string, req.ownerId as string),
+      validateCanister(req.delegateCanisterId as string, req.callerId as string),
       validateCanister(req.canisterId as string, req.delegateCanisterId as string)
     ]);
   } else {
-    await validateCanister(req.canisterId as string, req.ownerId as string);
+    await validateCanister(req.canisterId as string, req.callerId as string);
   }
 
   const repoVisibility = await validateRepo(req.repoUrl as string, req.repoAccessToken as string);
 
   const result = await coverActor.registerVerification({
-    owner_id: Principal.fromText(req.ownerId as string),
+    caller_id: Principal.fromText(req.callerId as string),
     delegate_canister_id: req.delegateCanisterId ? [Principal.fromText(req.delegateCanisterId as string)] : [],
     canister_id: Principal.fromText(req.canisterId as string),
     dfx_version: req.dfxVersion as string,
@@ -63,7 +63,7 @@ const build = async (event: APIGatewayProxyEvent): Promise<void> => {
     workflow_id: 'cover_builder.yml',
     ref: config.builderBranch,
     inputs: {
-      owner_id_and_delegate_canister_id: `${req.ownerId}|${req.delegateCanisterId}`,
+      caller_id_and_delegate_canister_id: `${req.callerId}|${req.delegateCanisterId}`,
       canister_id: req.canisterId as string,
       canister_name: req.canisterName as string,
       repo_url_and_visibility: `${req.repoUrl}|${repoVisibility}`,

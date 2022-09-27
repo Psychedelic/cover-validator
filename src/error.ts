@@ -1,4 +1,4 @@
-import {Error as CanisterError} from './actor/factory.d';
+import {Error as CanisterError} from './actor/idl/cover.did.d';
 export class ErrorResponse {
   code: string;
 
@@ -23,8 +23,8 @@ export const throwBadInputRequest = (details: unknown): ErrorResponse =>
 export const ValidateRepoFail: ErrorResponse = new ErrorResponse('ERR_002', 'Bad credentials or repo not found');
 export const GetCoverMetadataFailed: ErrorResponse = new ErrorResponse('ERR_003', 'Failed to get cover metadata');
 export const GetCanisterInfoFailed: ErrorResponse = new ErrorResponse('ERR_004', 'Failed to get canister info');
-export const UnauthorizedOwner: ErrorResponse = new ErrorResponse('ERR_005', 'Unauthorized canister controller');
-export const InvalidOwner: ErrorResponse = new ErrorResponse('ERR_006', 'Invalid owner principal');
+export const UnauthorizedCaller: ErrorResponse = new ErrorResponse('ERR_005', 'Unauthorized canister controller');
+export const InvalidCaller: ErrorResponse = new ErrorResponse('ERR_006', 'Invalid caller principal');
 export const InvalidSignature: ErrorResponse = new ErrorResponse('ERR_007', 'Invalid signature');
 export const BuildConfigNotFound: ErrorResponse = new ErrorResponse('ERR_008', 'Build Config Not Found');
 export const InvalidTimestamp: ErrorResponse = new ErrorResponse('ERR_009', 'Expired or invalid timestamp');

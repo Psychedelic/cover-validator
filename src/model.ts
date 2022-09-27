@@ -67,7 +67,7 @@ export class BuildConfigRequest {
   @IsNotEmpty()
   @IsString()
   @Validate(IsValidPrincipalFormat)
-  ownerId?: string;
+  callerId?: string;
 
   @IsNotEmpty()
   @IsInt()
@@ -86,7 +86,7 @@ export class BuildWithConfigRequest {
   @IsNotEmpty()
   @IsString()
   @Validate(IsValidPrincipalFormat)
-  ownerId?: string;
+  callerId?: string;
 
   @IsNotEmpty()
   @IsString()

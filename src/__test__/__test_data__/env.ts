@@ -4,13 +4,13 @@ import MockDate from 'mockdate';
 import * as td from 'testdouble';
 
 import {
+  callerId,
   canisterId,
   canisterName,
   commitHash,
   delegateCanisterId,
   dfxVersion,
   optimizeCount,
-  ownerId,
   publicKey,
   repoAccessToken,
   repoUrl,
@@ -21,7 +21,7 @@ import {
 
 //  MOCK - cbor
 td.replace(Decoder, 'decodeFirstSync', () => ({
-  value: [Principal.fromText(ownerId).toUint8Array(), Principal.fromText(delegateCanisterId).toUint8Array()]
+  value: [Principal.fromText(callerId).toUint8Array(), Principal.fromText(delegateCanisterId).toUint8Array()]
 }));
 
 // MOCK - cover canister id
@@ -51,7 +51,7 @@ const {HttpAgent} = td.replace('@dfinity/agent', {
       },
       getBuildConfigValidator: () => [
         {
-          owner_id: Principal.fromText(ownerId),
+          caller_id: Principal.fromText(callerId),
           delegate_canister_id: [Principal.fromText(delegateCanisterId)],
           canister_id: Principal.fromText(canisterId),
           canister_name: canisterName,

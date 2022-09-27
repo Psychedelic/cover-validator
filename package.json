@@ -10,7 +10,7 @@
     "pre:stage": "npm run prettier && npm run lint && npm t",
     "build": "tsc && node fileExtReplacer.js dist",
     "clean": "rm -rf dist coverage logs node_modules build package-lock.json .aws-sam",
-    "test": "npm run build && c8 ava",
+    "test": "npm run build && c8 ava -s -T 30s",
     "prepare": "husky install"
   },
   "engines": {

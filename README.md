@@ -129,3 +129,38 @@ https://h969vfa2pa.execute-api.us-east-1.amazonaws.com/production/build-with-con
     "timestamp": 1649281583096
 }'
 ```
+
+### Build With Cover Metadata
+
+- Without providing proof of ownership, it's possible to have your build-config exposed via query method from your canister.
+- **NOTE**: You must expose `coverMetadata` query method from your canister.
+
+Candid example:
+```candid
+// canister.did
+type CoverMetadata = record {
+  dfx_version : text;
+  canister_name : text;
+  commit_hash : text;
+  repo_url : text;
+  rust_version : opt text;
+  optimize_count : nat8;
+};
+service : {
+  coverMetadata : () -> (CoverMetadata) query;
+}
+```
+- Required inputs:
+  - `canisterId` (string): ID of the canister you want to build
+  - `repoAccessToken` (string): Personal Access Token of a github account that has `READ` permission. Leave it empty if your repo is public [How to create Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
+- Example:
+
+```bash
+curl -X POST \
+-H 'content-type: application/json' \
+https://h969vfa2pa.execute-api.us-east-1.amazonaws.com/production/build-with-cover-metadata -d \
+'{
+    "canisterId": "xyzoo-abcd-aaaai-abgca-cai",
+    "repoAccessToken": ""
+}'
+```

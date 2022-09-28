@@ -7,7 +7,7 @@ import {config} from '../config';
 import {throwCanisterResponseError} from '../error';
 import {httpResponse} from '../httpResponse';
 import {BuildWithCoverMetadataRequest} from '../model';
-import {getCanisterControllers, getCoverMetadataValidated, transformAndValidateData, validateRepo} from '../utils';
+import {getCoverMetadataValidated, transformAndValidateData, validateRepo} from '../utils';
 
 const buildWithCoverMetadata = async (event: APIGatewayProxyEvent): Promise<void> => {
   const req = await transformAndValidateData<BuildWithCoverMetadataRequest>(
@@ -17,12 +17,10 @@ const buildWithCoverMetadata = async (event: APIGatewayProxyEvent): Promise<void
 
   const coverMetadata = await getCoverMetadataValidated(req.canisterId as string);
 
-  const [controller] = await getCanisterControllers(req.canisterId as string);
-
   const repoVisibility = await validateRepo(coverMetadata.repo_url, req.repoAccessToken as string);
 
   const result = await coverActor.registerVerification({
-    caller_id: Principal.fromText(controller),
+    caller_id: Principal.fromText(req.canisterId as string),
     delegate_canister_id: [],
     canister_id: Principal.fromText(req.canisterId as string),
     dfx_version: coverMetadata.dfx_version,
@@ -48,7 +46,7 @@ const buildWithCoverMetadata = async (event: APIGatewayProxyEvent): Promise<void
     workflow_id: 'cover_builder.yml',
     ref: config.builderBranch,
     inputs: {
-      caller_id_and_delegate_canister_id: `${controller}|`,
+      caller_id_and_delegate_canister_id: `${req.canisterId as string}|`,
       canister_id: req.canisterId as string,
       canister_name: coverMetadata.canister_name,
       repo_url_and_visibility: `${coverMetadata.repo_url}|${repoVisibility}`,

@@ -149,6 +149,9 @@ export const getCoverMetadataValidated = async (canisterId: string): Promise<Cov
     throw GetCoverMetadataFailed;
   }
   await transformAndValidateData<CoverMetadataValidator>(coverMetadata, CoverMetadataValidator);
+  if (coverMetadata.controller[0]) {
+    await validateCanister(canisterId, coverMetadata.controller[0]);
+  }
   return coverMetadata;
 };
 

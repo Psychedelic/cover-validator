@@ -140,6 +140,7 @@ Candid example:
 ```candid
 // canister.did
 type CoverMetadata = record {
+  controller : opt text;
   dfx_version : text;
   canister_name : text;
   commit_hash : text;

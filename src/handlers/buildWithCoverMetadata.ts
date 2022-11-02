@@ -7,7 +7,7 @@ import {config} from '../config';
 import {throwCanisterResponseError} from '../error';
 import {httpResponse} from '../httpResponse';
 import {BuildWithCoverMetadataRequest} from '../model';
-import {getCoverMetadataValidated, transformAndValidateData, validateRepo} from '../utils';
+import {getCoverMetadataValidated, transformAndValidateData, validateCanister, validateRepo} from '../utils';
 
 const buildWithCoverMetadata = async (event: APIGatewayProxyEvent): Promise<void> => {
   const req = await transformAndValidateData<BuildWithCoverMetadataRequest>(
@@ -16,6 +16,8 @@ const buildWithCoverMetadata = async (event: APIGatewayProxyEvent): Promise<void
   );
 
   const coverMetadata = await getCoverMetadataValidated(req.canisterId as string);
+
+  await validateCanister(req.canisterId as string, coverMetadata.controller);
 
   const repoVisibility = await validateRepo(coverMetadata.repo_url, req.repoAccessToken as string);
 

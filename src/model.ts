@@ -116,6 +116,11 @@ export class BuildWithCoverMetadataRequest {
 export class CoverMetadataValidator {
   @IsNotEmpty()
   @IsString()
+  @Validate(IsValidPrincipalFormat)
+  controller?: string;
+
+  @IsNotEmpty()
+  @IsString()
   canister_name?: string;
 
   @IsNotEmpty()
